@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import ComplaintBanner from "@/components/home/ComplaintBanner";
+import ItemModal from "../ItemModal";
 
 export interface PopularMenuItem {
   id: number | string;
@@ -20,12 +22,17 @@ interface PopularMenuProps {
 }
 
 export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
-  const handleSelect = (item: PopularMenuItem) => {
-    if (onSelect) {
-      onSelect(item);
-    } else {
-      console.log("Membuka modal untuk menu:", item.nama_menu);
-    }
+  const [selectedItem, setSelectedItem] = useState<PopularMenuItem | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = (item: PopularMenuItem) => {
+    setSelectedItem(item);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedItem(null);
   };
 
   return (
@@ -124,7 +131,7 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
                 <div className="mt-5">
                   <button
                     type="button"
-                    onClick={() => handleSelect(food)}
+                    onClick={() => handleOpenModal(food)}
                     className="w-full bg-[rgb(51,51,204)] hover:bg-[rgb(43,43,173)] text-white font-semibold py-2.5 rounded-xl transition shadow-sm active:scale-[0.98]"
                   >
                     Beli Sekarang
@@ -137,6 +144,12 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
       </div>
 
       <ComplaintBanner />
+
+      <ItemModal
+        item={selectedItem}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 }

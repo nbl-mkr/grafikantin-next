@@ -23,16 +23,16 @@ export default function StandCards({ stands }: StandCardsProps) {
           {stands.map((stand) => (
             <div
               key={stand.id}
-              className="group rounded-2xl bg-white shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100 flex flex-col justify-between"
+              className="group rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
             >
               <div>
-                <div className="relative overflow-hidden rounded-t-2xl -m-px w-[calc(100%+2px)]">
+                <div className="relative overflow-hidden">
                   <Image
                     src={`/assets/${stand.gambar || "menu.jpg"}`}
                     alt={stand.nama_stand}
                     width={400}
                     height={208}
-                    className="h-52 w-full object-cover group-hover:scale-105 transition-transform duration-300 block"
+                    className="h-52 w-full object-cover scale-[1.02] group-hover:scale-105 transition-transform duration-300 block"
                   />
                 </div>
 
