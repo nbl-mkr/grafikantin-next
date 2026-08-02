@@ -10,9 +10,9 @@ export default function Navbar() {
   const isActive = (path: string) => pathname === path;
 
   const isDropdownActive =
-    pathname === "/riwayat" ||
+    pathname === "/history" ||
     pathname === "/kritik-saran" ||
-    pathname === "/login";
+    pathname === "/auth/login";
 
   return (
     <header className="sticky top-0 z-50 bg-white">
@@ -102,9 +102,9 @@ export default function Navbar() {
                 >
                   <div className="py-1">
                     <Link
-                      href="/riwayat"
+                      href="/history"
                       className={`block px-4 py-2 text-xs transition-colors hover:bg-gray-50 hover:text-[#3333cc] ${
-                        isActive("/riwayat")
+                        isActive("/history")
                           ? "font-semibold text-[#3333cc] bg-blue-50/50"
                           : "font-normal text-gray-600"
                       }`}
@@ -128,9 +128,9 @@ export default function Navbar() {
 
                   <div className="py-1">
                     <Link
-                      href="/login"
+                      href="/auth/login"
                       className={`block px-4 py-2 text-xs transition-colors hover:bg-blue-50 ${
-                        isActive("/login")
+                        isActive("/auth/login")
                           ? "font-semibold text-[#3333cc]"
                           : "font-medium text-[#3333cc]"
                       }`}
