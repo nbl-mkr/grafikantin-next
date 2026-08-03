@@ -1,6 +1,6 @@
 export default function HeroSection() {
   return (
-    <section className="relative w-full min-h-screen bg-[#fafafa] py-16 md:py-24 overflow-hidden">
+    <section className="relative w-full min-h-0 bg-[#fafafa] py-8 md:min-h-screen md:py-24 overflow-hidden">
       <div 
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
         style={{
@@ -23,7 +23,7 @@ export default function HeroSection() {
             <strong className="text-gray-900 font-semibold">Grafikantin</strong> menyediakan berbagai menu pilihan variatif dengan penyajian cepat. Rasa nikmat, suasana nyaman, dan pengalaman pesan makanan yang serba praktis.
           </p>
 
-          <div className="mt-8">
+          <div className="mt-8 flex justify-center md:justify-start">
             <a
               href="/order"
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-linear-to-r from-[#3333cc] to-[#4d4dff] px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 transition-all duration-200 hover:opacity-95 hover:shadow-indigo-500/35 active:scale-[0.98]"
@@ -33,7 +33,7 @@ export default function HeroSection() {
           </div>
         </div>
 
-        <div className="w-full md:w-1/2 flex justify-center md:justify-end">
+        <div className="hidden md:flex md:w-1/2 justify-end items-center">
             <img
                 src="../assets/mie.png"
                 alt="Menu Utama Grafikantin"

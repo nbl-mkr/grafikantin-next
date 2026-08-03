@@ -11,14 +11,14 @@ export default function PromoBanner() {
 
       <div className="relative mx-auto flex max-w-[75vw] flex-col items-center justify-between gap-6 p-12 md:flex-row">
         <div className="w-full text-center md:w-auto md:text-left">
-          <h2 className="text-[48px] font-extrabold tracking-tight leading-tight">
+          <h2 className="text-[36px] md:text-[48px] font-extrabold tracking-tight leading-tight">
             AMBIL <br className="hidden sm:block" />
             <span className="italic text-indigo-200">DI KANTIN</span>
           </h2>
         </div>
 
         <div className="w-full text-center md:w-auto md:text-left">
-          <p className="text-[30px] italic text-indigo-100 leading-snug">
+          <p className="text-[24px] md:text-[30px] italic text-indigo-100 leading-snug">
             Pesan, Tanpa Antre. <br className="hidden sm:block" />
             Siap Dalam 15 Menit!
           </p>
