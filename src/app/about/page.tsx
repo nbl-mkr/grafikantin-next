@@ -1,5 +1,5 @@
 import HeroSection from "@/components/about/HeroSection";
-import OperationalInformation from "@/components/about/OperationalInformation";
+import FrequentlyAskedQuestions from "@/components/about/FrequentlyAskedQuestions";
 import ValueCards from "@/components/about/ValueCards";
 
 export default function About() {
@@ -7,7 +7,7 @@ export default function About() {
         <>
           <HeroSection />
           <ValueCards />
-          <OperationalInformation />
+          <FrequentlyAskedQuestions />
         </>
     );
 }
