@@ -182,7 +182,7 @@ export default function Navbar() {
 
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="block rounded-lg bg-gray-100 p-2 text-gray-600 transition hover:text-gray-700 md:hidden"
+              className="block p-1.5 text-gray-600 hover:opacity-80 transition md:hidden"
             >
               <span className="sr-only">Toggle menu</span>
               {isOpen ? (
