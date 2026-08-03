@@ -1,11 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
 
   const isActive = (path: string) => pathname === path;
 
@@ -15,7 +17,7 @@ export default function Navbar() {
     pathname === "/auth/login";
 
   return (
-    <header className="sticky top-0 z-50 bg-white">
+    <header className="relative z-50 bg-white border-b border-gray-100">
       <div className="w-full flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2 text-gray-900 text-lg">
           <Image
@@ -178,27 +180,129 @@ export default function Navbar() {
               />
             </Link>
 
-            <button className="block rounded-lg bg-gray-100 p-2 text-gray-600 transition hover:text-gray-700 md:hidden">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="block rounded-lg bg-gray-100 p-2 text-gray-600 transition hover:text-gray-700 md:hidden"
+            >
               <span className="sr-only">Toggle menu</span>
-              <svg
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                className="size-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
+              {isOpen ? (
+                <svg
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="size-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="size-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              )}
             </button>
           </div>
         </div>
       </div>
+
+      {isOpen && (
+        <div className="absolute left-0 right-0 top-full border-t border-gray-100 bg-white px-4 py-3 md:hidden">
+          <ul className="flex flex-col gap-2 text-sm">
+            <li>
+              <Link
+                href="/"
+                onClick={() => setIsOpen(false)}
+                className={`block rounded-lg px-3 py-2 transition-colors ${
+                  isActive("/")
+                    ? "bg-blue-50 font-semibold text-[#3333cc]"
+                    : "text-gray-600 hover:bg-gray-50"
+                }`}
+              >
+                Beranda
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/order"
+                onClick={() => setIsOpen(false)}
+                className={`block rounded-lg px-3 py-2 transition-colors ${
+                  isActive("/order")
+                    ? "bg-blue-50 font-semibold text-[#3333cc]"
+                    : "text-gray-600 hover:bg-gray-50"
+                }`}
+              >
+                Pesan
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/about"
+                onClick={() => setIsOpen(false)}
+                className={`block rounded-lg px-3 py-2 transition-colors ${
+                  isActive("/about")
+                    ? "bg-blue-50 font-semibold text-[#3333cc]"
+                    : "text-gray-600 hover:bg-gray-50"
+                }`}
+              >
+                Tentang
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/history"
+                onClick={() => setIsOpen(false)}
+                className={`block rounded-lg px-3 py-2 transition-colors ${
+                  isActive("/history")
+                    ? "bg-blue-50 font-semibold text-[#3333cc]"
+                    : "text-gray-600 hover:bg-gray-50"
+                }`}
+              >
+                Riwayat Pesanan
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/kritik-saran"
+                onClick={() => setIsOpen(false)}
+                className={`block rounded-lg px-3 py-2 transition-colors ${
+                  isActive("/kritik-saran")
+                    ? "bg-blue-50 font-semibold text-[#3333cc]"
+                    : "text-gray-600 hover:bg-gray-50"
+                }`}
+              >
+                Kritik & Saran
+              </Link>
+            </li>
+            <li className="pt-2 border-t border-gray-100">
+              <Link
+                href="/auth/login"
+                onClick={() => setIsOpen(false)}
+                className="block w-full text-center rounded-lg bg-[#3333cc] px-4 py-2.5 font-semibold text-white shadow-sm transition hover:bg-[#2b2bad]"
+              >
+                Login
+              </Link>
+            </li>
+          </ul>
+        </div>
+      )}
     </header>
   );
 }
