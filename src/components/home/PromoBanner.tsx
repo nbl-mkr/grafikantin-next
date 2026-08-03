@@ -1,28 +1,38 @@
 export default function PromoBanner() {
-    return (
-        <div className="w-full bg-[rgb(51,51,204)] text-white py-8">
-        <div className="flex flex-col md:flex-row items-center justify-between mx-auto p-12 max-w-[75vw] gap-6">
+  return (
+    <section className="relative w-full overflow-hidden bg-[rgb(51,51,204)] py-8 text-white">
+      <div 
+        className="absolute inset-0 opacity-10 pointer-events-none"
+        style={{
+          backgroundImage: `radial-gradient(#fff 1px, transparent 1px)`,
+          backgroundSize: '16px 16px'
+        }}
+      />
 
-            <div className="w-full md:w-auto text-center md:text-left">
-                <h1 className="text-[48px] font-bold leading-tight">
-                    AMBIL <br className="hidden sm:block" />DI KANTIN
-                </h1>
-            </div>
-
-            <div className="w-full md:w-auto text-center md:text-left">
-                <h2 className="text-[30px] font-medium leading-snug">
-                    Pesan, Tanpa Antri <br className="hidden sm:block" />Siap Dalam 15 Menit
-                </h2>
-            </div>
-
-            <div className="w-full md:w-auto text-center md:text-right">
-                <a href="/order"
-                    className="inline-block bg-white text-[rgb(51,51,204)] hover:bg-gray-100 text-[16px] font-bold px-6 py-2.5 rounded-lg transition shadow-sm">
-                    Pesan Di Sini
-                </a>
-            </div>
-
+      <div className="relative mx-auto flex max-w-[75vw] flex-col items-center justify-between gap-6 p-12 md:flex-row">
+        <div className="w-full text-center md:w-auto md:text-left">
+          <h2 className="text-[48px] font-extrabold tracking-tight leading-tight">
+            AMBIL <br className="hidden sm:block" />
+            <span className="italic text-indigo-200">DI KANTIN</span>
+          </h2>
         </div>
-    </div>
-    );
+
+        <div className="w-full text-center md:w-auto md:text-left">
+          <p className="text-[30px] italic text-indigo-100 leading-snug">
+            Pesan, Tanpa Antre. <br className="hidden sm:block" />
+            Siap Dalam 15 Menit!
+          </p>
+        </div>
+
+        <div className="w-full text-center md:w-auto md:text-right">
+          <a
+            href="/order"
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-6 py-2.5 text-[16px] font-semibold text-[rgb(51,51,204)] shadow-sm transition-all duration-200 hover:bg-gray-100 active:scale-[0.98]"
+          >
+            <span>Pesan Di Sini</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  );
 }

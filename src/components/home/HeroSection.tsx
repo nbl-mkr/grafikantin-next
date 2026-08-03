@@ -11,7 +11,7 @@ export default function HeroSection() {
 
       <div className="relative mx-auto flex max-w-6xl flex-col items-center justify-between gap-12 px-6 md:flex-row">
         <div className="w-full text-left md:w-1/2">
-          <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+          <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
             Pesan Menu <span className="italic text-[#3333cc]">Favoritmu.</span>
           </h1>
 
@@ -29,9 +29,6 @@ export default function HeroSection() {
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-linear-to-r from-[#3333cc] to-[#4d4dff] px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 transition-all duration-200 hover:opacity-95 hover:shadow-indigo-500/35 active:scale-[0.98]"
             >
               <span>Pesan Sekarang</span>
-              <svg className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
             </a>
           </div>
         </div>

@@ -37,11 +37,13 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
 
   return (
     <div id="menu-populer" className="w-full bg-[#f8fafc] py-12">
-      <div className="text-center mb-8">
-        <p className="text-gray-500">Populer Menu</p>
-        <h2 className="text-3xl font-extrabold text-gray-900 mt-2">
-          Menu Populer Minggu Ini
+      <div className="flex flex-col items-center text-center mb-12 px-4">
+        <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+          Menu Populer <span className="text-[#3333cc]">Minggu Ini</span>
         </h2>
+        <p className="mt-2 text-sm text-gray-600 max-w-md">
+          Nikmati santapan paling diminati siswa dengan penyajian cepat dan rasa terjamin.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mx-auto px-4 max-w-[85vw] mb-16">
