@@ -14,16 +14,21 @@ interface StandCardsProps {
 
 export default function StandCards({ stands }: StandCardsProps) {
   return (
-    <div
-      id="cards"
-      className="relative py-12 text-center bg-cover bg-center bg-no-repeat bg-[linear-gradient(rgba(51,51,204,0.50),rgba(51,51,204,0.50)),url('/assets/card-image.jpg')]"
-    >
-      <div className="mx-auto max-w-[85vw] pt-4">
+    <section id="cards" className="w-full bg-white py-12 md:py-16">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="mb-10 text-center max-w-xl mx-auto">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">
+            Pilih Stand favoritmu
+          </h2>
+          <p className="mt-2 text-sm sm:text-base text-gray-600">
+            erbagai pilihan stand makanan dan minuman tersedia di Grafikantin
+          </p>
+        </div>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 justify-items-center">
           {stands.map((stand) => (
             <div
               key={stand.id}
-              className="group rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
+              className="group w-full rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
             >
               <div>
                 <div className="relative overflow-hidden">
@@ -36,7 +41,7 @@ export default function StandCards({ stands }: StandCardsProps) {
                   />
                 </div>
 
-                <div className="p-4 flex flex-col justify-between">
+                <div className="p-5 flex flex-col justify-between">
                   <div>
                     <h5 className="text-xl font-bold text-gray-900">
                       {stand.nama_stand}
@@ -81,6 +86,6 @@ export default function StandCards({ stands }: StandCardsProps) {
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 }
