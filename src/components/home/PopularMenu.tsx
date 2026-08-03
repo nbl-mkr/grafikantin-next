@@ -38,10 +38,10 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
   return (
     <div id="menu-populer" className="w-full bg-[#f8fafc] py-12">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-900">
-          MENU POPULER MINGGU INI
+        <p className="text-gray-500">Populer Menu</p>
+        <h2 className="text-3xl font-extrabold text-gray-900 mt-2">
+          Menu Populer Minggu Ini
         </h2>
-        <p className="text-gray-500 mt-1">Paling banyak dipesan oleh siswa</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mx-auto px-4 max-w-[85vw] mb-16">
