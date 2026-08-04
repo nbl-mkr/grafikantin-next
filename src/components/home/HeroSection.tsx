@@ -12,7 +12,7 @@ export default function HeroSection() {
       <div className="relative mx-auto flex max-w-6xl flex-col items-center justify-between gap-12 px-6 md:flex-row">
         <div className="w-full text-center md:text-left md:w-1/2">
           <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
-            Pesan Menu <span className="italic text-[#3333cc]">Favoritmu.</span>
+            Pesan Menu <span className="italic text-[#f97316]">Favoritmu.</span>
           </h1>
 
           <p className="mt-4 text-base italic text-gray-600">
@@ -26,7 +26,7 @@ export default function HeroSection() {
           <div className="mt-8 flex justify-center md:justify-start">
             <a
               href="/order"
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-linear-to-r from-[#3333cc] to-[#4d4dff] px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 transition-all duration-200 hover:opacity-95 hover:shadow-indigo-500/35 active:scale-[0.98]"
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-linear-to-r from-[#f97316] to-[#fb923c]   px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 transition-all duration-200 hover:opacity-95 hover:shadow-indigo-500/35 active:scale-[0.98]"
             >
               <span>Pesan Sekarang</span>
             </a>
