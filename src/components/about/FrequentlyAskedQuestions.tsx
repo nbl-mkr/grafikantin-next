@@ -3,7 +3,7 @@ export default function FrequentlyAskedQuestions() {
     <section className="w-full bg-[#fafafa] py-14 md:py-20 text-gray-900">
       <div className="mx-auto max-w-6xl px-6">
         <div className="mb-12 text-center max-w-xl mx-auto">
-          <span className="text-xs font-semibold uppercase tracking-wider text-[#3333cc]">
+          <span className="text-xs font-semibold uppercase tracking-wider text-[#f97316]">
             Pertanyaan Umum
           </span>
           <h2 className="mt-1 text-2xl font-bold text-gray-900 sm:text-3xl tracking-tight">
@@ -24,7 +24,7 @@ export default function FrequentlyAskedQuestions() {
                   </h3>
                   <svg
                     aria-hidden="true"
-                    className="size-5 shrink-0 transition-transform duration-300 group-open:-rotate-180 text-[#3333cc]"
+                    className="size-5 shrink-0 transition-transform duration-300 group-open:-rotate-180 text-[#f97316]"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -46,7 +46,7 @@ export default function FrequentlyAskedQuestions() {
                   </h3>
                   <svg
                     aria-hidden="true"
-                    className="size-5 shrink-0 transition-transform duration-300 group-open:-rotate-180 text-[#3333cc]"
+                    className="size-5 shrink-0 transition-transform duration-300 group-open:-rotate-180 text-[#f97316]"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -68,7 +68,7 @@ export default function FrequentlyAskedQuestions() {
                   </h3>
                   <svg
                     aria-hidden="true"
-                    className="size-5 shrink-0 transition-transform duration-300 group-open:-rotate-180 text-[#3333cc]"
+                    className="size-5 shrink-0 transition-transform duration-300 group-open:-rotate-180 text-[#f97316]"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -80,11 +80,11 @@ export default function FrequentlyAskedQuestions() {
 
                 <p className="mt-3 text-sm leading-relaxed text-gray-600 sm:text-base">
                   Kamu bisa menghubungi kami via WhatsApp di{" "}
-                  <a href="https://wa.me/62341000000" target="_blank" className="font-medium text-[#3333cc] hover:underline">
+                  <a href="https://wa.me/62341000000" target="_blank" className="font-medium text-[#f97316] hover:underline">
                     (0341) 000000
                   </a>{" "}
                   atau mengirimkan pesan ke email resmi kami di{" "}
-                  <a href="mailto:kantin@smkn4malang.sch.id" className="font-medium text-[#3333cc] hover:underline">
+                  <a href="mailto:kantin@smkn4malang.sch.id" className="font-medium text-[#f97316] hover:underline">
                     kantin@smkn4malang.sch.id
                   </a>.
                 </p>

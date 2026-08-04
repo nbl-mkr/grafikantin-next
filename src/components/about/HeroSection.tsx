@@ -12,7 +12,7 @@ export default function HeroSection() {
       <div className="relative mx-auto flex max-w-6xl flex-col items-start justify-between gap-8 md:gap-12 px-6 md:flex-row md:items-stretch">
         <div className="w-full text-center md:text-left md:w-8/12 flex flex-col justify-center">
             <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl leading-tight">
-                Lebih Dekat Dengan <span className="italic text-[#3333cc]">Grafikantin</span>
+                Lebih Dekat Dengan <span className="italic text-[#f97316]">Grafikantin</span>
             </h1>
 
             <p className="mt-3 text-base text-gray-600 leading-relaxed">
@@ -26,7 +26,7 @@ export default function HeroSection() {
             <span className="block text-3xl font-extrabold text-gray-900 sm:text-4xl">
                 SMKN 4
             </span>
-            <span className="text-sm sm:text-base font-semibold text-[#3333cc]">
+            <span className="text-sm sm:text-base font-semibold text-[#f97316]">
                 Kantin Sehat & Digital
             </span>
         </div>
