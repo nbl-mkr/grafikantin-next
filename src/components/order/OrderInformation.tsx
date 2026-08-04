@@ -4,7 +4,7 @@ export default function OrderInformation() {
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-10 px-6 md:flex-row md:items-stretch">
         
         <div className="w-full text-left md:w-6/12 flex flex-col justify-center">
-          <span className="text-xs font-semibold uppercase tracking-wider text-[#3333cc] mb-2">
+          <span className="text-xs font-semibold uppercase tracking-wider text-[#f97316] mb-2">
             Panduan Pesanan
           </span>
           <h3 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
@@ -24,15 +24,15 @@ export default function OrderInformation() {
 
           <ul className="space-y-2.5 text-sm text-gray-600 leading-relaxed">
             <li className="flex items-start gap-2.5">
-              <span className="text-[#3333cc] font-bold">•</span>
+              <span className="text-[#f97316] font-bold">•</span>
               <span>Pesanan hanya dapat diambil pada jam istirahat sekolah.</span>
             </li>
             <li className="flex items-start gap-2.5">
-              <span className="text-[#3333cc] font-bold">•</span>
+              <span className="text-[#f97316] font-bold">•</span>
               <span>Pastikan saldo digital mencukupi dan metode pembayaran sesuai sebelum membuat pesanan.</span>
             </li>
             <li className="flex items-start gap-2.5">
-              <span className="text-[#3333cc] font-bold">•</span>
+              <span className="text-[#f97316] font-bold">•</span>
               <span>Harap mengambil pesanan paling lambat 15 menit sebelum bel masuk kelas berbunyi.</span>
             </li>
           </ul>
