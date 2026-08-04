@@ -10,7 +10,7 @@ export default function HeroSection() {
       />
 
       <div className="relative mx-auto flex max-w-6xl flex-col items-start justify-between gap-8 md:gap-12 px-6 md:flex-row md:items-stretch">
-        <div className="w-full text-left md:w-8/12 flex flex-col justify-center">
+        <div className="w-full text-center md:text-left md:w-8/12 flex flex-col justify-center">
             <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl leading-tight">
                 Lebih Dekat Dengan <span className="italic text-[#3333cc]">Grafikantin</span>
             </h1>
@@ -22,7 +22,7 @@ export default function HeroSection() {
 
         <div className="hidden md:block w-px bg-gray-200 self-stretch my-2" />
 
-        <div className="w-full text-left md:w-3/12 flex flex-col justify-center whitespace-nowrap">
+        <div className="w-full text-center md:text-left md:w-3/12 flex flex-col justify-center whitespace-nowrap">
             <span className="block text-3xl font-extrabold text-gray-900 sm:text-4xl">
                 SMKN 4
             </span>

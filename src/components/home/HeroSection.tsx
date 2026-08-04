@@ -10,7 +10,7 @@ export default function HeroSection() {
       />
 
       <div className="relative mx-auto flex max-w-6xl flex-col items-center justify-between gap-12 px-6 md:flex-row">
-        <div className="w-full text-left md:w-1/2">
+        <div className="w-full text-center md:text-left md:w-1/2">
           <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
             Pesan Menu <span className="italic text-[#3333cc]">Favoritmu.</span>
           </h1>

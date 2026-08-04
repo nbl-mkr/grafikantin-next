@@ -10,7 +10,7 @@ export default function HeroSection() {
       />
 
       <div className="relative mx-auto flex max-w-6xl flex-col items-start justify-between gap-8 px-6 md:flex-row md:items-center">
-        <div className="w-full text-left md:w-8/12">
+        <div className="w-full text-center md:text-left md:w-8/12">
           <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl leading-tight">
             Mau Makan Apa <span className="italic text-[#3333cc]">Hari Ini?</span>
           </h1>
@@ -19,7 +19,7 @@ export default function HeroSection() {
             Cari stand dan makanan favoritmu di Grafikantin.
           </p>
 
-          <div className="mt-4 flex flex-wrap items-center gap-3 text-xs font-medium text-gray-500">
+          <div className="mt-4 flex flex-wrap items-center justify-center md:justify-start gap-3 text-xs font-medium text-gray-500">
             <span className="flex items-center gap-1.5">
               <span className="size-1.5 rounded-full bg-[#3333cc]"></span>
               Penyajian Cepat
@@ -35,7 +35,7 @@ export default function HeroSection() {
           </div>
         </div>
 
-        <div className="w-full text-left md:w-auto md:text-right">
+        <div className="flex w-full justify-center md:w-auto md:justify-start">
           <a
             href="#cards"
             className="inline-flex items-center justify-center gap-2 rounded-lg bg-linear-to-r from-[#3333cc] to-[#4d4dff] px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 transition-all duration-200 hover:opacity-95 hover:shadow-indigo-500/35 active:scale-[0.98]"
