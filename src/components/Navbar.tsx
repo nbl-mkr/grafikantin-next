@@ -36,9 +36,9 @@ export default function Navbar() {
               <li>
                 <Link
                   href="/"
-                  className={`transition-colors hover:text-[#3333cc] ${
+                  className={`transition-colors hover:text-[#f97316] ${
                     isActive("/")
-                      ? "font-semibold text-[#3333cc]"
+                      ? "font-semibold text-[#f97316]"
                       : "font-normal text-gray-500"
                   }`}
                 >
