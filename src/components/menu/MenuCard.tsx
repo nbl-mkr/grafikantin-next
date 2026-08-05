@@ -49,7 +49,7 @@ export default function MenuCard({ item, category, onSelect }: MenuCardProps) {
             <dl>
               <div>
                 <dt className="sr-only">Harga</dt>
-                <dd className="text-lg font-bold text-[rgb(51,51,204)]">
+                <dd className="text-lg font-bold text-[#e76f51]">
                   Rp {item.harga.toLocaleString("id-ID")}
                 </dd>
               </div>
@@ -69,7 +69,7 @@ export default function MenuCard({ item, category, onSelect }: MenuCardProps) {
             <div className="mt-4 flex items-center justify-center gap-6 text-xs border-t border-gray-100 pt-3">
               <div className="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
                 <svg
-                  className="size-4 text-[rgb(51,51,204)]"
+                  className="size-4 text-[#e76f51]"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -92,7 +92,7 @@ export default function MenuCard({ item, category, onSelect }: MenuCardProps) {
 
               <div className="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
                 <svg
-                  className="size-4 text-[rgb(51,51,204)]"
+                  className="size-4 text-[#e76f51]"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -118,7 +118,7 @@ export default function MenuCard({ item, category, onSelect }: MenuCardProps) {
               <button
                 type="button"
                 onClick={handleOpenModal}
-                className="w-full bg-[rgb(51,51,204)] hover:bg-[rgb(43,43,173)] text-white font-semibold py-2.5 rounded-xl transition shadow-sm active:scale-[0.98]"
+                className="w-full bg-[#e76f51] hover:bg-[#d95d3f] text-white font-semibold py-2.5 rounded-xl transition shadow-sm active:scale-[0.98]"
               >
                 Beli Sekarang
               </button>
