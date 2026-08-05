@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function HistoryOrder() {
   return (
     <div className="mx-auto max-w-md text-center py-12 px-4">
-      <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-indigo-50 text-[#3333cc]">
+      <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-indigo-50 text-[#e76f51]">
         <svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
@@ -32,7 +32,7 @@ export default function HistoryOrder() {
       <div className="mt-8 space-y-3">
         <Link
           href="/order"
-          className="block w-full rounded-xl bg-[#3333cc] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-[#2b2bad] active:scale-[0.98]"
+          className="block w-full rounded-xl bg-[#e76f51] hover:bg-[#d95d3f] px-6 py-3 text-sm font-semibold text-white shadow-md transition active:scale-[0.98]"
         >
           Eksplor Menu Kantin
         </Link>

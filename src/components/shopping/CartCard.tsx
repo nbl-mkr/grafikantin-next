@@ -23,7 +23,7 @@ export default function CartCard() {
                     </div>
 
                     <a href="/order"
-                        className="mt-4 block w-full rounded-xl bg-[#3333cc] px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-[#2b2bad] shadow-md active:scale-[0.98]">
+                        className="mt-4 block w-full rounded-xl bg-[#e76f51] hover:bg-[#d95d3f] px-6 py-3 text-sm font-semibold text-white transition-all shadow-md active:scale-[0.98]">
                         Lihat Daftar Stand
                     </a>
                 </div>
