@@ -54,7 +54,7 @@ export default function StandCards({ stands }: StandCardsProps) {
 
                   <div className="mt-4 flex items-center justify-center gap-2 text-xs border-t border-gray-100 pt-3 text-gray-500">
                     <svg
-                      className="size-4 text-[#f97316] shrink-0"
+                      className="size-4 text-[#e76f51] shrink-0"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
@@ -75,7 +75,7 @@ export default function StandCards({ stands }: StandCardsProps) {
                   <div className="mt-5">
                     <Link
                       href={`/menu?stand_id=${stand.id}`}
-                      className="inline-block w-full text-center bg-[#f97316] hover:bg-[#fb923c] text-white font-semibold py-2.5 rounded-xl transition shadow-sm active:scale-[0.98] focus:outline-none"
+                      className="inline-block w-full text-center bg-[#e76f51] hover:bg-[#d95d3f] text-white font-semibold py-2.5 rounded-xl transition shadow-sm active:scale-[0.98] focus:outline-none"
                     >
                       Kunjungi Stand
                     </Link>
