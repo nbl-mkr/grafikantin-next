@@ -36,9 +36,9 @@ export default function Navbar() {
               <li>
                 <Link
                   href="/"
-                  className={`transition-colors hover:text-[#f97316] ${
+                  className={`transition-colors hover:text-[#e76f51] ${
                     isActive("/")
-                      ? "font-semibold text-[#f97316]"
+                      ? "font-semibold text-[#e76f51]"
                       : "font-normal text-gray-500"
                   }`}
                 >
@@ -49,9 +49,9 @@ export default function Navbar() {
               <li>
                 <Link
                   href="/order"
-                  className={`transition-colors hover:text-[#f97316] ${
+                  className={`transition-colors hover:text-[#e76f51] ${
                     isActive("/order")
-                      ? "font-semibold text-[#f97316]"
+                      ? "font-semibold text-[#e76f51]"
                       : "font-normal text-gray-500"
                   }`}
                 >
@@ -62,9 +62,9 @@ export default function Navbar() {
               <li>
                 <Link
                   href="/about"
-                  className={`transition-colors hover:text-[#f97316] ${
+                  className={`transition-colors hover:text-[#e76f51] ${
                     isActive("/about")
-                      ? "font-semibold text-[#f97316]"
+                      ? "font-semibold text-[#e76f51]"
                       : "font-normal text-gray-500"
                   }`}
                 >
@@ -75,9 +75,9 @@ export default function Navbar() {
               <li className="relative group">
                 <button
                   type="button"
-                  className={`inline-flex items-center gap-1 py-2 transition-colors hover:text-[#f97316] focus:outline-none ${
+                  className={`inline-flex items-center gap-1 py-2 transition-colors hover:text-[#e76f51] focus:outline-none ${
                     isDropdownActive
-                      ? "font-semibold text-[#f97316]"
+                      ? "font-semibold text-[#e76f51]"
                       : "font-normal text-gray-500"
                   }`}
                 >
@@ -88,7 +88,7 @@ export default function Navbar() {
                     viewBox="0 0 24 24"
                     strokeWidth="2"
                     stroke="currentColor"
-                    className="size-3.5 text-gray-400 group-hover:text-[#f97316] group-hover:rotate-180 transition-transform duration-200"
+                    className="size-3.5 text-gray-400 group-hover:text-[#e76f51] group-hover:rotate-180 transition-transform duration-200"
                   >
                     <path
                       strokeLinecap="round"
@@ -105,9 +105,9 @@ export default function Navbar() {
                   <div className="py-1">
                     <Link
                       href="/history"
-                      className={`block px-4 py-2 text-xs transition-colors hover:bg-gray-50 hover:text-[#f97316] ${
+                      className={`block px-4 py-2 text-xs transition-colors hover:bg-gray-50 hover:text-[#e76f51] ${
                         isActive("/history")
-                          ? "font-semibold text-[#f97316] bg-blue-50/50"
+                          ? "font-semibold text-[#e76f51] bg-blue-50/50"
                           : "font-normal text-gray-600"
                       }`}
                       role="menuitem"
@@ -117,9 +117,9 @@ export default function Navbar() {
 
                     <Link
                       href="/kritik-saran"
-                      className={`block px-4 py-2 text-xs transition-colors hover:bg-gray-50 hover:text-[#f97316] ${
+                      className={`block px-4 py-2 text-xs transition-colors hover:bg-gray-50 hover:text-[#e76f51] ${
                         isActive("/kritik-saran")
-                          ? "font-semibold text-[#f97316] bg-blue-50/50"
+                          ? "font-semibold text-[#e76f51] bg-blue-50/50"
                           : "font-normal text-gray-600"
                       }`}
                       role="menuitem"
@@ -133,8 +133,8 @@ export default function Navbar() {
                       href="/auth/login"
                       className={`block px-4 py-2 text-xs transition-colors hover:bg-blue-50 ${
                         isActive("/auth/login")
-                          ? "font-semibold text-[#f97316]"
-                          : "font-medium text-[#f97316]"
+                          ? "font-semibold text-[#e76f51]"
+                          : "font-medium text-[#e76f51]"
                       }`}
                       role="menuitem"
                     >
@@ -151,7 +151,7 @@ export default function Navbar() {
               <input
                 type="search"
                 placeholder="Search..."
-                className="hidden sm:block w-36 lg:w-48 rounded-lg border border-gray-300 px-3 py-1.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-[#f97316] focus:outline-none focus:ring-1 focus:ring-[#f97316]"
+                className="hidden sm:block w-36 lg:w-48 rounded-lg border border-gray-300 px-3 py-1.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-[#e76f51] focus:outline-none focus:ring-1 focus:ring-[#e76f51]"
               />
               <button
                 type="submit"
@@ -232,7 +232,7 @@ export default function Navbar() {
                 onClick={() => setIsOpen(false)}
                 className={`block rounded-lg px-3 py-2 transition-colors ${
                   isActive("/")
-                    ? "bg-blue-50 font-semibold text-[#f97316]"
+                    ? "bg-blue-50 font-semibold text-[#e76f51]"
                     : "text-gray-600 hover:bg-gray-50"
                 }`}
               >
@@ -245,7 +245,7 @@ export default function Navbar() {
                 onClick={() => setIsOpen(false)}
                 className={`block rounded-lg px-3 py-2 transition-colors ${
                   isActive("/order")
-                    ? "bg-blue-50 font-semibold text-[#f97316]"
+                    ? "bg-blue-50 font-semibold text-[#e76f51]"
                     : "text-gray-600 hover:bg-gray-50"
                 }`}
               >
@@ -258,7 +258,7 @@ export default function Navbar() {
                 onClick={() => setIsOpen(false)}
                 className={`block rounded-lg px-3 py-2 transition-colors ${
                   isActive("/about")
-                    ? "bg-blue-50 font-semibold text-[#f97316]"
+                    ? "bg-blue-50 font-semibold text-[#e76f51]"
                     : "text-gray-600 hover:bg-gray-50"
                 }`}
               >
@@ -271,7 +271,7 @@ export default function Navbar() {
                 onClick={() => setIsOpen(false)}
                 className={`block rounded-lg px-3 py-2 transition-colors ${
                   isActive("/history")
-                    ? "bg-blue-50 font-semibold text-[#f97316]"
+                    ? "bg-blue-50 font-semibold text-[#e76f51]"
                     : "text-gray-600 hover:bg-gray-50"
                 }`}
               >
@@ -284,7 +284,7 @@ export default function Navbar() {
                 onClick={() => setIsOpen(false)}
                 className={`block rounded-lg px-3 py-2 transition-colors ${
                   isActive("/kritik-saran")
-                    ? "bg-blue-50 font-semibold text-[#f97316]"
+                    ? "bg-blue-50 font-semibold text-[#e76f51]"
                     : "text-gray-600 hover:bg-gray-50"
                 }`}
               >
@@ -295,7 +295,7 @@ export default function Navbar() {
               <Link
                 href="/auth/login"
                 onClick={() => setIsOpen(false)}
-                className="block w-full text-center rounded-lg bg-[#f97316] px-4 py-2.5 font-semibold text-white shadow-sm transition hover:bg-[#2b2bad]"
+                className="block w-full text-center rounded-lg bg-[#e76f51] px-4 py-2.5 font-semibold text-white shadow-sm transition hover:bg-[#2b2bad]"
               >
                 Login
               </Link>
