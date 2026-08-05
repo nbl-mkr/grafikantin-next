@@ -1,6 +1,6 @@
 export default function PromoBanner() {
   return (
-    <section className="relative w-full overflow-hidden bg-[#f97316] py-8 text-white">
+    <section className="relative w-full overflow-hidden bg-[#e76f51] py-8 text-white">
       <div 
         className="absolute inset-0 opacity-10 pointer-events-none"
         style={{

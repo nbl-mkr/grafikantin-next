@@ -39,7 +39,7 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
     <div id="menu-populer" className="w-full bg-[#f8fafc] py-12">
       <div className="flex flex-col items-center text-center mb-12 px-4">
         <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-          Menu Populer <span className="text-[#f97316]">Minggu Ini</span>
+          Menu Populer <span className="text-[#e76f51]">Minggu Ini</span>
         </h2>
         <p className="mt-2 text-sm text-gray-600 max-w-md">
           Nikmati santapan paling diminati siswa dengan penyajian cepat dan rasa terjamin.
@@ -65,7 +65,7 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
                 <dl>
                   <div>
                     <dt className="sr-only">Harga</dt>
-                    <dd className="text-lg font-bold text-[#f97316]">
+                    <dd className="text-lg font-bold text-[#e76f51]">
                       Rp {food.harga.toLocaleString("id-ID")}
                     </dd>
                   </div>
@@ -85,7 +85,7 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
                 <div className="mt-4 flex items-center justify-center gap-6 text-xs border-t border-gray-100 pt-3">
                   <div className="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
                     <svg
-                      className="size-4 text-[#f97316]"
+                      className="size-4 text-[#e76f51]"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
@@ -108,7 +108,7 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
 
                   <div className="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
                     <svg
-                      className="size-4 text-[#f97316]"
+                      className="size-4 text-[#e76f51]"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
@@ -134,7 +134,7 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
                   <button
                     type="button"
                     onClick={() => handleOpenModal(food)}
-                    className="w-full bg-[#f97316] hover:bg-[#ea580c] text-white font-semibold py-2.5 rounded-xl transition shadow-sm active:scale-[0.98]"
+                    className="w-full bg-[#e76f51] hover:bg-[#d95d3f] text-white font-semibold py-2.5 rounded-xl transition shadow-sm active:scale-[0.98]"
                   >
                     Beli Sekarang
                   </button>
