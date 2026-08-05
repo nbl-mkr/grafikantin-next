@@ -1,6 +1,6 @@
 export default function ComplaintBanner() {
   return (
-    <div className="mx-auto px-4 max-w-[85vw]">
+    <div className="mx-auto max-w-6xl px-6">
       <div className="relative overflow-hidden rounded-3xl bg-[#e76f51] p-8 text-white shadow-lg md:p-12">
         <div 
           className="absolute inset-0 opacity-10 pointer-events-none"
