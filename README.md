@@ -58,10 +58,10 @@ Fitur utama meliputi:
 
 Teknologi utama yang digunakan dalam membangun front-end aplikasi ini:
 
-* [![Next.js][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![TypeScript][TypeScript]][TypeScript-url]
-* [![Tailwind CSS][TailwindCSS]][Tailwind-url]
+* [![Next.js](https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+* [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+* [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+* [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
 <p align="right">(<a href="#readme-top">kembali ke atas</a>)</p>
 
