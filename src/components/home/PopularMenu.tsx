@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
+import Link from "next/link";
 import ComplaintBanner from "@/components/home/ComplaintBanner";
-import ItemModal from "../ItemModal";
 
 export interface PopularMenuItem {
   id: number | string;
@@ -22,19 +20,6 @@ interface PopularMenuProps {
 }
 
 export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
-  const [selectedItem, setSelectedItem] = useState<PopularMenuItem | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleOpenModal = (item: PopularMenuItem) => {
-    setSelectedItem(item);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedItem(null);
-  };
-
   return (
     <div id="menu-populer" className="w-full bg-[#f8fafc] py-12">
       <div className="flex flex-col items-center text-center mb-12 px-4">
@@ -132,13 +117,12 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
                   </div>
 
                   <div className="mt-5">
-                    <button
-                      type="button"
-                      onClick={() => handleOpenModal(food)}
-                      className="w-full bg-[#e76f51] hover:bg-[#d95d3f] text-white font-semibold py-2.5 rounded-xl transition shadow-sm active:scale-[0.98]"
+                    <Link
+                      href={`/product/${food.id}`}
+                      className="block w-full bg-[#e76f51] hover:bg-[#d95d3f] text-white font-semibold py-2.5 rounded-xl transition shadow-sm active:scale-[0.98] text-center"
                     >
                       Beli Sekarang
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -148,12 +132,6 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
       </div>
 
       <ComplaintBanner />
-
-      <ItemModal
-        item={selectedItem}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-      />
     </div>
   );
 }
