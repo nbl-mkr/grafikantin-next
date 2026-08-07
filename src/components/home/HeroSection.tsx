@@ -1,6 +1,6 @@
 export default function HeroSection() {
   return (
-    <section className="relative w-full min-h-0 bg-[#fafafa] py-8 md:min-h-screen md:py-24 overflow-hidden">
+    <section className="relative w-full min-h-[calc(100vh-64px)] bg-[#fafafa] py-6 md:py-10 flex items-center justify-center overflow-hidden">
       <div 
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
         style={{
@@ -9,7 +9,7 @@ export default function HeroSection() {
         }}
       />
 
-      <div className="relative mx-auto flex max-w-6xl flex-col items-center justify-between gap-12 px-6 md:flex-row">
+      <div className="relative mx-auto flex max-w-6xl w-full flex-col items-center justify-between gap-12 px-6 md:flex-row">
         <div className="w-full text-center md:text-left md:w-1/2">
           <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
             Pesan Menu <span className="italic text-[#e76f51]">Favoritmu.</span>
@@ -34,11 +34,24 @@ export default function HeroSection() {
         </div>
 
         <div className="hidden md:flex md:w-1/2 justify-end items-center">
+          <div className="relative w-full max-w-md aspect-square flex items-center justify-center">
+            <div className="absolute inset-4 rounded-full bg-[#e76f51]" />
+
+            <div className="absolute -top-2 -right-2 h-24 w-24 rounded-tr-3xl rounded-bl-3xl bg-[#f4a261]" />
+
+            <div className="absolute -bottom-3 left-6 h-16 w-3/4 rounded-full bg-[#f8e1d4]" />
+
+            <div className="absolute -bottom-4 right-0 h-28 w-16 rounded-tl-full rounded-tr-3xl bg-[#2a9d8f]" />
+
+            <div className="absolute -left-4 top-10 h-10 w-10 rounded-full bg-[#f4a261]" />
+            <div className="absolute left-2 bottom-12 h-14 w-14 rounded-full bg-[#2a9d8f]" />
+
             <img
-                src="../assets/mie.png"
-                alt="Menu Utama Grafikantin"
-                className="w-full max-w-md h-auto object-contain"
+              src="../assets/mie.png"
+              alt="Menu Utama Grafikantin"
+              className="relative z-10 w-full h-full object-contain drop-shadow-xl"
             />
+          </div>
         </div>
       </div>
     </section>
