@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import ItemModal from "../ItemModal";
 
 export interface MenuItem {
   id: number | string;
