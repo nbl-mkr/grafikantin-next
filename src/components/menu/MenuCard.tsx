@@ -125,12 +125,6 @@ export default function MenuCard({ item, category, onSelect }: MenuCardProps) {
           </div>
         </div>
       </div>
-
-      <ItemModal
-        item={item}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-      />
     </>
   );
 }
