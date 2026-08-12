@@ -1,6 +1,6 @@
 export default function HeroSection() {
   return (
-    <section className="relative w-full min-h-[calc(100vh-64px)] bg-[#fafafa] py-6 md:py-10 flex items-center justify-center overflow-hidden">
+    <section className="relative w-full bg-[#fafafa] py-6 md:py-10 flex items-center justify-center overflow-hidden">
       <div 
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
         style={{
