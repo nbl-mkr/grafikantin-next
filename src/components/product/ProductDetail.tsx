@@ -23,7 +23,6 @@ interface ProductDetailProps {
 
 export default function ProductDetail({ product }: ProductDetailProps) {
   const [quantity, setQuantity] = useState(1);
-  const [catatan, setCatatan] = useState("");
 
   const handleDecrease = () => {
     if (quantity > 1) setQuantity((prev) => prev - 1);
@@ -51,7 +50,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
         </span>
       </nav>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-start">
         <div className="w-full">
           <ProductGallery gambar={product.gambar} namaMenu={product.nama_menu} />
         </div>
