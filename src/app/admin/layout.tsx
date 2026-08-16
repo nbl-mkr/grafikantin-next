@@ -1,8 +1,15 @@
 import Sidebar from "@/components/admin/Sidebar";
+import type { Metadata, Viewport } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Dashboard Admin - Grafikantin",
   description: "Panel admin Grafikantin SMK Negeri 4 Malang",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function AdminLayout({
@@ -11,9 +18,9 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen bg-slate-50 font-sans">
+    <div className="flex min-h-screen bg-slate-50 font-sans overflow-x-hidden">
       <Sidebar />
-      <div className="flex-1 flex flex-col lg:ml-64">
+      <div className="flex-1 flex flex-col min-w-0 lg:ml-64">
         {children}
       </div>
     </div>

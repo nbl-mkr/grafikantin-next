@@ -8,7 +8,7 @@ export default function OrderPage() {
   return (
     <div className="flex flex-col min-h-screen bg-slate-50">
       <Header />
-      <div className="flex-1 p-6 lg:p-8">
+      <div className="flex-1 p-3 sm:p-6 lg:p-8 min-w-0">
         <TabNav />
         <div className="mt-6 space-y-6">
           <OrderStat />

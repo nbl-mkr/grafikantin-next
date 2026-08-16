@@ -15,7 +15,7 @@ export default function AdminDashboard() {
   return (
     <div className="flex flex-col min-h-screen bg-slate-50">
       <Header />
-      <div className="flex-1 p-6 lg:p-8">
+      <div className="flex-1 p-3 sm:p-6 lg:p-8 min-w-0">
         <TabNav />
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {adminStats.map((stat, i) => (
