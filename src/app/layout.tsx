@@ -1,7 +1,10 @@
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import { CartProvider } from "@/context/CartContext";
+import LayoutWrapper from "@/components/LayoutWrapper";
+
+export const metadata = {
+  title: "Grafikantin - Pesan Menu Favoritmu",
+  description: "Kantin Digital SMKN 4 Malang",
+};
 
 export default function RootLayout({
   children,
@@ -9,13 +12,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id">
-      <body className="flex min-h-screen flex-col">
-        <CartProvider>
-          <Navbar />
-          <main className="flex-1 bg-[#fafafa]">{children}</main>
-          <Footer />
-        </CartProvider>
+    <html lang="id" className="scroll-smooth" suppressHydrationWarning>
+      <body
+        className="min-h-screen flex flex-col justify-between bg-[#fafafa] font-sans antialiased"
+        suppressHydrationWarning
+      >
+        <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>
   );
