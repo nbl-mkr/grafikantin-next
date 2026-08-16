@@ -1,4 +1,5 @@
 import "./globals.css";
+import { CartProvider } from "@/context/CartContext";
 import LayoutWrapper from "@/components/LayoutWrapper";
 
 export const metadata = {
@@ -17,7 +18,9 @@ export default function RootLayout({
         className="min-h-screen flex flex-col justify-between bg-[#fafafa] font-sans antialiased"
         suppressHydrationWarning
       >
-        <LayoutWrapper>{children}</LayoutWrapper>
+        <CartProvider>
+          <LayoutWrapper>{children}</LayoutWrapper>
+        </CartProvider>
       </body>
     </html>
   );
