@@ -1,6 +1,13 @@
 import "./globals.css";
+import { Inter } from "next/font/google";
 import { CartProvider } from "@/context/CartContext";
 import LayoutWrapper from "@/components/LayoutWrapper";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const metadata = {
   title: "Grafikantin - Pesan Menu Favoritmu",
@@ -15,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="id" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className="min-h-screen flex flex-col justify-between bg-[#fafafa] font-sans antialiased"
+        className={`${inter.variable} min-h-screen flex flex-col justify-between bg-[#fafafa] font-sans antialiased`}
         suppressHydrationWarning
       >
         <CartProvider>
