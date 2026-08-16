@@ -13,7 +13,7 @@ export default function PromoBanner() {
         <div className="w-full text-center md:w-auto md:text-left">
           <h2 className="text-[36px] md:text-[48px] font-extrabold tracking-tight leading-tight">
             AMBIL <br className="hidden sm:block" />
-            <span className="italic text-indigo-100">DI KANTIN</span>
+            <span className="italic">DI KANTIN</span>
           </h2>
         </div>
 
