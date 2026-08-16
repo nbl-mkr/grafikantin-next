@@ -129,7 +129,7 @@ export default function ChartSection({ lineData, barData }: ChartSectionProps) {
         <div className="flex items-start justify-between">
           <div>
             <p className="text-sm font-medium text-gray-500">Pendapatan per Stand</p>
-            <p className="mt-1 text-2xl font-extrabold text-gray-900 tracking-tight">Rp 1.510.000</p>
+            <p className="mt-1 text-2xl font-extrabold text-gray-900 tracking-tight">Rp 1.500.000</p>
           </div>
           <div className="flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-600 cursor-pointer hover:bg-gray-50 transition">
             <span>Minggu Ini</span>
