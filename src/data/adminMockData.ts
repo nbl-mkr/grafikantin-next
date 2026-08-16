@@ -155,6 +155,20 @@ export const topMenus: TopMenu[] = [
     terjual: 84,
     gambar: "/assets/roti-bakar.jpg",
   },
+  {
+    id: 5,
+    nama_menu: "Pangsit Rebus",
+    stand: "Stand Anggrek",
+    terjual: 72,
+    gambar: "/assets/pangsit-rebus.jpg",
+  },
+  {
+    id: 6,
+    nama_menu: "Lumpia Pastel",
+    stand: "Stand Mawar",
+    terjual: 65,
+    gambar: "/assets/lumpia-pastel.jpg",
+  },
 ];
 
 export const standStatuses: StandStatus[] = [

@@ -14,13 +14,20 @@ export default function BottomSection({ menus, stands }: BottomSectionProps) {
   const terjualHarian = 1250000;
   const progressPercent = Math.min((terjualHarian / targetHarian) * 100, 100);
 
-  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
-  const totalPages = Math.ceil(stands.length / itemsPerPage);
 
+  const [currentMenuPage, setCurrentMenuPage] = useState(1);
+  const totalMenuPages = Math.ceil(menus.length / itemsPerPage);
+  const paginatedMenus = menus.slice(
+    (currentMenuPage - 1) * itemsPerPage,
+    currentMenuPage * itemsPerPage
+  );
+
+  const [currentStandPage, setCurrentStandPage] = useState(1);
+  const totalStandPages = Math.ceil(stands.length / itemsPerPage);
   const paginatedStands = stands.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    (currentStandPage - 1) * itemsPerPage,
+    currentStandPage * itemsPerPage
   );
 
   return (
@@ -69,8 +76,9 @@ export default function BottomSection({ menus, stands }: BottomSectionProps) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
+
         <div className="flex flex-1 flex-col justify-start gap-3">
-          {menus.slice(0, 4).map((item) => (
+          {paginatedMenus.map((item) => (
             <div key={item.id} className="flex items-center gap-3">
               <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full bg-gray-100">
                 <Image src={item.gambar} alt={item.nama_menu} fill className="object-cover" />
@@ -86,6 +94,28 @@ export default function BottomSection({ menus, stands }: BottomSectionProps) {
             </div>
           ))}
         </div>
+
+        {totalMenuPages > 1 && (
+          <div className="flex items-center justify-between border-t border-gray-100 pt-2.5 text-xs text-gray-500 shrink-0">
+            <span>Halaman {currentMenuPage} dari {totalMenuPages}</span>
+            <div className="flex gap-1.5">
+              <button
+                disabled={currentMenuPage === 1}
+                onClick={() => setCurrentMenuPage((p) => p - 1)}
+                className="rounded-lg border px-2 py-0.5 disabled:opacity-30 hover:bg-gray-50 transition"
+              >
+                ←
+              </button>
+              <button
+                disabled={currentMenuPage === totalMenuPages}
+                onClick={() => setCurrentMenuPage((p) => p + 1)}
+                className="rounded-lg border px-2 py-0.5 disabled:opacity-30 hover:bg-gray-50 transition"
+              >
+                →
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="flex h-75 flex-col justify-between rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
@@ -123,20 +153,20 @@ export default function BottomSection({ menus, stands }: BottomSectionProps) {
           ))}
         </div>
 
-        {totalPages > 1 && (
+        {totalStandPages > 1 && (
           <div className="flex items-center justify-between border-t border-gray-100 pt-2.5 text-xs text-gray-500 shrink-0">
-            <span>Halaman {currentPage} dari {totalPages}</span>
+            <span>Halaman {currentStandPage} dari {totalStandPages}</span>
             <div className="flex gap-1.5">
               <button
-                disabled={currentPage === 1}
-                onClick={() => setCurrentPage((p) => p - 1)}
+                disabled={currentStandPage === 1}
+                onClick={() => setCurrentStandPage((p) => p - 1)}
                 className="rounded-lg border px-2 py-0.5 disabled:opacity-30 hover:bg-gray-50 transition"
               >
                 ←
               </button>
               <button
-                disabled={currentPage === totalPages}
-                onClick={() => setCurrentPage((p) => p + 1)}
+                disabled={currentStandPage === totalStandPages}
+                onClick={() => setCurrentStandPage((p) => p + 1)}
                 className="rounded-lg border px-2 py-0.5 disabled:opacity-30 hover:bg-gray-50 transition"
               >
                 →
