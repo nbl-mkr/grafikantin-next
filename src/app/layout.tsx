@@ -13,13 +13,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id" className="scroll-smooth" suppressHydrationWarning>
+    <html lang="id" suppressHydrationWarning>
       <body 
-        className="min-h-screen flex flex-col justify-between bg-[#fafafa] font-sans antialiased"
+        className="min-h-screen flex flex-col bg-[#fafafa] font-sans antialiased"
         suppressHydrationWarning
       >
         <Navbar />
-        <main className="grow flex flex-col">{children}</main>
+        <main className="flex-1 flex flex-col">{children}</main>
         <Footer />
       </body>
     </html>

@@ -1,14 +1,16 @@
+"use client";
+
 export default function HeroSection() {
+  const handleScrollToCards = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const element = document.getElementById("cards");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <section className="relative w-full bg-[#fafafa] py-14 md:py-20 overflow-hidden">
-      <div 
-        className="absolute inset-0 opacity-[0.03] pointer-events-none"
-        style={{
-          backgroundImage: `radial-gradient(#000 1px, transparent 1px)`,
-          backgroundSize: '16px 16px'
-        }}
-      />
-
       <div className="relative mx-auto flex max-w-6xl flex-col items-start justify-between gap-8 px-6 md:flex-row md:items-center">
         <div className="w-full text-center md:text-left md:w-8/12">
           <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl leading-tight">
@@ -38,7 +40,8 @@ export default function HeroSection() {
         <div className="flex w-full justify-center md:w-auto md:justify-start">
           <a
             href="#cards"
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-linear-to-r from-[#e76f51] to-[#f4a261] px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 transition-all duration-200 hover:opacity-95 hover:shadow-indigo-500/35 active:scale-[0.98]"
+            onClick={handleScrollToCards}
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-linear-to-r from-[#e76f51] to-[#f4a261] px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#E76F51]/25 transition-all duration-200 hover:opacity-95 hover:shadow-[#E76F51]/35 active:scale-[0.98]"
           >
             <span>Pesan Di Sini</span>
           </a>
