@@ -31,7 +31,7 @@ export interface StandStatus {
 export const adminStats = [
   {
     label: "Pendapatan Hari Ini",
-    value: "Rp 1.240.000",
+    value: "Rp 1.250.000",
     change: "+12.5%",
     positive: true,
     period: "Hari Ini",
@@ -162,6 +162,6 @@ export const standStatuses: StandStatus[] = [
   { id: 2, nama_stand: "Stand Cempaka", status: "Buka", terjual: 96 },
   { id: 3, nama_stand: "Stand Kenanga", status: "Buka", terjual: 84 },
   { id: 4, nama_stand: "Stand Anggrek", status: "Buka", terjual: 72 },
-  { id: 5, nama_stand: "Stand Mawar", status: "Tutup", terjual: 0 },
+  { id: 5, nama_stand: "Stand Mawar", status: "Buka", terjual: 64 },
   { id: 6, nama_stand: "Stand Dahlia", status: "Buka", terjual: 58 },
 ];

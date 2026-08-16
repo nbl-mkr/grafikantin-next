@@ -11,7 +11,7 @@ interface BottomSectionProps {
 
 export default function BottomSection({ menus, stands }: BottomSectionProps) {
   const targetHarian = 2000000;
-  const terjualHarian = 1240000;
+  const terjualHarian = 1250000;
   const progressPercent = Math.min((terjualHarian / targetHarian) * 100, 100);
 
   const [currentPage, setCurrentPage] = useState(1);
