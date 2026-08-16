@@ -63,7 +63,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
         </span>
       </nav>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-stretch">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-stretch pb-6 md:pb-10">
         <div className="w-full h-full">
           <ProductGallery gambar={product.gambar} namaMenu={product.nama_menu} />
         </div>
