@@ -67,15 +67,15 @@ export default function Sidebar() {
 
   return (
     <aside className="fixed inset-y-0 left-0 z-50 hidden w-64 flex-col border-r border-gray-100 bg-white lg:flex">
-      <div className="flex h-16 items-center gap-3 border-b border-gray-100 px-6">
+      <div className="flex h-16.25 items-center gap-2 border-b border-gray-100 px-4 sm:px-6 lg:px-8 text-gray-900 text-lg">
         <Image
           src="/assets/logo.png"
-          alt="Grafikantin"
+          alt="Logo Grafikantin"
           width={32}
           height={32}
           className="h-8 w-auto object-contain"
         />
-        <span className="text-lg font-bold text-gray-900">Grafikantin</span>
+        <span>Grafikantin</span>
       </div>
 
       <nav className="flex-1 overflow-y-auto px-4 py-6">
