@@ -15,7 +15,7 @@ export default function ComplaintBanner() {
             <h3 className="text-3xl font-extrabold tracking-tight leading-tight mb-3 md:text-[40px]">
               Keluhan Siswa
             </h3>
-            <p className="text-indigo-100 text-base leading-relaxed md:text-lg">
+            <p className="text-base leading-relaxed md:text-lg">
               Suara Siswa sangat berarti bagi sekolah. Sampaikan kritik dan
               saran Anda untuk membantu Grafikantin memberikan pelayanan yang
               lebih baik lagi.
