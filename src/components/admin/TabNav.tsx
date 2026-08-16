@@ -50,8 +50,8 @@ export default function TabNav() {
             onClick={() => setActive(tab.label)}
             className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition ${
               isActive
-                ? "bg-gray-100 text-gray-900"
-                : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                ? "bg-[#e76f51]/10 text-[#e76f51]"
+                : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
             }`}
           >
             {tab.icon}
