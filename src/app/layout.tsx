@@ -13,7 +13,7 @@ export default function RootLayout({
       <body className="flex min-h-screen flex-col">
         <CartProvider>
           <Navbar />
-          <main className="flex-1">{children}</main>
+          <main className="flex-1 bg-[#fafafa]">{children}</main>
           <Footer />
         </CartProvider>
       </body>
