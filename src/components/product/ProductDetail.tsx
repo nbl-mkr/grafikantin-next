@@ -5,6 +5,7 @@ import Link from "next/link";
 import ProductGallery from "./ProductGallery";
 import ProductActionBar from "./ProductActionBar";
 import { mockStands } from "@/data/mockData";
+import { useCart } from "@/context/CartContext";
 
 export interface ProductData {
   id: string | number;
@@ -23,6 +24,7 @@ interface ProductDetailProps {
 
 export default function ProductDetail({ product }: ProductDetailProps) {
   const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useCart();
 
   const handleDecrease = () => {
     if (quantity > 1) setQuantity((prev) => prev - 1);
@@ -30,6 +32,17 @@ export default function ProductDetail({ product }: ProductDetailProps) {
 
   const handleIncrease = () => {
     setQuantity((prev) => prev + 1);
+  };
+
+  const handleAddToCart = () => {
+    addToCart({
+      id: product.id,
+      nama_menu: product.nama_menu,
+      harga: product.harga,
+      gambar: product.gambar,
+      quantity: quantity,
+      stand_id: product.stand_id || 1,
+    });
   };
 
   const standName = useMemo(() => {
@@ -105,6 +118,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
               quantity={quantity}
               onDecrease={handleDecrease}
               onIncrease={handleIncrease}
+              onAddToCart={handleAddToCart}
             />
           </div>
         </div>

@@ -1,8 +1,13 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+
 interface ProductActionBarProps {
   price: number;
   quantity: number;
   onDecrease: () => void;
   onIncrease: () => void;
+  onAddToCart: () => void;
 }
 
 export default function ProductActionBar({
@@ -10,48 +15,49 @@ export default function ProductActionBar({
   quantity,
   onDecrease,
   onIncrease,
+  onAddToCart,
 }: ProductActionBarProps) {
-  const totalPrice = price * quantity;
+  const router = useRouter();
+
+  const handleAddToCartAndRedirect = () => {
+    onAddToCart();
+    router.push("/shopping");
+  };
 
   return (
-    <div className="border-t border-gray-100 pt-5">
-      <div className="flex items-center justify-between mb-5">
-        <span className="text-sm font-bold text-gray-900">Jumlah</span>
-        <div className="flex items-center gap-2 bg-gray-50 p-1.5 rounded-xl border border-gray-100">
+    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-t border-gray-100 pt-6">
+      <div className="flex items-center gap-3">
+        <span className="text-xs font-bold uppercase tracking-wider text-gray-400">
+          Jumlah
+        </span>
+        <div className="flex items-center rounded-xl border border-gray-200 bg-white">
           <button
             type="button"
             onClick={onDecrease}
-            disabled={quantity <= 1}
-            className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#e76f51] text-white hover:bg-[#d95d3f] transition font-bold text-sm active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex h-10 w-10 items-center justify-center text-gray-600 transition hover:bg-gray-50 rounded-l-xl"
           >
-            −
+            -
           </button>
-          <span className="text-sm font-bold text-gray-800 min-w-8 text-center">
+          <span className="w-12 text-center text-sm font-semibold text-gray-900">
             {quantity}
           </span>
           <button
             type="button"
             onClick={onIncrease}
-            className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#e76f51] text-white hover:bg-[#d95d3f] transition font-bold text-sm active:scale-95"
+            className="flex h-10 w-10 items-center justify-center text-gray-600 transition hover:bg-gray-50 rounded-r-xl"
           >
             +
           </button>
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-        <div className="shrink-0">
-          <p className="text-[11px] text-gray-400 font-medium">Total Pembayaran</p>
-          <p className="text-lg font-extrabold text-[#e76f51]">
-            Rp {totalPrice.toLocaleString("id-ID")}
-          </p>
-        </div>
-
+      <div className="flex flex-1 items-center gap-3 sm:justify-end">
         <button
           type="button"
-          className="flex-1 bg-linear-to-r from-[#e76f51] to-[#f4a261] hover:opacity-90 text-white text-sm font-semibold py-3.5 rounded-xl transition shadow-md shadow-[#e76f51]/20 active:scale-[0.98] text-center"
+          onClick={handleAddToCartAndRedirect}
+          className="w-full sm:w-auto flex-1 max-w-xs rounded-xl bg-[#e76f51] px-6 py-3 text-center text-sm font-bold text-white shadow-md transition hover:bg-[#d55f43] active:scale-95"
         >
-          Masukkan Keranjang
+          Rp {(price * quantity).toLocaleString("id-ID")}
         </button>
       </div>
     </div>
