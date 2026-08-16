@@ -14,6 +14,8 @@ export interface MenuItem {
 
 interface MenuCardProps {
   item: MenuItem;
+  category?: "makanan" | "camilan" | string;
+  onSelect?: (item: MenuItem, category: string) => void;
 }
 
 export default function MenuCard({ item }: MenuCardProps) {

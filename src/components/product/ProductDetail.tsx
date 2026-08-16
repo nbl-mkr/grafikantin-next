@@ -39,7 +39,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
       id: product.id,
       nama_menu: product.nama_menu,
       harga: product.harga,
-      gambar: product.gambar,
+      gambar: product.gambar || "/placeholder.png",
       quantity: quantity,
       stand_id: product.stand_id || 1,
     });
