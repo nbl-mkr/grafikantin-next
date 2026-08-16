@@ -39,7 +39,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
   }, [product.stand_id]);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 md:py-10">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 md:py-10 grow">
       <nav className="mb-6 flex items-center gap-2 text-sm text-gray-500">
         <Link href="/" className="hover:text-[#e76f51] transition">
           Beranda

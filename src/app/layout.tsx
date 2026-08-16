@@ -19,7 +19,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <Navbar />
-        <main className="grow bg-[#fafafa]">{children}</main>
+        <main className="grow flex flex-col">{children}</main>
         <Footer />
       </body>
     </html>
