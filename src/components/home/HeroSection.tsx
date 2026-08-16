@@ -32,10 +32,6 @@ export default function HeroSection() {
         >
           <span>Pesan Sekarang</span>
         </a>
-
-        <p className="mt-6 text-xs text-neutral-500">
-          Pesan sekarang tanpa terhalang waktu.
-        </p>
       </div>
     </section>
   );
