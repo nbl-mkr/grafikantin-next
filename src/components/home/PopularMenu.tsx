@@ -7,7 +7,6 @@ export interface PopularMenuItem {
   id: number | string;
   nama_menu: string;
   harga: number;
-  deskripsi: string;
   gambar: string;
   stand_id?: number | string;
   estimasi?: string;
@@ -26,7 +25,7 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
         <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
           Menu Populer <span className="text-[#e76f51]">Minggu Ini</span>
         </h2>
-        <p className="mt-2 text-sm text-gray-600 max-w-md">
+        <p className="mt-2 text-sm text-gray-600 max-w-xl">
           Nikmati santapan paling diminati siswa dengan penyajian cepat dan rasa terjamin.
         </p>
       </div>
@@ -63,10 +62,6 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
                       </dd>
                     </div>
                   </dl>
-
-                  <p className="text-sm text-gray-500 mt-2 line-clamp-2">
-                    {food.deskripsi}
-                  </p>
 
                   <div className="mt-4 flex items-center justify-center gap-6 text-xs border-t border-gray-100 pt-3">
                     <div className="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
