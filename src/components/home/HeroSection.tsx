@@ -11,27 +11,39 @@ export default function HeroSection() {
   return (
     <section className="relative w-full overflow-hidden bg-[#fafafa]">
       <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center px-6 py-14 text-center md:py-20">
-        <h1 className="max-w-4xl text-4xl font-extrabold leading-[1.12] tracking-tight text-neutral-900 sm:text-5xl md:text-6xl">
-          Pesan Menu <span className="italic text-[#e76f51]">Favoritmu.</span>
+        <h1 className="text-3xl font-black tracking-tight text-slate-900 sm:text-5xl lg:text-6xl max-w-4xl mx-auto leading-tight sm:leading-none">
+          Pesan Menu <span className="text-[#e76f51]">Favoritmu</span> Tanpa Antre.
         </h1>
 
-        <p className="mt-4 max-w-xl text-sm leading-relaxed text-neutral-600 md:text-base">
-          Makan nikmat tanpa antre, khusus siswa SMK Negeri 4 Malang.
-        </p>
-
-        <p className="mt-4 max-w-xl text-sm leading-relaxed text-neutral-600 md:text-base">
-          <strong className="font-semibold text-neutral-900">Grafikantin</strong>{" "}
-          menyediakan berbagai menu pilihan variatif dengan penyajikan cepat. Rasa
-          nikmat, suasana nyaman, dan pengalaman pesan makanan yang serba praktis.
+        <p className="mt-8 text-sm sm:text-base text-slate-500 max-w-2xl mx-auto font-normal">
+          Nikmati santapan kantin dengan penyajian cepat, rasa terjamin, dan pengalaman pemesanan yang serba praktis langsung dari perangkatmu.
         </p>
 
         <a
-          href="#menu-populer"
-          onClick={handleScrollToMenu}
-          className="group mt-6 inline-flex items-center gap-2.5 rounded-lg bg-linear-to-r from-[#e76f51] to-[#f4a261] px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#e76f51]/25 transition-all duration-200 hover:scale-[1.04] hover:shadow-[#e76f51]/35 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e76f51] focus-visible:ring-offset-2"
+            href="/order"
+            className="mt-8 w-full sm:w-auto rounded-xl bg-[#e76f51] px-7 py-3 text-sm font-bold text-white transition hover:bg-[#d55f43] shadow-sm"
         >
-          <span>Pesan Sekarang</span>
+          Pesan Sekarang
         </a>
+
+        <div className="mt-8 pt-8 border-t border-slate-100 grid grid-cols-2 sm:grid-cols-4 gap-16 text-center">
+          <div>
+            <p className="text-2xl font-black text-slate-900">15m</p>
+            <p className="text-xs font-medium text-slate-500">Estimasi Penyajian</p>
+          </div>
+          <div>
+            <p className="text-2xl font-black text-slate-900">10+</p>
+            <p className="text-xs font-medium text-slate-500">Stand Kantin</p>
+          </div>
+          <div>
+            <p className="text-2xl font-black text-slate-900">100%</p>
+            <p className="text-xs font-medium text-slate-500">Higienis & Segar</p>
+          </div>
+          <div>
+            <p className="text-2xl font-black text-slate-900">4.8/5</p>
+            <p className="text-xs font-medium text-slate-500">Rating Siswa</p>
+          </div>
+        </div>
       </div>
     </section>
   );
