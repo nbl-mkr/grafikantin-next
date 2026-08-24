@@ -6,7 +6,6 @@ export interface MenuItem {
   id: number | string;
   nama_menu: string;
   harga: number;
-  deskripsi: string;
   gambar: string;
   estimasi?: string;
   rating?: string;
@@ -46,10 +45,6 @@ export default function MenuCard({ item }: MenuCardProps) {
               </dd>
             </div>
           </dl>
-
-          <p className="text-sm text-gray-500 mt-2 line-clamp-2">
-            {item.deskripsi}
-          </p>
 
           <div className="mt-4 flex items-center justify-center gap-6 text-xs border-t border-gray-100 pt-3">
             <div className="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
