@@ -3,13 +3,13 @@ export default function ValueCards() {
     <section className="w-full bg-[#e76f51] py-14 md:py-20 text-white">
       <div className="mx-auto max-w-6xl px-6">
         <div className="mb-12 text-center max-w-xl mx-auto">
-          <span className="text-xs font-semibold uppercase tracking-wider text-indigo-100">
+          <span className="text-xs font-semibold uppercase tracking-wider">
             Prinsip Utama
           </span>
           <h2 className="mt-1 text-2xl font-bold text-white sm:text-3xl tracking-tight">
             Nilai Utama Kami
           </h2>
-          <p className="mt-2 text-sm sm:text-base text-indigo-100">
+          <p className="mt-2 text-sm sm:text-base">
             Prinsip yang selalu kami pegang dalam melayani seluruh warga sekolah
           </p>
         </div>
