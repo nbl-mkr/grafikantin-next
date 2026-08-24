@@ -51,10 +51,11 @@ export default function CartCard() {
 
   if (cart.length === 0) {
     return (
-      <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-8">
+      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 pb-32">
+        <h1 className="text-2xl font-bold text-gray-900 mb-6">
           Keranjang Belanja Saya
         </h1>
+
         <div className="flex flex-col items-center justify-center rounded-2xl border border-gray-100 bg-white p-8 sm:p-12 text-center shadow-sm">
           <div className="mb-4 rounded-full bg-slate-50 p-6">
             <svg
