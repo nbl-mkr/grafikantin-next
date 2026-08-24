@@ -82,7 +82,7 @@ export const recentOrders: Order[] = [
   {
     id: "ORD-001",
     customer: "Ahmadinezka Evan",
-    menu: "Teriyaki Chicken Rice Bowl",
+    menu: "Teriyaki Chicken",
     stand: "Stand Melati",
     total: 8000,
     status: "Selesai",
@@ -91,7 +91,7 @@ export const recentOrders: Order[] = [
   {
     id: "ORD-002",
     customer: "Ahmad Daqiqul",
-    menu: "Katsu Chicken Rice Bowl",
+    menu: "Katsu Chicken",
     stand: "Stand Cempaka",
     total: 10000,
     status: "Selesai",
@@ -138,14 +138,14 @@ export const recentOrders: Order[] = [
 export const topMenus: TopMenu[] = [
   {
     id: 1,
-    nama_menu: "Teriyaki Chicken Rice Bowl",
+    nama_menu: "Teriyaki Chicken",
     stand: "Stand Melati",
     terjual: 142,
     gambar: "/assets/teriyaki-chicken.jpg",
   },
   {
     id: 2,
-    nama_menu: "Katsu Chicken Rice Bowl",
+    nama_menu: "Katsu Chicken",
     stand: "Stand Melati",
     terjual: 128,
     gambar: "/assets/katsu-chicken.jpg",
