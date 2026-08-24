@@ -7,6 +7,7 @@ export interface PopularMenuItem {
   id: number | string;
   nama_menu: string;
   harga: number;
+  deskripsi?: string;
   gambar: string;
   stand_id?: number | string;
   estimasi?: string;
