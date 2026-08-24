@@ -20,7 +20,7 @@ interface PopularMenuProps {
 
 export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
   return (
-    <div id="menu-populer" className="w-full bg-[#f8fafc] py-12 scroll-mt-16">
+    <div id="menu-populer" className="w-full bg-white py-12 scroll-mt-16">
       <div className="flex flex-col items-center text-center mb-12 px-4">
         <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
           Menu Populer <span className="text-[#e76f51]">Minggu Ini</span>

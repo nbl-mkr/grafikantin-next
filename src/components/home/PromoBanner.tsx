@@ -1,6 +1,6 @@
 export default function PromoBanner() {
   return (
-    <section className="relative w-full overflow-hidden bg-[#e76f51] py-8 text-white">
+    <section className="relative w-full overflow-hidden bg-[#fafafa] border-t border-b border-gray-100 py-8 text-black">
       <div 
         className="absolute inset-0 opacity-10 pointer-events-none"
         style={{
@@ -27,7 +27,7 @@ export default function PromoBanner() {
         <div className="w-full text-center md:w-auto md:text-right">
           <a
             href="/order"
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-6 py-2.5 text-[16px] font-semibold text-[#f97316] shadow-sm transition-all duration-200 hover:bg-gray-100 active:scale-[0.98]"
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#e76f51] px-6 py-2.5 text-[16px] font-semibold text-white shadow-sm transition-all duration-200 hover:bg-gray-100 active:scale-[0.98]"
           >
             <span>Pesan Di Sini</span>
           </a>
