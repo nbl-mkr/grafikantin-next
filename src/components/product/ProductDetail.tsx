@@ -11,7 +11,7 @@ export interface ProductData {
   id: string | number;
   nama_menu: string;
   harga: number;
-  deskripsi: string;
+  deskripsi?: string;
   gambar?: string;
   estimasi?: string;
   rating?: string;
