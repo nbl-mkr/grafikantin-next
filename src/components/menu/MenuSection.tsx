@@ -30,6 +30,7 @@ export default function MenuSection({
             <MenuCard
               key={item.id}
               item={item}
+              category={category}
               onSelect={onSelectItem}
             />
           ))}
