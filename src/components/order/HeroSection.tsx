@@ -41,7 +41,7 @@ export default function HeroSection() {
           <a
             href="#cards"
             onClick={handleScrollToCards}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-linear-to-r from-[#e76f51] to-[#f4a261] px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#E76F51]/25 transition-all duration-200 hover:opacity-95 hover:shadow-[#E76F51]/35 active:scale-[0.98]"
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#e76f51] px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#E76F51]/25 transition-all duration-200 hover:opacity-95 hover:shadow-[#E76F51]/35 active:scale-[0.98]"
           >
             <span>Pesan Di Sini</span>
           </a>
