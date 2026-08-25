@@ -21,27 +21,27 @@ export default function StandCards({ stands }: StandCardsProps) {
             Pilih Stand favoritmu
           </h2>
           <p className="mt-2 text-sm sm:text-base text-gray-600">
-            erbagai pilihan stand makanan dan minuman tersedia di Grafikantin
+            Berbagai pilihan stand makanan dan minuman tersedia di Grafikantin
           </p>
         </div>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 justify-items-center">
           {stands.map((stand) => (
             <div
               key={stand.id}
-              className="group w-full rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
+              className="group w-full rounded-lg bg-white p-4 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100 flex flex-col justify-between"
             >
               <div>
-                <div className="relative overflow-hidden">
+                <div className="relative overflow-hidden rounded-lg">
                   <Image
                     src={`/assets/${stand.gambar || "menu.jpg"}`}
                     alt={stand.nama_stand}
                     width={400}
                     height={208}
-                    className="h-52 w-full object-cover scale-[1.02] group-hover:scale-105 transition-transform duration-300 block"
+                    className="h-52 w-full object-cover group-hover:scale-105 transition-transform duration-300 block"
                   />
                 </div>
 
-                <div className="p-5 flex flex-col justify-between">
+                <div className="mt-4 flex flex-col justify-between">
                   <div>
                     <h5 className="text-xl font-bold text-gray-900">
                       {stand.nama_stand}
