@@ -6,7 +6,7 @@ interface StatCardProps {
   period: string;
 }
 
-export function StatCard({ label, value, change, positive, period }: StatCardProps) {
+export default function StatCard({ label, value, change, positive, period }: StatCardProps) {
   return (
     <article className="flex flex-col gap-4 rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
       <div
@@ -51,39 +51,5 @@ export function StatCard({ label, value, change, positive, period }: StatCardPro
         </p>
       </div>
     </article>
-  );
-}
-
-export default function StatSection() {
-  const stats = [
-    {
-      label: "Pendapatan Bulanan",
-      value: "Rp 18.450.000",
-      change: "12.4%",
-      positive: true,
-      period: "dari bulan lalu",
-    },
-    {
-      label: "Pelanggan Aktif",
-      value: "1.420",
-      change: "4.1%",
-      positive: true,
-      period: "dari minggu lalu",
-    },
-    {
-      label: "Tingkat Penolakan Stok",
-      value: "0.8%",
-      change: "0.5%",
-      positive: true, // Berkurangnya penolakan dianggap tren positif
-      period: "dari bulan lalu",
-    },
-  ];
-
-  return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-      {stats.map((stat, index) => (
-        <StatCard key={index} {...stat} />
-      ))}
-    </div>
   );
 }
