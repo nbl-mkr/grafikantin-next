@@ -51,13 +51,13 @@ export default function HeroSection({ stand }: HeroSectionProps) {
           <div className="mt-6 flex gap-3">
             <a
               href="#food-section"
-              className="inline-flex items-center justify-center rounded-lg bg-linear-to-r from-[#e76f51] to-[#f4a261] px-5 py-2.5 text-xs font-semibold text-white shadow-md shadow-indigo-500/20 transition-all duration-200 hover:opacity-95 active:scale-[0.98]"
+              className="inline-flex items-center justify-center rounded-lg bg-[#e76f51] px-5 py-2.5 text-xs font-semibold text-white shadow-md shadow-indigo-500/20 transition-all duration-200 hover:opacity-95 active:scale-[0.98]"
             >
               Makanan
             </a>
             <a
               href="#snack-section"
-              className="inline-flex items-center justify-center rounded-lg bg-linear-to-r from-[#e76f51] to-[#f4a261] px-5 py-2.5 text-xs font-semibold text-white shadow-md shadow-indigo-500/20 transition-all duration-200 hover:opacity-95 active:scale-[0.98]"
+              className="inline-flex items-center justify-center rounded-lg bg-[#e76f51] px-5 py-2.5 text-xs font-semibold text-white shadow-md shadow-indigo-500/20 transition-all duration-200 hover:opacity-95 active:scale-[0.98]"
             >
               Camilan
             </a>
@@ -67,7 +67,7 @@ export default function HeroSection({ stand }: HeroSectionProps) {
         <div className="w-full text-left md:w-auto md:text-right">
           <Link
             href="/order"
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-linear-to-r from-[#e76f51] to-[#f4a261] px-6 py-3 text-sm font-semibold text-white shadow-md shadow-indigo-500/20 transition-all duration-200 hover:opacity-95 active:scale-[0.98]"
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#e76f51] px-6 py-3 text-sm font-semibold text-white shadow-md shadow-indigo-500/20 transition-all duration-200 hover:opacity-95 active:scale-[0.98]"
           >
             <span>Kembali ke Utama</span>
           </Link>
