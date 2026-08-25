@@ -31,15 +31,15 @@ export interface StandStatus {
 export const adminStats = [
   {
     label: "Pendapatan Bulanan",
-    value: "Rp 18.450.000",
-    change: "12.4%",
+    value: "Rp 18.000.000",
+    change: "12.5%",
     positive: true,
     period: "dari bulan lalu",
   },
   {
     label: "Pelanggan Aktif",
-    value: "1.420",
-    change: "4.1%",
+    value: "1.000",
+    change: "5%",
     positive: true,
     period: "dari minggu lalu",
   },
