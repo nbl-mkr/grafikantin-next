@@ -59,7 +59,7 @@ export default function CartCard() {
         <div className="flex flex-col items-center justify-center rounded-2xl border border-gray-100 bg-white p-8 sm:p-12 text-center shadow-sm">
           <div className="mb-4 rounded-full bg-slate-50 p-6">
             <svg
-              className="h-12 w-12 text-gray-400"
+              className="size-8 text-gray-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
