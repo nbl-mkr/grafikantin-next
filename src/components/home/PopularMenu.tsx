@@ -36,10 +36,10 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
           {items.map((food) => (
             <div
               key={food.id}
-              className="group rounded-2xl bg-white shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100 flex flex-col justify-between"
+              className="group rounded-lg bg-white p-4 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100 flex flex-col justify-between"
             >
               <div>
-                <div className="relative overflow-hidden rounded-t-2xl">
+                <div className="relative overflow-hidden rounded-t-lg">
                   <img
                     src={food.gambar}
                     alt={food.nama_menu}
