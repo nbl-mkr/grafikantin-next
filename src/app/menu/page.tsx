@@ -26,7 +26,7 @@ function MenuContent() {
     <>
       <HeroSection stand={currentStand} />
 
-      <main className="max-w-[85vw] mx-auto">
+      <main className="w-full mx-auto">
         <MenuSection
           id="food-section"
           title="Makanan"
