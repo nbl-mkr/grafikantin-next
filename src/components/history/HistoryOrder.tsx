@@ -16,7 +16,7 @@ export default function HistoryOrder() {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="size-10 text-[#e76f51]"
+            className="h-8 w-8 text-gray-400"
           >
             <path
               strokeLinecap="round"
