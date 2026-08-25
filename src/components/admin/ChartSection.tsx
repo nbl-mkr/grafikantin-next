@@ -130,8 +130,8 @@ export default function ChartSection({}: ChartSectionProps) {
     datasets: [
       {
         data: [68, 22, 10],
-        backgroundColor: ["#10b981", "#f59e0b", "#f43f5e"],
-        hoverBackgroundColor: ["#059669", "#d97706", "#e11d48"],
+        backgroundColor: ["#10b981", "#e76f51", "#f43f5e"],
+        hoverBackgroundColor: ["#059669", "#d95f43", "#e11d48"],
         borderColor: "#ffffff",
         borderWidth: 2,
       },
