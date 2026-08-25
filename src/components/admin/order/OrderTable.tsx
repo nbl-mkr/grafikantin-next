@@ -7,7 +7,7 @@ interface OrderItem {
   customer: string;
   date: string;
   status: "Selesai" | "Diproses" | "Batal";
-  amount: string;
+  amount: number;
 }
 
 const mockOrders: OrderItem[] = [
@@ -16,44 +16,50 @@ const mockOrders: OrderItem[] = [
     customer: "Ahmadinezka Evan",
     date: "12 Jun 2025",
     status: "Selesai",
-    amount: "Rp 412.000",
+    amount: 412000,
   },
   {
     id: "#3920",
     customer: "Akhmad Daqiqul",
     date: "11 Jun 2025",
     status: "Diproses",
-    amount: "Rp 128.500",
+    amount: 128500,
   },
   {
     id: "#3919",
     customer: "Devin Adinata",
     date: "10 Jun 2025",
     status: "Selesai",
-    amount: "Rp 894.200",
+    amount: 894200,
   },
   {
     id: "#3918",
     customer: "Rizky Zidane",
     date: "09 Jun 2025",
     status: "Batal",
-    amount: "Rp 56.000",
+    amount: 56000,
   },
   {
     id: "#3917",
     customer: "Permadi Saprianto",
     date: "08 Jun 2025",
     status: "Selesai",
-    amount: "Rp 219.750",
+    amount: 219750,
   },
   {
     id: "#3916",
     customer: "Rizza Cetta",
     date: "07 Jun 2025",
     status: "Diproses",
-    amount: "Rp 63.400",
+    amount: 63400,
   },
 ];
+
+const statusStyles: Record<string, string> = {
+  Selesai: "bg-emerald-50 text-emerald-600",
+  Diproses: "bg-blue-50 text-blue-600",
+  Batal: "bg-red-50 text-red-600",
+};
 
 export default function OrderTable() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -74,18 +80,18 @@ export default function OrderTable() {
   });
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-6">
+    <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-sm font-medium text-gray-900">Semua Pesanan</h2>
 
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-          <div className="relative">
+          <div className="relative flex items-center">
             <input
               type="text"
               placeholder="Cari pesanan..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full rounded-md border border-gray-200 py-1.5 pl-3 pr-9 text-sm text-gray-900 shadow-sm focus:border-indigo-500 focus:outline-none sm:w-56"
+              className="h-9 w-full rounded-md border border-gray-200 pl-3 pr-9 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none sm:w-56"
             />
             <span className="pointer-events-none absolute inset-y-0 right-0 grid w-8 place-content-center text-gray-400">
               <svg
@@ -106,11 +112,11 @@ export default function OrderTable() {
             </span>
           </div>
 
-          <div className="inline-flex rounded-md border border-gray-200 p-0.5 text-xs font-medium">
+          <div className="inline-flex h-9 items-center rounded-md border border-gray-200 p-1 text-xs font-medium">
             <button
               type="button"
               onClick={() => setStatusFilter("all")}
-              className={`rounded-sm px-2 py-1 ${
+              className={`h-full rounded-sm px-2.5 flex items-center justify-center ${
                 statusFilter === "all"
                   ? "bg-gray-100 text-gray-900"
                   : "text-gray-600 hover:text-gray-900"
@@ -121,7 +127,7 @@ export default function OrderTable() {
             <button
               type="button"
               onClick={() => setStatusFilter("paid")}
-              className={`rounded-sm px-2 py-1 ${
+              className={`h-full rounded-sm px-2.5 flex items-center justify-center ${
                 statusFilter === "paid"
                   ? "bg-gray-100 text-gray-900"
                   : "text-gray-600 hover:text-gray-900"
@@ -132,7 +138,7 @@ export default function OrderTable() {
             <button
               type="button"
               onClick={() => setStatusFilter("pending")}
-              className={`rounded-sm px-2 py-1 ${
+              className={`h-full rounded-sm px-2.5 flex items-center justify-center ${
                 statusFilter === "pending"
                   ? "bg-gray-100 text-gray-900"
                   : "text-gray-600 hover:text-gray-900"
@@ -143,7 +149,7 @@ export default function OrderTable() {
             <button
               type="button"
               onClick={() => setStatusFilter("refunded")}
-              className={`rounded-sm px-2 py-1 ${
+              className={`h-full rounded-sm px-2.5 flex items-center justify-center ${
                 statusFilter === "refunded"
                   ? "bg-gray-100 text-gray-900"
                   : "text-gray-600 hover:text-gray-900"
@@ -156,47 +162,47 @@ export default function OrderTable() {
       </div>
 
       <div className="mt-4 overflow-x-auto">
-        <table className="min-w-full divide-y-2 divide-gray-200 text-left text-sm">
+        <table className="min-w-full divide-y divide-gray-100 text-sm">
           <thead>
-            <tr className="*:font-medium *:text-gray-900">
-              <th className="px-3 py-2 whitespace-nowrap">ID Pesanan</th>
-              <th className="px-3 py-2 whitespace-nowrap">Pelanggan</th>
-              <th className="px-3 py-2 whitespace-nowrap">Tanggal</th>
-              <th className="px-3 py-2 whitespace-nowrap">Status</th>
-              <th className="px-3 py-2 whitespace-nowrap">Total</th>
+            <tr className="text-left font-medium text-gray-500">
+              <th className="px-4 py-3 whitespace-nowrap">ID Pesanan</th>
+              <th className="px-4 py-3 whitespace-nowrap">Pelanggan</th>
+              <th className="px-4 py-3 whitespace-nowrap">Tanggal</th>
+              <th className="px-4 py-3 whitespace-nowrap">Status</th>
+              <th className="px-4 py-3 whitespace-nowrap text-right">Total</th>
             </tr>
           </thead>
 
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-gray-100">
             {filteredOrders.length > 0 ? (
               filteredOrders.map((order) => (
-                <tr key={order.id} className="*:text-gray-900 *:first:font-medium">
-                  <td className="px-3 py-2 whitespace-nowrap">{order.id}</td>
-                  <td className="px-3 py-2 whitespace-nowrap">{order.customer}</td>
-                  <td className="px-3 py-2 whitespace-nowrap">{order.date}</td>
-                  <td className="px-3 py-2 whitespace-nowrap">
-                    {order.status === "Selesai" && (
-                      <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs text-emerald-700">
-                        Selesai
-                      </span>
-                    )}
-                    {order.status === "Diproses" && (
-                      <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs text-amber-700">
-                        Diproses
-                      </span>
-                    )}
-                    {order.status === "Batal" && (
-                      <span className="rounded-full bg-red-100 px-2.5 py-0.5 text-xs text-red-700">
-                        Batal
-                      </span>
-                    )}
+                <tr key={order.id} className="hover:bg-gray-50/50 transition-colors">
+                  <td className="px-4 py-3 whitespace-nowrap text-gray-500">
+                    {order.id}
                   </td>
-                  <td className="px-3 py-2 whitespace-nowrap">{order.amount}</td>
+                  <td className="px-4 py-3 whitespace-nowrap font-medium text-gray-900">
+                    {order.customer}
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap text-gray-500">
+                    {order.date}
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap">
+                    <span
+                      className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                        statusStyles[order.status] || "bg-gray-100 text-gray-600"
+                      }`}
+                    >
+                      {order.status}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap text-right font-semibold text-gray-900">
+                    Rp {order.amount.toLocaleString("id-ID")}
+                  </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td className="px-3 py-6 text-center text-gray-500" colSpan={5}>
+                <td className="px-4 py-6 text-center text-gray-500" colSpan={5}>
                   Tidak ada pesanan yang sesuai dengan pencarian.
                 </td>
               </tr>
