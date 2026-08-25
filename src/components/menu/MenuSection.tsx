@@ -18,7 +18,7 @@ export default function MenuSection({
   onSelectItem,
 }: MenuSectionProps) {
   return (
-    <div id={id} className="pt-8">
+    <div id={id} className="pt-8 mx-auto max-w-6xl px-6">
       <div className="flex items-center mb-6">
         <h3 className="text-2xl font-bold text-slate-800 pr-4 whitespace-nowrap">{title}</h3>
         <div className="h-[1.5px] w-full bg-slate-200"></div>
