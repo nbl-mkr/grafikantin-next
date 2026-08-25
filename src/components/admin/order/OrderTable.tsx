@@ -1,193 +1,208 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { Order } from "@/data/adminMockData";
+import { useState } from "react";
 
-interface OrderTableProps {
-  orders: Order[];
+interface OrderItem {
+  id: string;
+  customer: string;
+  date: string;
+  status: "Selesai" | "Diproses" | "Batal";
+  amount: string;
 }
 
-const statusStyles: Record<string, string> = {
-  Selesai: "bg-emerald-50 text-emerald-600",
-  Diproses: "bg-blue-50 text-blue-600",
-  Menunggu: "bg-amber-50 text-amber-600",
-};
-
-const statusOptions = [
-  { label: "Semua Status", value: "Semua" },
-  { label: "Menunggu", value: "Menunggu" },
-  { label: "Diproses", value: "Diproses" },
-  { label: "Selesai", value: "Selesai" },
+const mockOrders: OrderItem[] = [
+  {
+    id: "#3921",
+    customer: "Ahmadinezka Evan",
+    date: "12 Jun 2025",
+    status: "Selesai",
+    amount: "Rp 412.000",
+  },
+  {
+    id: "#3920",
+    customer: "Akhmad Daqiqul",
+    date: "11 Jun 2025",
+    status: "Diproses",
+    amount: "Rp 128.500",
+  },
+  {
+    id: "#3919",
+    customer: "Devin Adinata",
+    date: "10 Jun 2025",
+    status: "Selesai",
+    amount: "Rp 894.200",
+  },
+  {
+    id: "#3918",
+    customer: "Rizky Zidane",
+    date: "09 Jun 2025",
+    status: "Batal",
+    amount: "Rp 56.000",
+  },
+  {
+    id: "#3917",
+    customer: "Permadi Saprianto",
+    date: "08 Jun 2025",
+    status: "Selesai",
+    amount: "Rp 219.750",
+  },
+  {
+    id: "#3916",
+    customer: "Rizza Cetta",
+    date: "07 Jun 2025",
+    status: "Diproses",
+    amount: "Rp 63.400",
+  },
 ];
 
-export default function OrderTable({ orders }: OrderTableProps) {
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string>("Semua");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isStatusOpen, setIsStatusOpen] = useState(false);
-  const itemsPerPage = 5;
+export default function OrderTable() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
 
-  const filtered = useMemo(() => {
-    return orders.filter((o) => {
-      const matchSearch =
-        o.id.toLowerCase().includes(search.toLowerCase()) ||
-        o.customer.toLowerCase().includes(search.toLowerCase()) ||
-        o.menu.toLowerCase().includes(search.toLowerCase());
-      const matchStatus = statusFilter === "Semua" || o.status === statusFilter;
-      return matchSearch && matchStatus;
-    });
-  }, [orders, search, statusFilter]);
+  const filteredOrders = mockOrders.filter((order) => {
+    const matchesSearch =
+      order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.customer.toLowerCase().includes(searchTerm.toLowerCase());
 
-  const totalPages = Math.ceil(filtered.length / itemsPerPage);
-  const paginated = filtered.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+    const matchesStatus =
+      statusFilter === "all" ||
+      (statusFilter === "paid" && order.status === "Selesai") ||
+      (statusFilter === "pending" && order.status === "Diproses") ||
+      (statusFilter === "refunded" && order.status === "Batal");
 
-  const emptyRowsCount = itemsPerPage - paginated.length;
+    return matchesSearch && matchesStatus;
+  });
 
   return (
-    <div className="rounded-2xl border border-gray-100 bg-white shadow-sm flex flex-col justify-between">
-      <div>
-        <div className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-lg font-bold text-gray-900">Daftar Pesanan</h2>
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <div className="relative">
-              <svg className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-              <input
-                type="text"
-                placeholder="Cari pesanan..."
-                value={search}
-                onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
-                className="w-full sm:w-64 rounded-lg border border-gray-200 bg-white py-2 pl-9 pr-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-[#e76f51] focus:outline-none focus:ring-1 focus:ring-[#e76f51]"
-              />
-            </div>
+    <div className="rounded-lg border border-gray-200 bg-white p-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <h2 className="text-sm font-medium text-gray-900">Semua Pesanan</h2>
 
-            <div className="relative">
-              <button
-                onClick={() => setIsStatusOpen(!isStatusOpen)}
-                className="flex w-full min-w-35 items-center justify-between gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 hover:bg-gray-50 focus:border-[#e76f51] focus:outline-none focus:ring-1 focus:ring-[#e76f51] sm:w-auto"
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Cari pesanan..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full rounded-md border border-gray-200 py-1.5 pl-3 pr-9 text-sm text-gray-900 shadow-sm focus:border-indigo-500 focus:outline-none sm:w-56"
+            />
+            <span className="pointer-events-none absolute inset-y-0 right-0 grid w-8 place-content-center text-gray-400">
+              <svg
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="size-4"
               >
-                <span>{statusOptions.find((opt) => opt.value === statusFilter)?.label}</span>
-                <svg className={`h-4 w-4 text-gray-400 transition-transform ${isStatusOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-
-              {isStatusOpen && (
-                <>
-                  <div
-                    className="fixed inset-0 z-10"
-                    onClick={() => setIsStatusOpen(false)}
-                  />
-                  <div className="absolute right-0 top-full z-20 mt-2 w-40 rounded-xl border border-gray-100 bg-white py-2 shadow-lg">
-                    {statusOptions.map((opt) => (
-                      <button
-                        key={opt.value}
-                        onClick={() => {
-                          setStatusFilter(opt.value);
-                          setCurrentPage(1);
-                          setIsStatusOpen(false);
-                        }}
-                        className={`block w-full px-4 py-2 text-left text-sm transition-colors hover:bg-gray-50 ${
-                          statusFilter === opt.value
-                            ? "text-[#e76f51] font-medium"
-                            : "text-gray-600"
-                        }`}
-                      >
-                        {opt.label}
-                      </button>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                />
+              </svg>
+            </span>
           </div>
-        </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-gray-50 text-gray-500">
-              <tr>
-                <th className="px-6 py-3 font-medium">ID Pesanan</th>
-                <th className="px-6 py-3 font-medium">Pelanggan</th>
-                <th className="px-6 py-3 font-medium">Menu</th>
-                <th className="px-6 py-3 font-medium">Stand</th>
-                <th className="px-6 py-3 font-medium">Total</th>
-                <th className="px-6 py-3 font-medium">Status</th>
-                <th className="px-6 py-3 font-medium">Waktu</th>
-                <th className="px-6 py-3 font-medium text-right">Aksi</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {paginated.length > 0 ? (
-                <>
-                  {paginated.map((order) => (
-                    <tr key={order.id} className="h-16 hover:bg-gray-50/50 transition">
-                      <td className="px-6 py-4 font-semibold text-gray-900">{order.id}</td>
-                      <td className="px-6 py-4 text-gray-600">{order.customer}</td>
-                      <td className="px-6 py-4 text-gray-600">{order.menu}</td>
-                      <td className="px-6 py-4 text-gray-600">{order.stand}</td>
-                      <td className="px-6 py-4 font-semibold text-gray-900">Rp {order.total.toLocaleString("id-ID")}</td>
-                      <td className="px-6 py-4">
-                        <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${statusStyles[order.status]}`}>
-                          {order.status}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-gray-500">{order.time}</td>
-                      <td className="px-6 py-4 text-right">
-                        <button className="text-[#e76f51] hover:text-[#d55f43] text-xs font-semibold transition">
-                          Detail
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                  {Array.from({ length: emptyRowsCount }).map((_, index) => (
-                    <tr key={`empty-${index}`} className="h-16">
-                      <td colSpan={8}></td>
-                    </tr>
-                  ))}
-                </>
-              ) : (
-                <tr className="h-80">
-                  <td colSpan={8} className="px-6 py-12 text-center text-gray-400">
-                    Tidak ada pesanan yang sesuai.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+          <div className="inline-flex rounded-md border border-gray-200 p-0.5 text-xs font-medium">
+            <button
+              type="button"
+              onClick={() => setStatusFilter("all")}
+              className={`rounded-sm px-2 py-1 ${
+                statusFilter === "all"
+                  ? "bg-gray-100 text-gray-900"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              Semua
+            </button>
+            <button
+              type="button"
+              onClick={() => setStatusFilter("paid")}
+              className={`rounded-sm px-2 py-1 ${
+                statusFilter === "paid"
+                  ? "bg-gray-100 text-gray-900"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              Selesai
+            </button>
+            <button
+              type="button"
+              onClick={() => setStatusFilter("pending")}
+              className={`rounded-sm px-2 py-1 ${
+                statusFilter === "pending"
+                  ? "bg-gray-100 text-gray-900"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              Diproses
+            </button>
+            <button
+              type="button"
+              onClick={() => setStatusFilter("refunded")}
+              className={`rounded-sm px-2 py-1 ${
+                statusFilter === "refunded"
+                  ? "bg-gray-100 text-gray-900"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              Batal
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className="flex h-14 items-center justify-between border-t border-gray-100 px-6 text-xs text-gray-500">
-        {filtered.length > 0 ? (
-          <>
-            <span>
-              Menampilkan {(currentPage - 1) * itemsPerPage + 1} - {Math.min(currentPage * itemsPerPage, filtered.length)} dari {filtered.length} pesanan
-            </span>
-            <div className="flex gap-1.5">
-              <button
-                disabled={currentPage === 1}
-                onClick={() => setCurrentPage((p) => p - 1)}
-                className="rounded-lg border px-2.5 py-1 disabled:opacity-30 hover:bg-gray-50 transition"
-              >
-                ←
-              </button>
-              <button
-                disabled={currentPage === totalPages || totalPages === 0}
-                onClick={() => setCurrentPage((p) => p + 1)}
-                className="rounded-lg border px-2.5 py-1 disabled:opacity-30 hover:bg-gray-50 transition"
-              >
-                →
-              </button>
-            </div>
-          </>
-        ) : (
-          <div></div>
-        )}
+      <div className="mt-4 overflow-x-auto">
+        <table className="min-w-full divide-y-2 divide-gray-200 text-left text-sm">
+          <thead>
+            <tr className="*:font-medium *:text-gray-900">
+              <th className="px-3 py-2 whitespace-nowrap">ID Pesanan</th>
+              <th className="px-3 py-2 whitespace-nowrap">Pelanggan</th>
+              <th className="px-3 py-2 whitespace-nowrap">Tanggal</th>
+              <th className="px-3 py-2 whitespace-nowrap">Status</th>
+              <th className="px-3 py-2 whitespace-nowrap">Total</th>
+            </tr>
+          </thead>
+
+          <tbody className="divide-y divide-gray-200">
+            {filteredOrders.length > 0 ? (
+              filteredOrders.map((order) => (
+                <tr key={order.id} className="*:text-gray-900 *:first:font-medium">
+                  <td className="px-3 py-2 whitespace-nowrap">{order.id}</td>
+                  <td className="px-3 py-2 whitespace-nowrap">{order.customer}</td>
+                  <td className="px-3 py-2 whitespace-nowrap">{order.date}</td>
+                  <td className="px-3 py-2 whitespace-nowrap">
+                    {order.status === "Selesai" && (
+                      <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs text-emerald-700">
+                        Selesai
+                      </span>
+                    )}
+                    {order.status === "Diproses" && (
+                      <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs text-amber-700">
+                        Diproses
+                      </span>
+                    )}
+                    {order.status === "Batal" && (
+                      <span className="rounded-full bg-red-100 px-2.5 py-0.5 text-xs text-red-700">
+                        Batal
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-3 py-2 whitespace-nowrap">{order.amount}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td className="px-3 py-6 text-center text-gray-500" colSpan={5}>
+                  Tidak ada pesanan yang sesuai dengan pencarian.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );
