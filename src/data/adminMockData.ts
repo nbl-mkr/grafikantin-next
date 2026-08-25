@@ -80,7 +80,7 @@ export const barChartData: SalesData[] = [
 
 export const recentOrders: Order[] = [
   {
-    id: "ORD-001",
+    id: "GRF-001",
     customer: "Ahmadinezka Evan",
     menu: "Teriyaki Chicken",
     stand: "Stand Melati",
@@ -89,7 +89,7 @@ export const recentOrders: Order[] = [
     time: "10:23",
   },
   {
-    id: "ORD-002",
+    id: "GRF-002",
     customer: "Ahmad Daqiqul",
     menu: "Katsu Chicken",
     stand: "Stand Cempaka",
@@ -98,7 +98,7 @@ export const recentOrders: Order[] = [
     time: "10:45",
   },
   {
-    id: "ORD-003",
+    id: "GRF-003",
     customer: "Devin Adinata",
     menu: "Mie Pangsit",
     stand: "Stand Kenanga",
@@ -107,7 +107,7 @@ export const recentOrders: Order[] = [
     time: "11:02",
   },
   {
-    id: "ORD-004",
+    id: "GRF-004",
     customer: "Rizky Zidane",
     menu: "Roti Bakar",
     stand: "Stand Anggrek",
@@ -116,7 +116,7 @@ export const recentOrders: Order[] = [
     time: "11:15",
   },
   {
-    id: "ORD-005",
+    id: "GRF-005",
     customer: "Permadi Saprianto",
     menu: "Pangsit Rebus",
     stand: "Stand Mawar",
@@ -125,7 +125,7 @@ export const recentOrders: Order[] = [
     time: "11:30",
   },
   {
-    id: "ORD-006",
+    id: "GRF-006",
     customer: "Rizza Cetta",
     menu: "Lumpia Pastel",
     stand: "Stand Dahlia",
