@@ -21,7 +21,7 @@ export default function HeroSection() {
 
         <a
             href="/order"
-            className="mt-8 w-full sm:w-auto rounded-xl bg-[#e76f51] px-7 py-3 text-sm font-bold text-white transition hover:bg-[#d55f43] shadow-sm"
+            className="mt-8 inline-flex items-center justify-center rounded-xl bg-[#e76f51] px-7 py-3 text-sm font-bold text-white transition hover:bg-[#d55f43] shadow-sm"
         >
           Pesan Sekarang
         </a>
