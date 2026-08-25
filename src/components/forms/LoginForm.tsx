@@ -68,7 +68,7 @@ export default function LoginForm() {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="25604021130411"
-                  className="w-full rounded-xl border border-gray-200 bg-white py-3 pl-4 pr-11 text-sm text-gray-900 placeholder-gray-400 focus:border-[#f97316] focus:outline-none focus:ring-1 focus:ring-[#f97316] shadow-sm transition"
+                  className="w-full rounded-xl border border-gray-200 bg-white py-3 pl-4 pr-11 text-sm text-gray-900 placeholder-gray-400 focus:border-[#62748e] focus:outline-none focus:ring-1 focus:ring-[#62748e] shadow-sm transition"
                 />
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5 text-gray-400">
                   <svg className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -90,7 +90,7 @@ export default function LoginForm() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="w-full rounded-xl border border-gray-200 bg-white py-3 pl-4 pr-11 text-sm text-gray-900 placeholder-gray-400 focus:border-[#f97316] focus:outline-none focus:ring-1 focus:ring-[#f97316] shadow-sm transition"
+                  className="w-full rounded-xl border border-gray-200 bg-white py-3 pl-4 pr-11 text-sm text-gray-900 placeholder-gray-400 focus:border-[#62748e] focus:outline-none focus:ring-1 focus:ring-[#62748e] shadow-sm transition"
                 />
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5 text-gray-400">
                   <svg className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -103,7 +103,7 @@ export default function LoginForm() {
             <button
               type="submit"
               onClick={() => window.location.href = "/"}
-              className="w-full rounded-xl bg-[#e76f51] py-3 text-sm font-semibold text-white shadow-md hover:bg-[#fb923c] transition active:scale-[0.98]"
+              className="w-full rounded-xl bg-[#e76f51] py-3 text-sm font-semibold text-white transition hover:bg-[#d55f43] shadow-sm"
             >
               Masuk
             </button>
