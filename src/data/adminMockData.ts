@@ -162,3 +162,18 @@ export const standStatuses: StandStatus[] = [
   { id: 5, nama_stand: "Stand Mawar", status: "Buka", terjual: 64 },
   { id: 6, nama_stand: "Stand Dahlia", status: "Buka", terjual: 58 },
 ];
+
+export interface OrderTargetData {
+  month: string;
+  orders: number;
+  target: number;
+}
+
+export const orderTargetData: OrderTargetData[] = [
+  { month: "Jan", orders: 210, target: 230 },
+  { month: "Feb", orders: 245, target: 230 },
+  { month: "Mar", orders: 228, target: 230 },
+  { month: "Apr", orders: 268, target: 260 },
+  { month: "Mei", orders: 289, target: 260 },
+  { month: "Jun", orders: 312, target: 260 },
+];
