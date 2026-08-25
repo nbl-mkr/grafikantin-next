@@ -21,7 +21,7 @@ export default function SettingsForm() {
         <button
           type="submit"
           form="account-settings-form"
-          className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800"
+          className="rounded-lg bg-[#e76f51] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#d55f43]"
         >
           Simpan perubahan
         </button>
@@ -105,7 +105,7 @@ export default function SettingsForm() {
               aria-checked={emailNotifications}
               onClick={() => setEmailNotifications(!emailNotifications)}
               className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors ${
-                emailNotifications ? "bg-indigo-600" : "bg-gray-200"
+                emailNotifications ? "bg-[#e76f51]" : "bg-gray-200"
               }`}
             >
               <span
@@ -132,7 +132,7 @@ export default function SettingsForm() {
               aria-checked={productUpdates}
               onClick={() => setProductUpdates(!productUpdates)}
               className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors ${
-                productUpdates ? "bg-indigo-600" : "bg-gray-200"
+                productUpdates ? "bg-[#e76f51]" : "bg-gray-200"
               }`}
             >
               <span
@@ -159,7 +159,7 @@ export default function SettingsForm() {
               aria-checked={weeklySummary}
               onClick={() => setWeeklySummary(!weeklySummary)}
               className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors ${
-                weeklySummary ? "bg-indigo-600" : "bg-gray-200"
+                weeklySummary ? "bg-[#e76f51]" : "bg-gray-200"
               }`}
             >
               <span
