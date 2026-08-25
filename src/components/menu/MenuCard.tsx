@@ -19,9 +19,9 @@ interface MenuCardProps {
 
 export default function MenuCard({ item }: MenuCardProps) {
   return (
-    <div className="group rounded-2xl bg-white shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100 flex flex-col justify-between">
+    <div className="group rounded-lg bg-white p-4 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100 flex flex-col justify-between">
       <div>
-        <div className="relative overflow-hidden rounded-t-2xl">
+        <div className="relative overflow-hidden rounded-lg">
           <img
             src={item.gambar}
             alt={item.nama_menu}
@@ -29,7 +29,7 @@ export default function MenuCard({ item }: MenuCardProps) {
           />
         </div>
 
-        <div className="p-4">
+        <div className="mt-2">
           <dl>
             <div>
               <dt className="sr-only">Harga</dt>
