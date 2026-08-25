@@ -47,7 +47,7 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
                   />
                 </div>
 
-                <div className="p-4">
+                <div className="mt-2">
                   <dl>
                     <div>
                       <dt className="sr-only">Harga</dt>
