@@ -3,13 +3,7 @@ import TabNav from "@/components/admin/TabNav";
 import StatCard from "@/components/admin/StatCard";
 import ChartSection from "@/components/admin/ChartSection";
 import BottomSection from "@/components/admin/BottomSection";
-import {
-  adminStats,
-  lineChartData,
-  barChartData,
-  topMenus,
-  standStatuses,
-} from "@/data/adminMockData";
+import { adminStats } from "@/data/adminMockData";
 
 export default function AdminDashboard() {
   return (
@@ -17,13 +11,13 @@ export default function AdminDashboard() {
       <Header />
       <div className="flex-1 p-3 sm:p-6 lg:p-8 min-w-0">
         <TabNav />
-        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
           {adminStats.map((stat, i) => (
             <StatCard key={i} {...stat} />
           ))}
         </div>
-        <ChartSection lineData={lineChartData} barData={barChartData} />
-        <BottomSection menus={topMenus} stands={standStatuses} />
+        <ChartSection />
+        <BottomSection />
       </div>
     </div>
   );
