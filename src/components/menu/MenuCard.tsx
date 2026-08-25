@@ -97,7 +97,7 @@ export default function MenuCard({ item }: MenuCardProps) {
           <div className="mt-5">
             <Link
               href={`/product/${item.id}`}
-              className="block w-full bg-[#e76f51] hover:bg-[#d95d3f] text-white font-semibold py-2.5 rounded-xl transition shadow-sm active:scale-[0.98] text-center"
+              className="block w-full bg-[#e76f51] hover:bg-[#d95d3f] text-white font-semibold py-2.5 rounded-lg transition shadow-sm active:scale-[0.98] text-center"
             >
               Beli Sekarang
             </Link>
