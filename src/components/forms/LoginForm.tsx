@@ -15,7 +15,7 @@ export default function LoginForm() {
 
   return (
     <div className="h-screen w-full flex flex-col lg:flex-row overflow-hidden bg-slate-50">
-      <div className="relative flex h-1/2 w-full flex-col justify-between pt-10 pb-6 px-6 sm:p-8 lg:h-full lg:w-1/2 lg:p-12 text-white overflow-hidden">
+      <div className="relative flex h-1/2 w-full flex-col justify-between pt-12 pb-6 px-6 sm:p-8 lg:h-full lg:w-1/2 lg:p-12 text-white overflow-hidden">
         <Image
           src="/assets/menu.jpg"
           alt="Menu Grafikantin"
