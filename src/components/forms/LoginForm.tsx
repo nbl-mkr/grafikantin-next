@@ -15,7 +15,7 @@ export default function LoginForm() {
 
   return (
     <div className="h-screen w-full flex flex-col lg:flex-row overflow-hidden bg-slate-50">
-      <div className="relative flex h-1/2 w-full flex-col justify-between p-6 sm:p-8 lg:h-full lg:w-1/2 lg:p-12 text-white overflow-hidden">
+      <div className="relative flex h-1/2 w-full flex-col justify-between pt-10 pb-6 px-6 sm:p-8 lg:h-full lg:w-1/2 lg:p-12 text-white overflow-hidden">
         <Image
           src="/assets/menu.jpg"
           alt="Menu Grafikantin"
@@ -26,14 +26,14 @@ export default function LoginForm() {
         
         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-black/30" />
 
-        <div className="relative z-10">
+        <div className="relative z-10 w-full max-w-md">
           <Link href="/" className="inline-block text-xl sm:text-2xl font-bold tracking-tight text-white">
             Grafikantin
           </Link>
         </div>
 
-        <div className="relative z-10 max-w-md">
-          <h2 className="text-2xl lg:text-4xl font-extrabold tracking-tight leading-tight">
+        <div className="relative z-10 w-full max-w-md">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight">
             Pesan Kantin Lebih Cepat & Praktis
           </h2>
           <p className="mt-2 sm:mt-4 text-xs sm:text-sm lg:text-base text-gray-200 leading-relaxed">
@@ -44,9 +44,9 @@ export default function LoginForm() {
         <div className="relative z-10" />
       </div>
 
-      <div className="relative flex h-1/2 w-full flex-col justify-center items-center p-4 sm:p-8 lg:h-full lg:w-1/2 lg:p-16 bg-white overflow-y-auto">
-        <div className="w-full max-w-sm">
-          <div className="mb-4 sm:mb-8">
+      <div className="relative flex h-1/2 w-full flex-col justify-center items-center px-6 py-4 sm:p-8 lg:h-full lg:w-1/2 lg:p-12 bg-white overflow-y-auto">
+        <div className="w-full max-w-md mx-auto">
+          <div className="mb-4 sm:mb-6 lg:mb-8">
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">
               Login
             </h1>
