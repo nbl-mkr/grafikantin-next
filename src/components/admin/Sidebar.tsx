@@ -88,8 +88,8 @@ export default function Sidebar() {
                   href={item.href}
                   className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition ${
                     isActive
-                      ? "bg-[#e76f51]/10 text-[#e76f51]"
-                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                      ? "bg-gray-50 text-[#e76f51]"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-[#e76f51]"
                   }`}
                 >
                   {item.icon}
