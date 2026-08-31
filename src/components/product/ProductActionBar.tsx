@@ -30,22 +30,22 @@ export default function ProductActionBar({
         <span className="text-xs font-bold uppercase tracking-wider text-gray-400">
           Jumlah
         </span>
-        <div className="flex items-center rounded-xl border border-gray-200 bg-white">
+        <div className="flex h-11 items-center rounded-xl border border-gray-200 bg-white shadow-xs">
           <button
             type="button"
             onClick={onDecrease}
             disabled={quantity <= 1}
-            className="flex h-10 w-9 sm:w-10 items-center justify-center text-gray-600 transition hover:bg-gray-50 rounded-l-xl disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex h-full w-9 sm:w-10 items-center justify-center text-gray-600 transition hover:bg-gray-50 rounded-l-xl disabled:opacity-40 disabled:cursor-not-allowed"
           >
             -
           </button>
-          <span className="w-9 sm:w-12 text-center text-sm font-semibold text-gray-900">
+          <span className="flex h-full items-center justify-center w-9 sm:w-12 text-center text-sm font-semibold text-gray-900">
             {quantity}
           </span>
           <button
             type="button"
             onClick={onIncrease}
-            className="flex h-10 w-9 sm:w-10 items-center justify-center text-gray-600 transition hover:bg-gray-50 rounded-r-xl"
+            className="flex h-full w-9 sm:w-10 items-center justify-center text-gray-600 transition hover:bg-gray-50 rounded-r-xl"
           >
             +
           </button>
@@ -56,7 +56,7 @@ export default function ProductActionBar({
         <button
           type="button"
           onClick={handleAddToCartAndRedirect}
-          className="w-full sm:w-auto flex-1 max-w-xs truncate rounded-xl bg-[#e76f51] px-4 sm:px-6 py-3 text-center text-sm font-bold text-white shadow-md transition hover:bg-[#d55f43] active:scale-95"
+          className="flex h-11 items-center justify-center w-full sm:w-auto flex-1 max-w-xs truncate rounded-xl bg-[#e76f51] px-4 sm:px-6 text-center text-sm font-bold text-white shadow-md transition hover:bg-[#d55f43] active:scale-95"
         >
           Rp {(price * quantity).toLocaleString("id-ID")}
         </button>
