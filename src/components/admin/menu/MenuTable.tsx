@@ -1,59 +1,116 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Menu, menusData } from "@/data/adminMockData";
 
-const kategoriStyles: Record<string, string> = {
+type ModalMode = "add" | "edit" | null;
+type SortField = "nama" | "harga" | "stok" | "terjual";
+type SortOrder = "asc" | "desc";
+
+const KATEGORI_STYLES: Record<string, string> = {
   Makanan: "bg-blue-50 text-blue-600",
   Minuman: "bg-cyan-50 text-cyan-600",
   Snack: "bg-amber-50 text-amber-600",
-};
-
-type ModalMode = "add" | "edit" | null;
-
-const emptyForm: Omit<Menu, "id"> = {
-  nama: "",
-  stand: "",
-  kategori: "Makanan",
-  harga: 0,
-  stok: 0,
-  terjual: 0,
-  tersedia: true,
 };
 
 export default function MenuTable() {
   const [menus, setMenus] = useState<Menu[]>(menusData);
   const [searchTerm, setSearchTerm] = useState("");
   const [kategoriFilter, setKategoriFilter] = useState<"all" | "Makanan" | "Minuman" | "Snack">("all");
+  
+  const [sortField, setSortField] = useState<SortField>("nama");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
+  
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+
   const [modalMode, setModalMode] = useState<ModalMode>(null);
   const [selectedMenu, setSelectedMenu] = useState<Menu | null>(null);
-  const [form, setForm] = useState<Omit<Menu, "id">>(emptyForm);
+  const [form, setForm] = useState<Omit<Menu, "id">>({
+    nama: "",
+    stand: "",
+    kategori: "Makanan",
+    harga: 0,
+    stok: 0,
+    terjual: 0,
+    tersedia: true,
+  });
   const [deleteTarget, setDeleteTarget] = useState<Menu | null>(null);
 
-  const filtered = menus.filter((m) => {
-    const matchSearch =
-      m.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      m.stand.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchKategori = kategoriFilter === "all" || m.kategori === kategoriFilter;
-    return matchSearch && matchKategori;
-  });
+  const processedMenus = useMemo(() => {
+    let result = menus.filter((m) => {
+      const matchSearch =
+        m.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        m.stand.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchKategori = kategoriFilter === "all" || m.kategori === kategoriFilter;
+      return matchSearch && matchKategori;
+    });
+
+    result.sort((a, b) => {
+      let valA = a[sortField];
+      let valB = b[sortField];
+
+      if (typeof valA === "string") {
+        const comp = (valA as string).localeCompare(valB as string);
+        return sortOrder === "asc" ? comp : -comp;
+      }
+      
+      return sortOrder === "asc" 
+        ? (valA as number) - (valB as number) 
+        : (valB as number) - (valA as number);
+    });
+
+    return result;
+  }, [menus, searchTerm, kategoriFilter, sortField, sortOrder]);
+
+  const totalPages = Math.ceil(processedMenus.length / itemsPerPage) || 1;
+  const validCurrentPage = Math.min(currentPage, totalPages);
+
+  const paginatedMenus = useMemo(() => {
+    const startIndex = (validCurrentPage - 1) * itemsPerPage;
+    return processedMenus.slice(startIndex, startIndex + itemsPerPage);
+  }, [processedMenus, validCurrentPage, itemsPerPage]);
+
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortOrder("asc");
+    }
+  };
 
   const openAdd = () => {
-    setForm(emptyForm);
+    setForm({
+      nama: "",
+      stand: "",
+      kategori: "Makanan",
+      harga: 0,
+      stok: 0,
+      terjual: 0,
+      tersedia: true,
+    });
     setSelectedMenu(null);
     setModalMode("add");
   };
 
   const openEdit = (menu: Menu) => {
     setSelectedMenu(menu);
-    setForm({ nama: menu.nama, stand: menu.stand, kategori: menu.kategori, harga: menu.harga, stok: menu.stok, terjual: menu.terjual, tersedia: menu.tersedia });
+    setForm({
+      nama: menu.nama,
+      stand: menu.stand,
+      kategori: menu.kategori,
+      harga: menu.harga,
+      stok: menu.stok,
+      terjual: menu.terjual,
+      tersedia: menu.tersedia,
+    });
     setModalMode("edit");
   };
 
   const closeModal = () => {
     setModalMode(null);
     setSelectedMenu(null);
-    setForm(emptyForm);
   };
 
   const handleSave = () => {
@@ -89,7 +146,10 @@ export default function MenuTable() {
                 type="text"
                 placeholder="Cari menu atau stand..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="h-9 w-full rounded-md border border-gray-200 pl-3 pr-9 text-sm text-gray-900 focus:border-[#e76f51] focus:outline-none sm:w-56"
               />
               <span className="pointer-events-none absolute inset-y-0 right-0 grid w-8 place-content-center text-gray-400">
@@ -104,7 +164,10 @@ export default function MenuTable() {
                 <button
                   key={f}
                   type="button"
-                  onClick={() => setKategoriFilter(f)}
+                  onClick={() => {
+                    setKategoriFilter(f);
+                    setCurrentPage(1);
+                  }}
                   className={`h-full rounded-sm px-2.5 flex items-center justify-center transition-colors ${
                     kategoriFilter === f ? "bg-gray-100 text-gray-900" : "text-gray-600 hover:text-gray-900"
                   }`}
@@ -128,74 +191,188 @@ export default function MenuTable() {
           <table className="min-w-full divide-y divide-gray-100 text-sm">
             <thead>
               <tr className="text-left font-medium text-gray-500">
-                <th className="px-4 py-3 whitespace-nowrap">Nama Menu</th>
+                <th className="px-4 py-3 whitespace-nowrap w-12 text-center">#</th>
+                <th className="px-4 py-3 whitespace-nowrap">
+                  <button type="button" onClick={() => handleSort("nama")} className="inline-flex items-center gap-1 hover:text-gray-900">
+                    Nama Menu
+                    <span className="text-xs text-gray-400">{sortField === "nama" ? (sortOrder === "asc" ? "↑" : "↓") : "↕"}</span>
+                  </button>
+                </th>
                 <th className="px-4 py-3 whitespace-nowrap">Stand</th>
                 <th className="px-4 py-3 whitespace-nowrap">Kategori</th>
-                <th className="px-4 py-3 whitespace-nowrap text-right">Harga</th>
-                <th className="px-4 py-3 whitespace-nowrap text-center">Stok</th>
-                <th className="px-4 py-3 whitespace-nowrap text-center">Terjual</th>
+                <th className="px-4 py-3 whitespace-nowrap text-right">
+                  <button type="button" onClick={() => handleSort("harga")} className="inline-flex items-center gap-1 hover:text-gray-900">
+                    Harga
+                    <span className="text-xs text-gray-400">{sortField === "harga" ? (sortOrder === "asc" ? "↑" : "↓") : "↕"}</span>
+                  </button>
+                </th>
+                <th className="px-4 py-3 whitespace-nowrap text-center">
+                  <button type="button" onClick={() => handleSort("stok")} className="inline-flex items-center gap-1 hover:text-gray-900">
+                    Stok
+                    <span className="text-xs text-gray-400">{sortField === "stok" ? (sortOrder === "asc" ? "↑" : "↓") : "↕"}</span>
+                  </button>
+                </th>
+                <th className="px-4 py-3 whitespace-nowrap text-center">
+                  <button type="button" onClick={() => handleSort("terjual")} className="inline-flex items-center gap-1 hover:text-gray-900">
+                    Terjual
+                    <span className="text-xs text-gray-400">{sortField === "terjual" ? (sortOrder === "asc" ? "↑" : "↓") : "↕"}</span>
+                  </button>
+                </th>
                 <th className="px-4 py-3 whitespace-nowrap text-center">Tersedia</th>
                 <th className="px-4 py-3 whitespace-nowrap text-right">Aksi</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {filtered.length > 0 ? (
-                filtered.map((menu) => (
-                  <tr key={menu.id} className="hover:bg-gray-50/50 transition-colors">
-                    <td className="px-4 py-3 whitespace-nowrap font-medium text-gray-900">{menu.nama}</td>
-                    <td className="px-4 py-3 whitespace-nowrap text-gray-600">{menu.stand}</td>
-                    <td className="px-4 py-3 whitespace-nowrap">
-                      <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${kategoriStyles[menu.kategori] || "bg-gray-100 text-gray-600"}`}>
-                        {menu.kategori}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-right text-gray-600">
-                      Rp {menu.harga.toLocaleString("id-ID")}
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-center text-gray-600">{menu.stok}</td>
-                    <td className="px-4 py-3 whitespace-nowrap text-center text-gray-600">{menu.terjual}</td>
-                    <td className="px-4 py-3 whitespace-nowrap text-center">
-                      <button
-                        type="button"
-                        role="switch"
-                        aria-checked={menu.tersedia}
-                        onClick={() => toggleTersedia(menu)}
-                        className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full transition-colors ${
-                          menu.tersedia ? "bg-[#e76f51]" : "bg-gray-200"
-                        }`}
-                      >
-                        <span className={`size-3.5 rounded-full bg-white transition-transform ${menu.tersedia ? "translate-x-4.5" : "translate-x-0.5"}`} />
-                      </button>
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-right">
-                      <div className="flex items-center justify-end gap-2">
+              {paginatedMenus.length > 0 ? (
+                paginatedMenus.map((menu, index) => {
+                  const rowNumber = (validCurrentPage - 1) * itemsPerPage + index + 1;
+                  return (
+                    <tr key={menu.id} className="hover:bg-gray-50/50 transition-colors">
+                      <td className="px-4 py-3 whitespace-nowrap text-center text-xs font-semibold text-gray-400">{rowNumber}</td>
+                      <td className="px-4 py-3 whitespace-nowrap font-medium text-gray-900">{menu.nama}</td>
+                      <td className="px-4 py-3 whitespace-nowrap text-gray-600">{menu.stand}</td>
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${KATEGORI_STYLES[menu.kategori] ?? "bg-gray-100 text-gray-600"}`}>
+                          {menu.kategori}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap text-right text-gray-600">
+                        Rp {menu.harga.toLocaleString("id-ID")}
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap text-center text-gray-600">{menu.stok}</td>
+                      <td className="px-4 py-3 whitespace-nowrap text-center text-gray-600">{menu.terjual}</td>
+                      <td className="px-4 py-3 whitespace-nowrap text-center">
                         <button
                           type="button"
-                          onClick={() => openEdit(menu)}
-                          className="rounded-md px-2.5 py-1 text-xs font-medium text-emerald-600 border border-emerald-200 hover:bg-emerald-50 transition-colors"
+                          role="switch"
+                          aria-checked={menu.tersedia}
+                          onClick={() => toggleTersedia(menu)}
+                          className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full transition-colors ${
+                            menu.tersedia ? "bg-[#e76f51]" : "bg-gray-200"
+                          }`}
                         >
-                          Edit
+                          <span className={`size-3.5 rounded-full bg-white transition-transform ${menu.tersedia ? "translate-x-4.5" : "translate-x-0.5"}`} />
                         </button>
-                        <button
-                          type="button"
-                          onClick={() => setDeleteTarget(menu)}
-                          className="rounded-md px-2.5 py-1 text-xs font-medium text-red-600 border border-red-200 hover:bg-red-50 transition-colors"
-                        >
-                          Hapus
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <button
+                            type="button"
+                            onClick={() => openEdit(menu)}
+                            className="rounded-md px-2.5 py-1 text-xs font-medium text-emerald-600 border border-emerald-200 hover:bg-emerald-50 transition-colors"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setDeleteTarget(menu)}
+                            className="rounded-md px-2.5 py-1 text-xs font-medium text-red-600 border border-red-200 hover:bg-red-50 transition-colors"
+                          >
+                            Hapus
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })
               ) : (
                 <tr>
-                  <td className="px-4 py-6 text-center text-gray-500" colSpan={8}>
+                  <td className="px-4 py-6 text-center text-gray-500" colSpan={9}>
                     Tidak ada menu yang sesuai dengan pencarian.
                   </td>
                 </tr>
               )}
             </tbody>
           </table>
+        </div>
+
+        <div className="mt-4 flex flex-col items-center justify-between gap-4 border-t border-gray-100 pt-4 sm:flex-row text-xs text-gray-600">
+          <div className="flex items-center gap-2">
+            <span>Tampilkan</span>
+            <div className="relative group">
+              <button
+                type="button"
+                className="inline-flex items-center gap-1.5 h-8 rounded-lg border border-gray-200 bg-white px-2.5 text-xs text-gray-700 hover:border-[#e76f51] focus:outline-none transition-colors"
+              >
+                <span>{itemsPerPage}</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                  className="size-3.5 text-gray-400 group-hover:text-[#e76f51] group-hover:rotate-180 transition-transform duration-200"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                </svg>
+              </button>
+
+              <div
+                role="menu"
+                className="absolute bottom-full left-0 mb-1 w-16 divide-y divide-gray-100 overflow-hidden rounded-xl border border-gray-100 bg-white shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50"
+              >
+                <div className="py-1">
+                  {[5, 10, 20].map((num) => (
+                    <button
+                      key={num}
+                      type="button"
+                      onClick={() => {
+                        setItemsPerPage(num);
+                        setCurrentPage(1);
+                      }}
+                      className={`block w-full text-left px-3 py-1.5 text-xs transition-colors hover:bg-gray-50 hover:text-[#e76f51] ${
+                        itemsPerPage === num ? "font-semibold text-[#e76f51] bg-blue-50/50" : "font-normal text-gray-600"
+                      }`}
+                    >
+                      {num}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <span>dari {processedMenus.length} data</span>
+          </div>
+
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              disabled={validCurrentPage === 1}
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              className="inline-flex items-center justify-center h-8 w-8 rounded-md border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:hover:bg-transparent text-gray-600 transition-colors"
+              aria-label="Halaman Sebelumnya"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="size-4">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+              </svg>
+            </button>
+
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                type="button"
+                onClick={() => setCurrentPage(page)}
+                className={`h-8 w-8 rounded-md border text-xs font-medium transition-colors ${
+                  validCurrentPage === page
+                    ? "border-[#e76f51] bg-[#e76f51] text-white"
+                    : "border-gray-200 hover:bg-gray-50 text-gray-700"
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+
+            <button
+              type="button"
+              disabled={validCurrentPage === totalPages}
+              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              className="inline-flex items-center justify-center h-8 w-8 rounded-md border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:hover:bg-transparent text-gray-600 transition-colors"
+              aria-label="Halaman Selanjutnya"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="size-4">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 
