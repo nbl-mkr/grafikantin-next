@@ -132,7 +132,7 @@ export default function ChartSection({}: ChartSectionProps) {
 
   return (
     <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
-      <div className="rounded-lg border border-gray-200 bg-white p-6 lg:col-span-2">
+      <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm lg:col-span-2">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-medium text-gray-900">Tren Pendapatan</h2>
 
@@ -168,7 +168,7 @@ export default function ChartSection({}: ChartSectionProps) {
         </div>
       </div>
 
-      <div className="rounded-lg border border-gray-200 bg-white p-6">
+      <div className="rounded-lg border border-gray-100 shadow-sm bg-white p-6">
         <h2 className="text-sm font-medium text-gray-900">Status Pesanan</h2>
 
         <div className="mt-4 h-64">
