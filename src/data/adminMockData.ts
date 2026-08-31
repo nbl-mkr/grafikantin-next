@@ -52,6 +52,33 @@ export const adminStats = [
   },
 ];
 
+export const revenueRangesByPeriod = {
+  "6m": {
+    labels: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun"],
+    values: [1000000, 1250000, 1100000, 1750000, 1900000, 2250000],
+  },
+  "12m": {
+    labels: [
+      "Jul",
+      "Agu",
+      "Sep",
+      "Okt",
+      "Nov",
+      "Des",
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "Mei",
+      "Jun",
+    ],
+    values: [
+      600000, 750000, 850000, 1200000, 1150000, 1400000, 1000000, 1250000,
+      1100000, 1750000, 1900000, 2250000,
+    ],
+  },
+};
+
 export const lineChartData: SalesData[] = [
   { day: "Jan", amount: 1000000 },
   { day: "Feb", amount: 1250000 },
@@ -176,6 +203,12 @@ export const orderTargetData: OrderTargetData[] = [
   { month: "Apr", orders: 268, target: 260 },
   { month: "Mei", orders: 289, target: 260 },
   { month: "Jun", orders: 312, target: 260 },
+  { month: "Jul", orders: 275, target: 290 },
+  { month: "Agu", orders: 305, target: 290 },
+  { month: "Sep", orders: 320, target: 290 },
+  { month: "Okt", orders: 340, target: 320 },
+  { month: "Nov", orders: 315, target: 320 },
+  { month: "Des", orders: 365, target: 320 },
 ];
 
 export interface Stand {
