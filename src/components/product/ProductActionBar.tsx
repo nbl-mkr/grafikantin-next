@@ -25,8 +25,8 @@ export default function ProductActionBar({
   };
 
   return (
-    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-t border-gray-100 pt-6">
-      <div className="flex items-center gap-3">
+    <div className="flex items-center justify-between gap-3 sm:gap-4 border-t border-gray-100 pt-6">
+      <div className="flex items-center gap-2 sm:gap-3 shrink-0">
         <span className="text-xs font-bold uppercase tracking-wider text-gray-400">
           Jumlah
         </span>
@@ -34,28 +34,29 @@ export default function ProductActionBar({
           <button
             type="button"
             onClick={onDecrease}
-            className="flex h-10 w-10 items-center justify-center text-gray-600 transition hover:bg-gray-50 rounded-l-xl"
+            disabled={quantity <= 1}
+            className="flex h-10 w-9 sm:w-10 items-center justify-center text-gray-600 transition hover:bg-gray-50 rounded-l-xl disabled:opacity-40 disabled:cursor-not-allowed"
           >
             -
           </button>
-          <span className="w-12 text-center text-sm font-semibold text-gray-900">
+          <span className="w-9 sm:w-12 text-center text-sm font-semibold text-gray-900">
             {quantity}
           </span>
           <button
             type="button"
             onClick={onIncrease}
-            className="flex h-10 w-10 items-center justify-center text-gray-600 transition hover:bg-gray-50 rounded-r-xl"
+            className="flex h-10 w-9 sm:w-10 items-center justify-center text-gray-600 transition hover:bg-gray-50 rounded-r-xl"
           >
             +
           </button>
         </div>
       </div>
 
-      <div className="flex flex-1 items-center gap-3 sm:justify-end">
+      <div className="flex flex-1 items-center justify-end min-w-0">
         <button
           type="button"
           onClick={handleAddToCartAndRedirect}
-          className="w-full sm:w-auto flex-1 max-w-xs rounded-xl bg-[#e76f51] px-6 py-3 text-center text-sm font-bold text-white shadow-md transition hover:bg-[#d55f43] active:scale-95"
+          className="w-full sm:w-auto flex-1 max-w-xs truncate rounded-xl bg-[#e76f51] px-4 sm:px-6 py-3 text-center text-sm font-bold text-white shadow-md transition hover:bg-[#d55f43] active:scale-95"
         >
           Rp {(price * quantity).toLocaleString("id-ID")}
         </button>
