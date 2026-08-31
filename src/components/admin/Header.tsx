@@ -65,7 +65,7 @@ export default function Header({ title = "Dashboard" }: HeaderProps) {
               <input
                 type="search"
                 placeholder="Search..."
-                className="hidden sm:block w-36 lg:w-48 rounded-lg border border-gray-300 px-3 py-1.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-[#e76f51] focus:outline-none focus:ring-1 focus:ring-[#e76f51]"
+                className="hidden sm:block w-36 lg:w-48 rounded-lg border border-gray-200 px-3 py-1.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-[#62748e] focus:outline-none focus:ring-1 focus:ring-[#62748e]"
               />
               <button type="submit" className="p-1.5 text-gray-600 hover:opacity-80 transition">
                 <Image src="/assets/search.png" alt="Search Icon" width={16} height={16} className="w-4 h-4" />
