@@ -177,10 +177,10 @@ export default function OrderTable() {
             {filteredOrders.length > 0 ? (
               filteredOrders.map((order) => (
                 <tr key={order.id} className="hover:bg-gray-50/50 transition-colors">
-                  <td className="px-4 py-3 whitespace-nowrap text-gray-500">
+                  <td className="px-4 py-3 whitespace-nowrap font-medium text-gray-900">
                     {order.id}
                   </td>
-                  <td className="px-4 py-3 whitespace-nowrap font-medium text-gray-900">
+                  <td className="px-4 py-3 whitespace-nowrap text-gray-600">
                     {order.customer}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-gray-500">
@@ -195,7 +195,7 @@ export default function OrderTable() {
                       {order.status}
                     </span>
                   </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-right font-semibold text-gray-900">
+                  <td className="px-4 py-3 whitespace-nowrap text-right text-gray-600">
                     Rp {order.amount.toLocaleString("id-ID")}
                   </td>
                 </tr>
