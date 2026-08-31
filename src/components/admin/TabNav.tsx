@@ -74,8 +74,8 @@ export default function TabNav() {
             href={tab.href}
             className={`flex shrink-0 items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition ${
               isActive
-                ? "bg-[#e76f51]/10 text-[#e76f51]"
-                : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                ? "bg-gray-50 text-[#e76f51]"
+                : "text-gray-600 hover:bg-gray-50 hover:text-[#e76f51]"
             }`}
           >
             {tab.icon}
