@@ -150,7 +150,7 @@ export default function MenuTable() {
                   setSearchTerm(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="h-9 w-full rounded-md border border-gray-200 pl-3 pr-9 text-sm text-gray-900 focus:border-[#e76f51] focus:outline-none sm:w-56"
+                className="h-9 w-full rounded-md border border-gray-200 pl-3 pr-9 text-sm text-gray-900 focus:border-[#62748e] focus:outline-none sm:w-56"
               />
               <span className="pointer-events-none absolute inset-y-0 right-0 grid w-8 place-content-center text-gray-400">
                 <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-4">
@@ -292,7 +292,7 @@ export default function MenuTable() {
             <div className="relative group">
               <button
                 type="button"
-                className="inline-flex items-center gap-1.5 h-8 rounded-lg border border-gray-200 bg-white px-2.5 text-xs text-gray-700 hover:border-[#e76f51] focus:outline-none transition-colors"
+                className="inline-flex items-center gap-1.5 h-8 rounded-lg border border-gray-200 bg-white px-2.5 text-xs text-gray-700 hover:border-[#62748e] focus:outline-none transition-colors"
               >
                 <span>{itemsPerPage}</span>
                 <svg
@@ -301,7 +301,7 @@ export default function MenuTable() {
                   viewBox="0 0 24 24"
                   strokeWidth="2"
                   stroke="currentColor"
-                  className="size-3.5 text-gray-400 group-hover:text-[#e76f51] group-hover:rotate-180 transition-transform duration-200"
+                  className="size-3.5 text-gray-400 group-hover:text-[#62748e] group-hover:rotate-180 transition-transform duration-200"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                 </svg>
