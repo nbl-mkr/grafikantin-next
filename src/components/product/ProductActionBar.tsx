@@ -30,22 +30,22 @@ export default function ProductActionBar({
         <span className="text-xs font-bold uppercase tracking-wider text-gray-400">
           Jumlah
         </span>
-        <div className="flex h-11 items-center rounded-xl border border-gray-200 bg-white shadow-xs">
+        <div className="flex h-11 items-center rounded-xl bg-white shadow-xs ring-1 ring-gray-200">
           <button
             type="button"
             onClick={onDecrease}
             disabled={quantity <= 1}
-            className="flex h-full w-9 sm:w-10 items-center justify-center text-gray-600 transition hover:bg-gray-50 rounded-l-xl disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex h-11 w-9 sm:w-10 items-center justify-center text-gray-600 transition hover:bg-gray-50 rounded-l-xl disabled:opacity-40 disabled:cursor-not-allowed"
           >
             -
           </button>
-          <span className="flex h-full items-center justify-center w-9 sm:w-12 text-center text-sm font-semibold text-gray-900">
+          <span className="flex h-11 items-center justify-center w-9 sm:w-12 text-center text-sm font-semibold text-gray-900 select-none">
             {quantity}
           </span>
           <button
             type="button"
             onClick={onIncrease}
-            className="flex h-full w-9 sm:w-10 items-center justify-center text-gray-600 transition hover:bg-gray-50 rounded-r-xl"
+            className="flex h-11 w-9 sm:w-10 items-center justify-center text-gray-600 transition hover:bg-gray-50 rounded-r-xl"
           >
             +
           </button>
