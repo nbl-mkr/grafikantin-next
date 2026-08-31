@@ -101,7 +101,7 @@ export default function OrderTargetChart() {
   };
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-6">
+    <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm">
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-medium text-gray-900">Pesanan vs Target Bulanan</h2>
 
