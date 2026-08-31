@@ -65,7 +65,7 @@ export default function TabNav() {
   const pathname = usePathname();
 
   return (
-    <div className="inline-flex max-w-full items-center gap-1 overflow-x-auto rounded-xl border border-gray-200 bg-white p-1 shadow-sm">
+    <div className="inline-flex max-w-full items-center gap-1 overflow-x-auto rounded-xl border border-gray-100 bg-white p-1 shadow-sm">
       {tabs.map((tab) => {
         const isActive = pathname === tab.href;
         return (
