@@ -264,7 +264,7 @@ export const reportSummary: ReportSummary[] = [
   { label: "Total Pendapatan", value: "Rp 15.350.000", change: "12.5%", positive: true, period: "dari bulan lalu" },
   { label: "Total Pesanan", value: "1.852", change: "8.3%", positive: true, period: "dari bulan lalu" },
   { label: "Rata-rata Pesanan", value: "Rp 8.287", change: "3.1%", positive: false, period: "dari bulan lalu" },
-  { label: "Stand Aktif", value: "4 / 6", change: "0%", positive: true, period: "tidak berubah" },
+  { label: "Stand Aktif", value: "6 / 6", change: "0%", positive: true, period: "tidak berubah" },
 ];
 
 export interface ReportRow {
