@@ -40,10 +40,10 @@ export default function BottomSection({ recentOrders = [] }: BottomSectionProps)
           <tbody className="divide-y divide-gray-100">
             {displayOrders.map((item, index) => (
               <tr key={index} className="hover:bg-gray-50/50 transition-colors">
-                <td className="px-4 py-3 whitespace-nowrap text-gray-500">
+                <td className="px-4 py-3 whitespace-nowrap font-medium text-gray-900">
                   {item.id}
                 </td>
-                <td className="px-4 py-3 whitespace-nowrap font-medium text-gray-900">
+                <td className="px-4 py-3 whitespace-nowrap text-gray-600">
                   {item.customer}
                 </td>
                 <td className="px-4 py-3 whitespace-nowrap text-gray-500">
@@ -58,7 +58,7 @@ export default function BottomSection({ recentOrders = [] }: BottomSectionProps)
                     {item.status}
                   </span>
                 </td>
-                <td className="px-4 py-3 whitespace-nowrap text-right font-semibold text-gray-900">
+                <td className="px-4 py-3 whitespace-nowrap text-right text-gray-600">
                   Rp {item.total.toLocaleString("id-ID")}
                 </td>
               </tr>
