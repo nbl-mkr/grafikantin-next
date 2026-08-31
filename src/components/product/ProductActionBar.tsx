@@ -30,7 +30,7 @@ export default function ProductActionBar({
         <span className="text-xs font-bold uppercase tracking-wider text-gray-400">
           Jumlah
         </span>
-        <div className="flex h-11 items-center rounded-xl bg-white shadow-xs ring-1 ring-gray-200">
+        <div className="flex h-11 items-center rounded-xl bg-white ring-1 ring-gray-200">
           <button
             type="button"
             onClick={onDecrease}
@@ -56,7 +56,7 @@ export default function ProductActionBar({
         <button
           type="button"
           onClick={handleAddToCartAndRedirect}
-          className="flex h-11 items-center justify-center w-full sm:w-auto flex-1 max-w-xs truncate rounded-xl bg-[#e76f51] px-4 sm:px-6 text-center text-sm font-bold text-white shadow-md transition hover:bg-[#d55f43] active:scale-95"
+          className="flex h-11 items-center justify-center w-full sm:w-auto flex-1 max-w-xs truncate rounded-xl bg-[#e76f51] px-4 sm:px-6 text-center text-sm font-bold text-white transition hover:bg-[#d55f43] active:scale-95"
         >
           Rp {(price * quantity).toLocaleString("id-ID")}
         </button>
