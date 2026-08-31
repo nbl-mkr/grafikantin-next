@@ -14,6 +14,7 @@ import {
   Filler,
 } from "chart.js";
 import { Line, Doughnut } from "react-chartjs-2";
+import { revenueRangesByPeriod } from "@/data/adminMockData";
 
 ChartJS.register(
   CategoryScale,
@@ -34,33 +35,6 @@ interface ChartSectionProps {
 
 export default function ChartSection({}: ChartSectionProps) {
   const [range, setRange] = useState<"6m" | "12m">("6m");
-
-  const revenueRangesByPeriod = {
-    "6m": {
-      labels: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun"],
-      values: [1000000, 1250000, 1100000, 1750000, 1900000, 2250000],
-    },
-    "12m": {
-      labels: [
-        "Jul",
-        "Agu",
-        "Sep",
-        "Okt",
-        "Nov",
-        "Des",
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "Mei",
-        "Jun",
-      ],
-      values: [
-        600000, 750000, 850000, 1200000, 1150000, 1400000, 1000000, 1250000,
-        1100000, 1750000, 1900000, 2250000,
-      ],
-    },
-  };
 
   const currentData = revenueRangesByPeriod[range];
 
