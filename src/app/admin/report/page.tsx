@@ -9,7 +9,6 @@ export default function AdminReportPage() {
       <div className="flex items-center justify-between rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
         <div>
           <h1 className="text-xl font-bold text-gray-900">Laporan</h1>
-          <p className="mt-1 text-sm text-gray-500">Rekap pendapatan dan performa stand bulan ini.</p>
         </div>
         <button
           type="button"
