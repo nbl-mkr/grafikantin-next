@@ -6,9 +6,21 @@ export default function SettingsForm() {
   const [fullName, setFullName] = useState("Nabil Makarim");
   const [email, setEmail] = useState("n481lmaka@gmail.com");
   const [teamName, setTeamName] = useState("Grafikantin");
+  const [photoProfile, setPhotoProfile] = useState("/assets/photo_profile.jpg");
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [productUpdates, setProductUpdates] = useState(false);
   const [weeklySummary, setWeeklySummary] = useState(true);
+
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPhotoProfile(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,6 +47,26 @@ export default function SettingsForm() {
         <h2 className="text-sm font-medium text-gray-900">Profil</h2>
 
         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="sm:col-span-2 flex flex-col items-center justify-center gap-4">
+            <label htmlFor="photo-profile-upload" className="cursor-pointer">
+              <div className="relative h-32 w-32 overflow-hidden rounded-full border border-gray-200">
+                <img
+                  src={photoProfile}
+                  alt="Foto Profil"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            </label>
+            <span className="text-sm font-medium text-gray-900">{fullName}</span>
+            <input
+              type="file"
+              id="photo-profile-upload"
+              accept="image/*"
+              onChange={handlePhotoChange}
+              className="hidden"
+            />
+          </div>
+
           <div>
             <label
               htmlFor="full-name"
