@@ -3,9 +3,12 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { CartItem } from "@/context/CartContext";
+import { useRouter } from "next/navigation";
+import { CartItem, useCart } from "@/context/CartContext";
 
 export default function CheckoutCard() {
+  const router = useRouter();
+  const { clearCart } = useCart();
   const [items, setItems] = useState<CartItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -27,6 +30,34 @@ export default function CheckoutCard() {
   );
 
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=QRIS_GRAFIKANTIN_SMKN4_MALANG_${subtotal}`;
+
+  const handleConfirmAndPay = () => {
+    if (items.length === 0) return;
+
+    const now = new Date();
+    const formattedDate = now.toLocaleDateString("id-ID", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }) + `, ${now.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })} WIB`;
+
+    const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+    const dateStr = now.toISOString().slice(0, 10).replace(/-/g, "");
+    const generatedOrderId = `#KG-${dateStr}${randomSuffix}`;
+
+    const orderPayload = {
+      orderId: generatedOrderId,
+      date: formattedDate,
+      paymentMethod: "QRIS / E-Wallet",
+      items: items,
+      total: subtotal,
+    };
+
+    localStorage.setItem("last_order", JSON.stringify(orderPayload));
+    localStorage.removeItem("checkout_items");
+    clearCart();
+    router.push("/invoice");
+  };
 
   if (!isLoaded) {
     return <div className="min-h-screen bg-slate-50" />;
@@ -143,6 +174,7 @@ export default function CheckoutCard() {
             </div>
             <button
               type="button"
+              onClick={handleConfirmAndPay}
               className="w-full rounded-xl bg-[#e76f51] py-3 text-center text-sm font-bold text-white transition hover:bg-[#d55f43] cursor-pointer"
             >
               Konfirmasi & Bayar
