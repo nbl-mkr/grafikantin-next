@@ -17,7 +17,7 @@ export default function Navbar() {
     pathname === "/auth/login";
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-gray-100">
+    <header className="sticky top-0 z-50 bg-white border-b border-gray-100 print:hidden">
       <div className="w-full flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2 text-gray-900 text-lg">
           <Image
