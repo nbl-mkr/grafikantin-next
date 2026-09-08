@@ -163,9 +163,18 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
             </div>
           )}
         </div>
+
+        <div className="mt-16 sm:mt-20">
+          <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 leading-[1.1] sm:text-4xl">
+            Kami <span className="text-[#e76f51]">Mendengarmu</span>
+          </h2>
+          <p className="mt-4 text-base text-gray-600 max-w-2xl leading-relaxed sm:text-lg">
+            Punya pengalaman makan yang menyenangkan, atau menemukan kendala saat memesan? Sampaikan lewat fitur ini agar kantin tumbuh lebih baik.
+          </p>
+        </div>
       </div>
 
-      <div className="mt-16">
+      <div className="mt-8">
         <ComplaintBanner />
       </div>
     </div>
