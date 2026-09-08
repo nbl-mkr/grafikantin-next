@@ -20,27 +20,22 @@ export default function Footer() {
                     <p className="font-semibold text-gray-900">Menu</p>
                     <ul className="mt-4 space-y-3 text-sm">
                         <li>
-                            <a href="/"
+                            <Link href="/"
                                 className="text-gray-600 transition hover:text-gray-900 hover:underline">
                                 Beranda
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="/order"
+                            <Link href="/order"
                                 className="text-gray-600 transition hover:text-gray-900 hover:underline">
                                 Pesan
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="/about"
+                            <Link href="/about"
                                 className="text-gray-600 transition hover:text-gray-900 hover:underline">
                                 Tentang
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/" className="text-gray-600 transition hover:text-gray-900 hover:underline">
-                                Lainnya
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                 </div>
