@@ -18,7 +18,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-100 print:hidden">
-      <div className="w-full flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+      <div className="w-full flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 md:grid md:grid-cols-[1fr_auto_1fr]">
         <Link href="/" className="flex items-center gap-2 text-gray-900 text-lg">
           <Image
             src="/assets/logo.png"
@@ -30,8 +30,8 @@ export default function Navbar() {
           <span>Grafikantin</span>
         </Link>
 
-        <div className="flex flex-1 items-center justify-end md:justify-between">
-          <nav aria-label="Global" className="hidden md:block">
+        <div className="flex flex-1 items-center justify-end md:contents">
+          <nav aria-label="Global" className="hidden md:block md:justify-self-center">
             <ul className="flex items-center gap-6 text-sm">
               <li>
                 <Link
@@ -146,7 +146,7 @@ export default function Navbar() {
             </ul>
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 md:justify-self-end">
             <form className="flex items-center gap-2" role="search" onSubmit={(e) => e.preventDefault()}>
               <input
                 type="search"
