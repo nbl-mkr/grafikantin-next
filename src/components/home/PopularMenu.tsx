@@ -20,29 +20,66 @@ interface PopularMenuProps {
 }
 
 export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
-  return (
-    <div id="menu-populer" className="w-full bg-white py-12 scroll-mt-16">
-      <div className="flex flex-col items-center text-center mb-12 px-4">
-        <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-          Menu Populer <span className="text-[#e76f51]">Minggu Ini</span>
-        </h2>
-        <p className="mt-2 text-sm text-gray-600 max-w-xl">
-          Nikmati santapan paling diminati siswa dengan penyajian cepat dan rasa terjamin.
-        </p>
-      </div>
+  const featured = items[0];
 
-      <div className="mx-auto max-w-6xl px-6 mb-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {items.map((food) => (
-            <div
-              key={food.id}
-              className="group rounded-lg bg-white p-4 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100 flex flex-col justify-between"
+  const handleBuyClick = () => {
+    if (!featured) return;
+    onSelect?.(featured);
+  };
+
+  return (
+    <div id="menu-populer" className="w-full bg-white py-16 sm:py-20 scroll-mt-16">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1fr_352px] lg:gap-14">
+          <div className="flex flex-col items-start">
+            <h2 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl leading-[1.1]">
+              Menu Populer <span className="text-[#e76f51]">Minggu Ini</span>
+            </h2>
+            <p className="mt-4 text-base text-gray-600 max-w-md leading-relaxed">
+              Nikmati santapan paling diminati siswa dengan penyajian cepat dan rasa terjamin.
+            </p>
+
+            {featured && (
+              <>
+                <div className="mt-8">
+                  <p className="text-xs font-medium text-gray-400">Harga mulai dari</p>
+                  <p className="mt-1 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    Rp {featured.harga.toLocaleString("id-ID")}
+                  </p>
+                </div>
+
+                <div className="mt-6 grid grid-cols-2 gap-6 w-full max-w-sm">
+                  <div className="border-l-2 border-[#e76f51] pl-4">
+                    <p className="text-lg font-bold text-gray-900">
+                      {featured.estimasi || "10-15 Mnt"}
+                    </p>
+                    <p className="text-xs text-gray-500">Estimasi Penyajian</p>
+                  </div>
+                  <div className="border-l-2 border-[#e76f51] pl-4">
+                    <p className="text-lg font-bold text-gray-900">
+                      {featured.rating || "4.8 / 5.0"}
+                    </p>
+                    <p className="text-xs text-gray-500">Rating Siswa</p>
+                  </div>
+                </div>
+              </>
+            )}
+
+            <Link
+              href="/menu"
+              className="mt-8 inline-flex items-center text-sm font-semibold text-gray-900 transition-colors hover:text-[#e76f51]"
             >
+              Lihat Semua Menu
+            </Link>
+          </div>
+
+          {featured && (
+            <div className="group rounded-lg bg-white p-4 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100 flex flex-col justify-between w-full max-w-[352px] mx-auto lg:justify-self-end lg:mx-0">
               <div>
-                <div className="relative overflow-hidden rounded-t-lg">
+                <div className="relative overflow-hidden rounded-lg">
                   <img
-                    src={food.gambar}
-                    alt={food.nama_menu}
+                    src={featured.gambar}
+                    alt={featured.nama_menu}
                     className="h-52 w-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
@@ -52,14 +89,14 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
                     <div>
                       <dt className="sr-only">Harga</dt>
                       <dd className="text-lg font-bold text-[#e76f51]">
-                        Rp {food.harga.toLocaleString("id-ID")}
+                        Rp {featured.harga.toLocaleString("id-ID")}
                       </dd>
                     </div>
 
                     <div>
                       <dt className="sr-only">Nama Menu</dt>
                       <dd className="text-xl font-bold text-gray-900 mt-0.5">
-                        {food.nama_menu}
+                        {featured.nama_menu}
                       </dd>
                     </div>
                   </dl>
@@ -83,7 +120,7 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
                       <div className="mt-1.5 sm:mt-0">
                         <p className="text-gray-400">Estimasi</p>
                         <p className="font-medium text-gray-700">
-                          {food.estimasi || "10-15 Mnt"}
+                          {featured.estimasi || "10-15 Mnt"}
                         </p>
                       </div>
                     </div>
@@ -106,7 +143,7 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
                       <div className="mt-1.5 sm:mt-0">
                         <p className="text-gray-400">Rating</p>
                         <p className="font-medium text-gray-700">
-                          {food.rating || "4.8 / 5.0"}
+                          {featured.rating || "4.8 / 5.0"}
                         </p>
                       </div>
                     </div>
@@ -114,7 +151,8 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
 
                   <div className="mt-5">
                     <Link
-                      href={`/product/${food.id}`}
+                      href={`/product/${featured.id}`}
+                      onClick={handleBuyClick}
                       className="block w-full bg-[#e76f51] hover:bg-[#d95d3f] text-white font-semibold py-2.5 rounded-lg transition shadow-sm active:scale-[0.98] text-center"
                     >
                       Beli Sekarang
@@ -123,11 +161,13 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
                 </div>
               </div>
             </div>
-          ))}
+          )}
         </div>
       </div>
 
-      <ComplaintBanner />
+      <div className="mt-16">
+        <ComplaintBanner />
+      </div>
     </div>
   );
 }
