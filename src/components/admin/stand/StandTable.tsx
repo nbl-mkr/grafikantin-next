@@ -1,9 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useMemo } from "react";
-import { Stand, standsData } from "@/data/adminMockData";
+import type { Stand } from "@/data/adminMockData";
+import { useStands } from "@/components/admin/stand/StandContext";
 
-type ModalMode = "add" | "edit" | null;
 type SortField = "nama" | "pemilik" | "totalMenu" | "pendapatan";
 type SortOrder = "asc" | "desc";
 
@@ -12,17 +13,8 @@ const statusStyles: Record<string, string> = {
   Tutup: "bg-red-50 text-red-600",
 };
 
-const emptyForm: Omit<Stand, "id"> = {
-  nama: "",
-  pemilik: "",
-  telepon: "",
-  status: "Buka",
-  totalMenu: 0,
-  pendapatan: 0,
-};
-
 export default function StandTable() {
-  const [stands, setStands] = useState<Stand[]>(standsData);
+  const { stands, deleteStand } = useStands();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | "Buka" | "Tutup">("all");
 
@@ -32,9 +24,6 @@ export default function StandTable() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
 
-  const [modalMode, setModalMode] = useState<ModalMode>(null);
-  const [selectedStand, setSelectedStand] = useState<Stand | null>(null);
-  const [form, setForm] = useState<Omit<Stand, "id">>(emptyForm);
   const [deleteTarget, setDeleteTarget] = useState<Stand | null>(null);
 
   const processedStands = useMemo(() => {
@@ -80,45 +69,9 @@ export default function StandTable() {
     }
   };
 
-  const openAdd = () => {
-    setForm(emptyForm);
-    setSelectedStand(null);
-    setModalMode("add");
-  };
-
-  const openEdit = (stand: Stand) => {
-    setSelectedStand(stand);
-    setForm({
-      nama: stand.nama,
-      pemilik: stand.pemilik,
-      telepon: stand.telepon,
-      status: stand.status,
-      totalMenu: stand.totalMenu,
-      pendapatan: stand.pendapatan,
-    });
-    setModalMode("edit");
-  };
-
-  const closeModal = () => {
-    setModalMode(null);
-    setSelectedStand(null);
-    setForm(emptyForm);
-  };
-
-  const handleSave = () => {
-    if (!form.nama.trim() || !form.pemilik.trim()) return;
-    if (modalMode === "add") {
-      const newId = Math.max(...stands.map((s) => s.id), 0) + 1;
-      setStands((prev) => [...prev, { id: newId, ...form }]);
-    } else if (modalMode === "edit" && selectedStand) {
-      setStands((prev) => prev.map((s) => (s.id === selectedStand.id ? { ...s, ...form } : s)));
-    }
-    closeModal();
-  };
-
   const handleDelete = () => {
     if (!deleteTarget) return;
-    setStands((prev) => prev.filter((s) => s.id !== deleteTarget.id));
+    deleteStand(deleteTarget.id);
     setDeleteTarget(null);
   };
 
@@ -165,13 +118,12 @@ export default function StandTable() {
               ))}
             </div>
 
-            <button
-              type="button"
-              onClick={openAdd}
-              className="h-9 rounded-lg bg-[#e76f51] px-4 text-sm font-medium text-white transition hover:bg-[#d55f43] whitespace-nowrap"
+            <Link
+              href="/admin/stand/tambah"
+              className="h-9 inline-flex items-center rounded-lg bg-[#e76f51] px-4 text-sm font-medium text-white transition hover:bg-[#d55f43] whitespace-nowrap"
             >
               + Tambah Stand
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -230,13 +182,12 @@ export default function StandTable() {
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-right">
                         <div className="flex items-center justify-end gap-2">
-                          <button
-                            type="button"
-                            onClick={() => openEdit(stand)}
+                          <Link
+                            href={`/admin/stand/${stand.id}/edit`}
                             className="rounded-md px-2.5 py-1 text-xs font-medium text-emerald-600 border border-emerald-200 hover:bg-emerald-50 transition-colors"
                           >
                             Edit
-                          </button>
+                          </Link>
                           <button
                             type="button"
                             onClick={() => setDeleteTarget(stand)}
@@ -349,77 +300,6 @@ export default function StandTable() {
           </div>
         </div>
       </div>
-
-      {modalMode && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
-            <h3 className="text-base font-semibold text-gray-900">
-              {modalMode === "add" ? "Tambah Stand Baru" : "Edit Stand"}
-            </h3>
-
-            <div className="mt-4 space-y-3">
-              <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">Nama Stand</label>
-                <input
-                  type="text"
-                  value={form.nama}
-                  onChange={(e) => setForm((f) => ({ ...f, nama: e.target.value }))}
-                  className="h-9 w-full rounded-md border border-gray-200 px-3 text-sm text-gray-900 focus:border-[#e76f51] focus:outline-none"
-                  placeholder="Nama stand"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">Pemilik</label>
-                <input
-                  type="text"
-                  value={form.pemilik}
-                  onChange={(e) => setForm((f) => ({ ...f, pemilik: e.target.value }))}
-                  className="h-9 w-full rounded-md border border-gray-200 px-3 text-sm text-gray-900 focus:border-[#e76f51] focus:outline-none"
-                  placeholder="Nama pemilik"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">Telepon</label>
-                <input
-                  type="text"
-                  value={form.telepon}
-                  onChange={(e) => setForm((f) => ({ ...f, telepon: e.target.value }))}
-                  className="h-9 w-full rounded-md border border-gray-200 px-3 text-sm text-gray-900 focus:border-[#e76f51] focus:outline-none"
-                  placeholder="Nomor telepon"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">Status</label>
-                <select
-                  value={form.status}
-                  onChange={(e) => setForm((f) => ({ ...f, status: e.target.value as "Buka" | "Tutup" }))}
-                  className="h-9 w-full rounded-md border border-gray-200 px-3 text-sm text-gray-900 focus:border-[#e76f51] focus:outline-none"
-                >
-                  <option value="Buka">Buka</option>
-                  <option value="Tutup">Tutup</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="mt-6 flex justify-end gap-2">
-              <button
-                type="button"
-                onClick={closeModal}
-                className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
-              >
-                Batal
-              </button>
-              <button
-                type="button"
-                onClick={handleSave}
-                className="rounded-lg bg-[#e76f51] px-4 py-2 text-sm font-medium text-white hover:bg-[#d55f43] transition-colors"
-              >
-                {modalMode === "add" ? "Tambah" : "Simpan"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {deleteTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">

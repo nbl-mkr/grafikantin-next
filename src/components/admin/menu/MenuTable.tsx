@@ -1,9 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useMemo } from "react";
-import { Menu, menusData } from "@/data/adminMockData";
+import type { Menu } from "@/data/adminMockData";
+import { useMenus } from "@/components/admin/menu/MenuContext";
 
-type ModalMode = "add" | "edit" | null;
 type SortField = "nama" | "harga" | "stok" | "terjual";
 type SortOrder = "asc" | "desc";
 
@@ -14,7 +15,7 @@ const KATEGORI_STYLES: Record<string, string> = {
 };
 
 export default function MenuTable() {
-  const [menus, setMenus] = useState<Menu[]>(menusData);
+  const { menus, deleteMenu, toggleTersedia } = useMenus();
   const [searchTerm, setSearchTerm] = useState("");
   const [kategoriFilter, setKategoriFilter] = useState<"all" | "Makanan" | "Minuman" | "Snack">("all");
   
@@ -24,17 +25,6 @@ export default function MenuTable() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
 
-  const [modalMode, setModalMode] = useState<ModalMode>(null);
-  const [selectedMenu, setSelectedMenu] = useState<Menu | null>(null);
-  const [form, setForm] = useState<Omit<Menu, "id">>({
-    nama: "",
-    stand: "",
-    kategori: "Makanan",
-    harga: 0,
-    stok: 0,
-    terjual: 0,
-    tersedia: true,
-  });
   const [deleteTarget, setDeleteTarget] = useState<Menu | null>(null);
 
   const processedMenus = useMemo(() => {
@@ -80,58 +70,10 @@ export default function MenuTable() {
     }
   };
 
-  const openAdd = () => {
-    setForm({
-      nama: "",
-      stand: "",
-      kategori: "Makanan",
-      harga: 0,
-      stok: 0,
-      terjual: 0,
-      tersedia: true,
-    });
-    setSelectedMenu(null);
-    setModalMode("add");
-  };
-
-  const openEdit = (menu: Menu) => {
-    setSelectedMenu(menu);
-    setForm({
-      nama: menu.nama,
-      stand: menu.stand,
-      kategori: menu.kategori,
-      harga: menu.harga,
-      stok: menu.stok,
-      terjual: menu.terjual,
-      tersedia: menu.tersedia,
-    });
-    setModalMode("edit");
-  };
-
-  const closeModal = () => {
-    setModalMode(null);
-    setSelectedMenu(null);
-  };
-
-  const handleSave = () => {
-    if (!form.nama.trim() || !form.stand.trim()) return;
-    if (modalMode === "add") {
-      const newId = Math.max(...menus.map((m) => m.id), 0) + 1;
-      setMenus((prev) => [...prev, { id: newId, ...form }]);
-    } else if (modalMode === "edit" && selectedMenu) {
-      setMenus((prev) => prev.map((m) => (m.id === selectedMenu.id ? { ...m, ...form } : m)));
-    }
-    closeModal();
-  };
-
   const handleDelete = () => {
     if (!deleteTarget) return;
-    setMenus((prev) => prev.filter((m) => m.id !== deleteTarget.id));
+    deleteMenu(deleteTarget.id);
     setDeleteTarget(null);
-  };
-
-  const toggleTersedia = (menu: Menu) => {
-    setMenus((prev) => prev.map((m) => (m.id === menu.id ? { ...m, tersedia: !m.tersedia } : m)));
   };
 
   return (
@@ -177,13 +119,12 @@ export default function MenuTable() {
               ))}
             </div>
 
-            <button
-              type="button"
-              onClick={openAdd}
-              className="h-9 rounded-lg bg-[#e76f51] px-4 text-sm font-medium text-white transition hover:bg-[#d55f43] whitespace-nowrap"
+            <Link
+              href="/admin/menu/tambah"
+              className="h-9 inline-flex items-center rounded-lg bg-[#e76f51] px-4 text-sm font-medium text-white transition hover:bg-[#d55f43] whitespace-nowrap"
             >
               + Tambah Menu
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -246,7 +187,7 @@ export default function MenuTable() {
                           type="button"
                           role="switch"
                           aria-checked={menu.tersedia}
-                          onClick={() => toggleTersedia(menu)}
+                          onClick={() => toggleTersedia(menu.id)}
                           className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full transition-colors ${
                             menu.tersedia ? "bg-[#e76f51]" : "bg-gray-200"
                           }`}
@@ -256,13 +197,12 @@ export default function MenuTable() {
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-right">
                         <div className="flex items-center justify-end gap-2">
-                          <button
-                            type="button"
-                            onClick={() => openEdit(menu)}
+                          <Link
+                            href={`/admin/menu/${menu.id}/edit`}
                             className="rounded-md px-2.5 py-1 text-xs font-medium text-emerald-600 border border-emerald-200 hover:bg-emerald-50 transition-colors"
                           >
                             Edit
-                          </button>
+                          </Link>
                           <button
                             type="button"
                             onClick={() => setDeleteTarget(menu)}
@@ -375,106 +315,6 @@ export default function MenuTable() {
           </div>
         </div>
       </div>
-
-      {modalMode && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
-            <h3 className="text-base font-semibold text-gray-900">
-              {modalMode === "add" ? "Tambah Menu Baru" : "Edit Menu"}
-            </h3>
-
-            <div className="mt-4 space-y-3">
-              <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">Nama Menu</label>
-                <input
-                  type="text"
-                  value={form.nama}
-                  onChange={(e) => setForm((f) => ({ ...f, nama: e.target.value }))}
-                  className="h-9 w-full rounded-md border border-gray-200 px-3 text-sm text-gray-900 focus:border-[#e76f51] focus:outline-none"
-                  placeholder="Nama menu"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">Stand</label>
-                <input
-                  type="text"
-                  value={form.stand}
-                  onChange={(e) => setForm((f) => ({ ...f, stand: e.target.value }))}
-                  className="h-9 w-full rounded-md border border-gray-200 px-3 text-sm text-gray-900 focus:border-[#e76f51] focus:outline-none"
-                  placeholder="Nama stand"
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1">Kategori</label>
-                  <select
-                    value={form.kategori}
-                    onChange={(e) => setForm((f) => ({ ...f, kategori: e.target.value as Menu["kategori"] }))}
-                    className="h-9 w-full rounded-md border border-gray-200 px-3 text-sm text-gray-900 focus:border-[#e76f51] focus:outline-none"
-                  >
-                    <option value="Makanan">Makanan</option>
-                    <option value="Minuman">Minuman</option>
-                    <option value="Snack">Snack</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1">Harga (Rp)</label>
-                  <input
-                    type="number"
-                    value={form.harga}
-                    onChange={(e) => setForm((f) => ({ ...f, harga: Number(e.target.value) }))}
-                    className="h-9 w-full rounded-md border border-gray-200 px-3 text-sm text-gray-900 focus:border-[#e76f51] focus:outline-none"
-                    min={0}
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1">Stok</label>
-                  <input
-                    type="number"
-                    value={form.stok}
-                    onChange={(e) => setForm((f) => ({ ...f, stok: Number(e.target.value) }))}
-                    className="h-9 w-full rounded-md border border-gray-200 px-3 text-sm text-gray-900 focus:border-[#e76f51] focus:outline-none"
-                    min={0}
-                  />
-                </div>
-                <div className="flex flex-col justify-end pb-1">
-                  <label className="block text-xs font-medium text-gray-700 mb-2">Tersedia</label>
-                  <button
-                    type="button"
-                    role="switch"
-                    aria-checked={form.tersedia}
-                    onClick={() => setForm((f) => ({ ...f, tersedia: !f.tersedia }))}
-                    className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors ${
-                      form.tersedia ? "bg-[#e76f51]" : "bg-gray-200"
-                    }`}
-                  >
-                    <span className={`size-4 rounded-full bg-white transition-transform ${form.tersedia ? "translate-x-6" : "translate-x-1"}`} />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-6 flex justify-end gap-2">
-              <button
-                type="button"
-                onClick={closeModal}
-                className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
-              >
-                Batal
-              </button>
-              <button
-                type="button"
-                onClick={handleSave}
-                className="rounded-lg bg-[#e76f51] px-4 py-2 text-sm font-medium text-white hover:bg-[#d55f43] transition-colors"
-              >
-                {modalMode === "add" ? "Tambah" : "Simpan"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {deleteTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
