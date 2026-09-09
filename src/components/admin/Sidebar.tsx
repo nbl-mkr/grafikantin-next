@@ -102,7 +102,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             type="button"
             aria-label="Tutup menu"
             onClick={onClose}
-            className="ml-auto flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-500 transition hover:bg-gray-50 hover:text-gray-700 lg:hidden"
+            className="ml-auto flex h-9 w-9 items-center justify-center rounded-lg text-gray-600 transition hover:bg-gray-50 hover:text-gray-700 lg:hidden"
           >
             <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
