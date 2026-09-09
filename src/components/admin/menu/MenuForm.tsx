@@ -1,6 +1,7 @@
 "use client";
 
-import { Menu } from "@/data/adminMockData";
+import { Menu, standsData } from "@/data/adminMockData";
+import CustomSelect from "@/components/CustomSelect";
 
 export interface MenuFormData {
   nama: string;
@@ -58,13 +59,15 @@ export default function MenuForm({ form, onChange }: MenuFormProps) {
         >
           Stand
         </label>
-        <input
-          type="text"
+        <CustomSelect
           id="menu-stand"
           value={form.stand}
-          onChange={(e) => update("stand", e.target.value)}
-          className="mt-1 h-9 w-full rounded-md border border-gray-200 px-3 text-sm text-gray-900 focus:border-[#e76f51] focus:outline-none"
-          placeholder="Nama stand"
+          options={standsData.map((stand) => ({
+            value: stand.nama,
+            label: stand.nama,
+          }))}
+          onChange={(value) => update("stand", value)}
+          ariaLabel="Pilih stand"
         />
       </div>
 
@@ -75,16 +78,17 @@ export default function MenuForm({ form, onChange }: MenuFormProps) {
         >
           Kategori
         </label>
-        <select
+        <CustomSelect
           id="menu-kategori"
           value={form.kategori}
-          onChange={(e) => update("kategori", e.target.value as Menu["kategori"])}
-          className="mt-1 h-9 w-full rounded-md border border-gray-200 px-3 text-sm text-gray-900 focus:border-[#e76f51] focus:outline-none"
-        >
-          <option value="Makanan">Makanan</option>
-          <option value="Minuman">Minuman</option>
-          <option value="Snack">Snack</option>
-        </select>
+          options={[
+            { value: "Makanan", label: "Makanan" },
+            { value: "Minuman", label: "Minuman" },
+            { value: "Snack", label: "Snack" },
+          ]}
+          onChange={(value) => update("kategori", value as Menu["kategori"])}
+          ariaLabel="Pilih kategori"
+        />
       </div>
 
       <div>

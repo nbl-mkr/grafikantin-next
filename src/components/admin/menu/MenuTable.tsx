@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState, useMemo } from "react";
 import type { Menu } from "@/data/adminMockData";
+import { standsData } from "@/data/adminMockData";
 import { useMenus } from "@/components/admin/menu/MenuContext";
 
 type SortField = "nama" | "harga" | "stok" | "terjual";
@@ -17,6 +18,7 @@ const KATEGORI_STYLES: Record<string, string> = {
 export default function MenuTable() {
   const { menus, deleteMenu, toggleTersedia } = useMenus();
   const [searchTerm, setSearchTerm] = useState("");
+  const [standFilter, setStandFilter] = useState<string>("all");
   const [kategoriFilter, setKategoriFilter] = useState<"all" | "Makanan" | "Minuman" | "Snack">("all");
   
   const [sortField, setSortField] = useState<SortField>("nama");
@@ -32,8 +34,9 @@ export default function MenuTable() {
       const matchSearch =
         m.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
         m.stand.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchStand = standFilter === "all" || m.stand === standFilter;
       const matchKategori = kategoriFilter === "all" || m.kategori === kategoriFilter;
-      return matchSearch && matchKategori;
+      return matchSearch && matchStand && matchKategori;
     });
 
     result.sort((a, b) => {
@@ -51,7 +54,7 @@ export default function MenuTable() {
     });
 
     return result;
-  }, [menus, searchTerm, kategoriFilter, sortField, sortOrder]);
+  }, [menus, searchTerm, standFilter, kategoriFilter, sortField, sortOrder]);
 
   const totalPages = Math.ceil(processedMenus.length / itemsPerPage) || 1;
   const validCurrentPage = Math.min(currentPage, totalPages);
@@ -99,6 +102,66 @@ export default function MenuTable() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>
               </span>
+            </div>
+
+            <div className="relative group">
+              <button
+                type="button"
+                className="inline-flex items-center gap-1.5 h-9 rounded-md border border-gray-200 bg-white px-3 text-sm text-gray-900 hover:border-[#62748e] focus:outline-none transition-colors"
+              >
+                <span>{standFilter === "all" ? "Semua Stand" : standFilter}</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                  className="size-3.5 text-gray-400 group-hover:text-[#62748e] group-hover:rotate-180 transition-transform duration-200"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                </svg>
+              </button>
+
+              <div
+                role="menu"
+                className="absolute left-0 top-full mt-1 w-44 divide-y divide-gray-100 overflow-hidden rounded-xl border border-gray-100 bg-white shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50"
+              >
+                <div className="py-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setStandFilter("all");
+                      setCurrentPage(1);
+                    }}
+                    className={`block w-full text-left px-4 py-2 text-xs transition-colors hover:bg-gray-50 hover:text-[#e76f51] ${
+                      standFilter === "all"
+                        ? "font-semibold text-[#e76f51] bg-blue-50/50"
+                        : "font-normal text-gray-600"
+                    }`}
+                    role="menuitem"
+                  >
+                    Semua Stand
+                  </button>
+                  {standsData.map((stand) => (
+                    <button
+                      key={stand.id}
+                      type="button"
+                      onClick={() => {
+                        setStandFilter(stand.nama);
+                        setCurrentPage(1);
+                      }}
+                      className={`block w-full text-left px-4 py-2 text-xs transition-colors hover:bg-gray-50 hover:text-[#e76f51] ${
+                        standFilter === stand.nama
+                          ? "font-semibold text-[#e76f51] bg-blue-50/50"
+                          : "font-normal text-gray-600"
+                      }`}
+                      role="menuitem"
+                    >
+                      {stand.nama}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
 
             <div className="inline-flex h-9 items-center rounded-md border border-gray-200 p-1 text-xs font-medium">

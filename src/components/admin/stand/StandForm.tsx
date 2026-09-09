@@ -1,6 +1,7 @@
 "use client";
 
 import { Stand } from "@/data/adminMockData";
+import CustomSelect from "@/components/CustomSelect";
 
 export interface StandFormData {
   nama: string;
@@ -90,15 +91,16 @@ export default function StandForm({ form, onChange }: StandFormProps) {
         >
           Status
         </label>
-        <select
+        <CustomSelect
           id="stand-status"
           value={form.status}
-          onChange={(e) => update("status", e.target.value as Stand["status"])}
-          className="mt-1 h-9 w-full rounded-md border border-gray-200 px-3 text-sm text-gray-900 focus:border-[#e76f51] focus:outline-none"
-        >
-          <option value="Buka">Buka</option>
-          <option value="Tutup">Tutup</option>
-        </select>
+          options={[
+            { value: "Buka", label: "Buka" },
+            { value: "Tutup", label: "Tutup" },
+          ]}
+          onChange={(value) => update("status", value as Stand["status"])}
+          ariaLabel="Pilih status"
+        />
       </div>
     </div>
   );
