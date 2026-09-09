@@ -1,11 +1,8 @@
-﻿import TabNav from "@/components/admin/TabNav";
-import ReportSection from "@/components/admin/report/ReportSection";
+﻿import ReportSection from "@/components/admin/report/ReportSection";
 
 export default function AdminReportPage() {
   return (
     <div className="space-y-6">
-      <TabNav />
-
       <div className="flex items-center justify-between rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
         <div>
           <h1 className="text-xl font-bold text-gray-900">Laporan</h1>
