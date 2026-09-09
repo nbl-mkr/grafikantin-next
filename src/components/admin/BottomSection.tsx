@@ -19,6 +19,8 @@ export default function BottomSection({ recentOrders = [] }: BottomSectionProps)
     { id: "#3920", customer: "Akhmad Daqiqul", time: "11 Jun 2025", total: 128500, status: "Diproses" },
     { id: "#3919", customer: "Devin Adinata", time: "10 Jun 2025", total: 894200, status: "Selesai" },
     { id: "#3918", customer: "Rizky Zidane", time: "09 Jun 2025", total: 56000, status: "Batal" },
+    { id: "#3917", customer: "Permadi Saprianto", time: "08 Jun 2025", total: 219750, status: "Selesai" },
+    { id: "#3916", customer: "Rizza Cetta", time: "07 Jun 2025", total: 63400, status: "Diproses" },
   ];
 
   return (
