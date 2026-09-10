@@ -34,12 +34,15 @@ export default function HistoryOrder() {
           Kamu belum pernah melakukan pemesanan makanan atau minuman. Yuk, pesan makanan favoritmu sekarang!
         </p>
 
-        <div className="mt-6 w-full max-w-sm rounded-xl border border-gray-100 bg-slate-50 p-4 text-left">
+        <Link
+          href="/#menu-populer"
+          className="mt-6 block w-full max-w-sm rounded-xl border border-gray-100 bg-slate-50 p-4 text-left transition-colors duration-300 hover:bg-slate-100"
+        >
           <p className="text-sm font-bold text-gray-900">Menu Populer</p>
           <p className="text-xs text-gray-500 mt-0.5">
             Temukan rekomendasi menu paling laris hari ini
           </p>
-        </div>
+        </Link>
 
         <Link
           href="/order"
