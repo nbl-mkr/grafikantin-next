@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const [photoProfile] = useState("/assets/photo_profile.jpg");
 
   const isActive = (path: string) => pathname === path;
 
@@ -147,26 +148,6 @@ export default function Navbar() {
           </nav>
 
           <div className="flex items-center gap-3 md:justify-self-end">
-            <form className="flex items-center gap-2" role="search" onSubmit={(e) => e.preventDefault()}>
-              <input
-                type="search"
-                placeholder="Search..."
-                className="hidden sm:block w-36 lg:w-48 rounded-lg border border-gray-200 px-3 py-1.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-[#62748e] focus:outline-none focus:ring-1 focus:ring-[#62748e]"
-              />
-              <button
-                type="submit"
-                className="p-1.5 text-gray-600 hover:opacity-80 transition"
-              >
-                <Image
-                  src="/assets/search.png"
-                  alt="Search Icon"
-                  width={16}
-                  height={16}
-                  className="w-4 h-4"
-                />
-              </button>
-            </form>
-
             <Link
               href="/shopping"
               className="p-1.5 text-gray-600 hover:opacity-80 transition"
@@ -177,6 +158,17 @@ export default function Navbar() {
                 width={16}
                 height={16}
                 className="w-4 h-4"
+              />
+            </Link>
+
+            <Link
+              href="/admin"
+              className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full border border-gray-200 bg-white shadow-sm transition hover:opacity-80"
+            >
+              <img
+                src={photoProfile}
+                alt="Foto profil"
+                className="h-full w-full object-cover"
               />
             </Link>
 
