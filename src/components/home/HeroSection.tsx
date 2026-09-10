@@ -1,15 +1,108 @@
 "use client";
 
-import { type MouseEvent } from "react";
+import { type MouseEvent, useEffect, useRef } from "react";
+
+const GLOW_SIZE = 680;
+const GLOW_LERP = 0.14;
 
 export default function HeroSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    const glow = glowRef.current;
+    if (!section || !glow) return;
+
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!finePointer.matches || reducedMotion.matches) return;
+
+    let raf = 0;
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let running = false;
+
+    const applyTransform = (x: number, y: number) => {
+      glow.style.transform = `translate3d(${x - GLOW_SIZE / 2}px, ${y - GLOW_SIZE / 2}px, 0)`;
+    };
+
+    const tick = () => {
+      currentX += (targetX - currentX) * GLOW_LERP;
+      currentY += (targetY - currentY) * GLOW_LERP;
+      applyTransform(currentX, currentY);
+      if (Math.abs(targetX - currentX) > 0.3 || Math.abs(targetY - currentY) > 0.3) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        running = false;
+      }
+    };
+
+    const wake = () => {
+      if (!running) {
+        running = true;
+        raf = requestAnimationFrame(tick);
+      }
+    };
+
+    const handleEnter = (event: PointerEvent) => {
+      const rect = section.getBoundingClientRect();
+      currentX = event.clientX - rect.left;
+      currentY = event.clientY - rect.top;
+      targetX = currentX;
+      targetY = currentY;
+      applyTransform(currentX, currentY);
+      glow.style.opacity = "1";
+    };
+
+    const handleMove = (event: PointerEvent) => {
+      const rect = section.getBoundingClientRect();
+      targetX = event.clientX - rect.left;
+      targetY = event.clientY - rect.top;
+      wake();
+    };
+
+    const handleLeave = () => {
+      glow.style.opacity = "0";
+    };
+
+    section.addEventListener("pointerenter", handleEnter);
+    section.addEventListener("pointermove", handleMove);
+    section.addEventListener("pointerleave", handleLeave);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      section.removeEventListener("pointerenter", handleEnter);
+      section.removeEventListener("pointermove", handleMove);
+      section.removeEventListener("pointerleave", handleLeave);
+    };
+  }, []);
+
   const handleScrollToMenu = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     document.getElementById("menu-populer")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#fafafa]">
+    <section
+      ref={sectionRef}
+      className="relative w-full overflow-hidden bg-[#fafafa]"
+    >
+      <div
+        ref={glowRef}
+        aria-hidden="true"
+        className="pointer-events-none absolute left-0 top-0 z-0 opacity-0 will-change-transform transition-opacity duration-300"
+        style={{
+          width: GLOW_SIZE,
+          height: GLOW_SIZE,
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, rgba(231, 111, 81, 0.10) 0%, rgba(231, 111, 81, 0.05) 32%, transparent 62%)",
+        }}
+      />
+
       <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center px-6 py-14 text-center md:py-20">
         <h1 className="text-3xl font-black tracking-tight text-slate-900 sm:text-5xl lg:text-6xl max-w-4xl mx-auto leading-tight sm:leading-none">
           Pesan Menu <span className="text-[#e76f51]">Favoritmu</span> Tanpa Antre.
