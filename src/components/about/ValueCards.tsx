@@ -15,7 +15,7 @@ export default function ValueCards() {
         </div>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          <div className="group relative flex flex-col justify-between rounded-2xl bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+          <div className="group relative flex flex-col justify-between rounded-lg bg-white p-7 shadow-sm transition-all duration-300 hover:shadow-[0_0_16px_rgba(15,23,42,0.05)]">
             <div>
               <div className="flex items-center justify-between mb-5">
                 <div className="flex size-12 items-center justify-center rounded-xl bg-[#e76f51]/10 group-hover:bg-[#e76f51] transition-colors duration-300">
@@ -39,7 +39,7 @@ export default function ValueCards() {
             <div className="mt-6 h-1 w-8 rounded-full bg-gray-100 group-hover:w-full group-hover:bg-[#e76f51] transition-all duration-300" />
           </div>
 
-          <div className="group relative flex flex-col justify-between rounded-2xl bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+          <div className="group relative flex flex-col justify-between rounded-lg bg-white p-7 shadow-sm transition-all duration-300 hover:shadow-[0_0_16px_rgba(15,23,42,0.05)]">
             <div>
               <div className="flex items-center justify-between mb-5">
                 <div className="flex size-12 items-center justify-center rounded-xl bg-[#e76f51]/10 group-hover:bg-[#e76f51] transition-colors duration-300">
@@ -63,7 +63,7 @@ export default function ValueCards() {
             <div className="mt-6 h-1 w-8 rounded-full bg-gray-200 group-hover:w-full group-hover:bg-[#e76f51] transition-all duration-300" />
           </div>
 
-          <div className="group relative flex flex-col justify-between rounded-2xl bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+          <div className="group relative flex flex-col justify-between rounded-lg bg-white p-7 shadow-sm transition-all duration-300 hover:shadow-[0_0_16px_rgba(15,23,42,0.05)]">
             <div>
               <div className="flex items-center justify-between mb-5">
                 <div className="flex size-12 items-center justify-center rounded-xl bg-[#e76f51]/10 group-hover:bg-[#e76f51] transition-colors duration-300">
