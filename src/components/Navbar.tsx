@@ -190,7 +190,7 @@ export default function Navbar() {
               />
             </Link>
 
-            {user ? (
+            {user && (
               <Link
                 href="/admin"
                 className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full border border-gray-200 bg-white shadow-sm transition hover:opacity-80"
@@ -200,13 +200,6 @@ export default function Navbar() {
                   alt="Foto profil"
                   className="h-full w-full object-cover"
                 />
-              </Link>
-            ) : (
-              <Link
-                href="/auth/login"
-                className="hidden md:inline-flex items-center justify-center rounded-lg bg-[#e76f51] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#d55f41]"
-              >
-                Login
               </Link>
             )}
 
