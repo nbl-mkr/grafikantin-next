@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { User } from "@supabase/supabase-js";
 import Link from "next/link";
@@ -11,33 +10,35 @@ import { usePathname } from "next/navigation";
 export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [user, setUser] = useState<User | null>(null)
-  const [photoProfile, setPhotoProfile] = useState("/assets/photo_profile.jpg")
+  const [user, setUser] = useState<User | null>(null);
+  const [photoProfile, setPhotoProfile] = useState("/assets/photo_profile.jpg");
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    const supabase = createClient()
+    setIsMounted(true);
+    const supabase = createClient();
     
     const getUser = async () => {
-      const { data } = await supabase.auth.getUser()
-      setUser(data.user)
+      const { data } = await supabase.auth.getUser();
+      setUser(data.user);
       if (data.user?.user_metadata?.avatar_url) {
-        setPhotoProfile(data.user.user_metadata.avatar_url)
+        setPhotoProfile(data.user.user_metadata.avatar_url);
       }
-    }
+    };
 
-    getUser()
+    getUser();
 
     const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null)
+      setUser(session?.user ?? null);
       if (session?.user?.user_metadata?.avatar_url) {
-        setPhotoProfile(session.user.user_metadata.avatar_url)
+        setPhotoProfile(session.user.user_metadata.avatar_url);
       }
-    })
+    });
 
     return () => {
-      authListener.subscription.unsubscribe()
-    }
-  }, [])
+      authListener.subscription.unsubscribe();
+    };
+  }, []);
 
   const isActive = (path: string) => pathname === path;
 
@@ -190,7 +191,7 @@ export default function Navbar() {
               />
             </Link>
 
-            {user && (
+            {isMounted && user && (
               <Link
                 href="/admin"
                 className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full border border-gray-200 bg-white shadow-sm transition hover:opacity-80"
