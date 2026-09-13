@@ -3,15 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { login } from "@/lib/actions";
 
 export default function LoginForm() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log({ username, password });
-  };
 
   return (
     <div className="h-screen w-full flex flex-col lg:flex-row overflow-hidden bg-slate-50">
@@ -55,19 +51,20 @@ export default function LoginForm() {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-5">
+          <form action={login} className="space-y-3.5 sm:space-y-5">
             <div className="space-y-1 sm:space-y-1.5">
-              <label htmlFor="username" className="block text-xs sm:text-sm font-semibold text-gray-700">
-                Username
+              <label htmlFor="email" className="block text-xs sm:text-sm font-semibold text-gray-700">
+                Email
               </label>
               <div className="relative">
                 <input
-                  id="username"
-                  type="text"
+                  id="email"
+                  name="email"
+                  type="email"
                   required
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="25604021130411"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="nama@smkn4malang.sch.id"
                   className="w-full rounded-xl border border-gray-200 bg-white py-2.5 sm:py-3 pl-3.5 sm:pl-4 pr-10 sm:pr-11 text-xs sm:text-sm text-gray-900 placeholder-gray-400 focus:border-[#62748e] focus:outline-none focus:ring-1 focus:ring-[#62748e] shadow-sm transition"
                 />
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 sm:pr-3.5 text-gray-400">
@@ -85,6 +82,7 @@ export default function LoginForm() {
               <div className="relative">
                 <input
                   id="password"
+                  name="password"
                   type="password"
                   required
                   value={password}
@@ -102,7 +100,6 @@ export default function LoginForm() {
 
             <button
               type="submit"
-              onClick={() => window.location.href = "/"}
               className="w-full rounded-xl bg-[#e76f51] py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-white transition hover:bg-[#d55f43] shadow-sm"
             >
               Masuk
