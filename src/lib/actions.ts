@@ -16,7 +16,7 @@ export async function login(formData: FormData) {
   })
 
   if (authError || !authData.user) {
-    return redirect('/login?error=Email atau password salah')
+    return redirect('/auth/login?error=Email atau password salah')
   }
 
   const { data: userData } = await supabase
@@ -27,9 +27,7 @@ export async function login(formData: FormData) {
 
   revalidatePath('/', 'layout')
 
-  if (userData?.role === 'penjual') {
-    redirect('/dashboard-penjual')
-  } else if (userData?.role === 'admin') {
+  if (userData?.role === 'penjual' || userData?.role === 'admin') {
     redirect('/admin')
   } else {
     redirect('/')
@@ -41,5 +39,5 @@ export async function logout() {
   await supabase.auth.signOut()
 
   revalidatePath('/', 'layout')
-  redirect('/login')
+  redirect('/auth/login')
 }
