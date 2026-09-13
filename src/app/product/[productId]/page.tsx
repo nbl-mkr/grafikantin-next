@@ -1,5 +1,6 @@
+import { notFound } from "next/navigation";
 import ProductDetail from "@/components/product/ProductDetail";
-import { mockMakanan, mockCamilan, mockPopularFoods } from "@/data/mockData";
+import { fetchPublicCatalog } from "@/lib/data/public";
 
 interface PageProps {
   params: Promise<{ productId: string }>;
@@ -7,26 +8,16 @@ interface PageProps {
 
 export default async function ProductDetailPage({ params }: PageProps) {
   const { productId } = await params;
+  const { items, stands } = await fetchPublicCatalog();
 
-  const allItems = [...mockMakanan, ...mockCamilan, ...mockPopularFoods];
-  const product = allItems.find((item) => String(item.id) === String(productId));
+  const product = items.find((item) => String(item.id) === String(productId));
+  if (!product) notFound();
 
-  if (!product) {
-    return (
-      <div className="grow bg-white flex items-center justify-center p-6 text-center">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Menu Tidak Ditemukan</h1>
-          <p className="mt-2 text-sm text-gray-500">
-            Menu dengan ID {productId} tidak ada di sistem.
-          </p>
-        </div>
-      </div>
-    );
-  }
+  const stand = stands.find((s) => s.id === product.stand_id);
 
   return (
     <div className="grow bg-white flex flex-col">
-      <ProductDetail product={product} />
+      <ProductDetail product={product} standName={stand?.nama_stand} />
     </div>
   );
 }

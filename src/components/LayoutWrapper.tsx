@@ -10,15 +10,15 @@ export default function LayoutWrapper({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const isAdmin = pathname?.startsWith("/admin");
+  const isDashboard = pathname?.startsWith("/dashboard");
 
   return (
     <>
-      {!isAdmin && <Navbar />}
-      <main className={`grow flex flex-col ${isAdmin ? "" : "bg-[#fafafa]"}`}>
+      {!isDashboard && <Navbar />}
+      <main className={`grow flex flex-col ${isDashboard ? "" : "bg-[#fafafa]"}`}>
         {children}
       </main>
-      {!isAdmin && <Footer />}
+      {!isDashboard && <Footer />}
     </>
   );
 }

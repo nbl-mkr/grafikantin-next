@@ -12,27 +12,30 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [photoProfile, setPhotoProfile] = useState("/assets/photo_profile.jpg");
-  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
     const supabase = createClient();
     
-    const getUser = async () => {
-      const { data } = await supabase.auth.getUser();
-      setUser(data.user);
-      if (data.user?.user_metadata?.avatar_url) {
-        setPhotoProfile(data.user.user_metadata.avatar_url);
-      }
+    const syncProfile = async (u: User | null) => {
+      setUser(u);
+      if (!u) return;
+      const { data: profile } = await supabase
+        .from("users")
+        .select("foto")
+        .eq("id", u.id)
+        .single();
+      if (profile?.foto) setPhotoProfile(profile.foto);
     };
 
-    getUser();
+    const init = async () => {
+      const { data } = await supabase.auth.getUser();
+      syncProfile(data.user);
+    };
+
+    init();
 
     const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      if (session?.user?.user_metadata?.avatar_url) {
-        setPhotoProfile(session.user.user_metadata.avatar_url);
-      }
+      syncProfile(session?.user ?? null);
     });
 
     return () => {
@@ -191,9 +194,9 @@ export default function Navbar() {
               />
             </Link>
 
-            {isMounted && user && (
+            {user && (
               <Link
-                href="/admin"
+                href="/dashboard"
                 className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full border border-gray-200 bg-white shadow-sm transition hover:opacity-80"
               >
                 <img

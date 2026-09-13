@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import ProductGallery from "./ProductGallery";
 import ProductActionBar from "./ProductActionBar";
-import { mockStands } from "@/data/mockData";
 import { useCart } from "@/context/CartContext";
 
 export interface ProductData {
@@ -20,9 +19,10 @@ export interface ProductData {
 
 interface ProductDetailProps {
   product: ProductData;
+  standName?: string;
 }
 
-export default function ProductDetail({ product }: ProductDetailProps) {
+export default function ProductDetail({ product, standName }: ProductDetailProps) {
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
 
@@ -45,11 +45,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
     });
   };
 
-  const standName = useMemo(() => {
-    if (!product.stand_id) return "Stand Melati";
-    const stand = mockStands.find((s) => String(s.id) === String(product.stand_id));
-    return stand?.nama_stand || "Stand Melati";
-  }, [product.stand_id]);
+  const resolvedStandName = standName || "Stand";
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 md:py-10">
@@ -71,7 +67,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
         <div className="flex flex-col">
           <div className="flex items-center gap-3 flex-wrap">
             <span className="rounded-full bg-[#e76f51]/10 px-3 py-1 text-xs font-semibold text-[#e76f51]">
-              {standName}
+              {resolvedStandName}
             </span>
             <div className="flex items-center gap-1 text-xs text-gray-500">
               <span className="text-amber-400 text-sm">★</span>

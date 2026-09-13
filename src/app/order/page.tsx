@@ -1,13 +1,15 @@
 import HeroSection from "@/components/order/HeroSection";
 import OrderInformation from "@/components/order/OrderInformation";
 import StandCards from "@/components/order/StandCards";
-import { mockStands } from "@/data/mockData";
+import { fetchPublicCatalog } from "@/lib/data/public";
 
-export default function Order() {
+export default async function Order() {
+  const { stands } = await fetchPublicCatalog();
+
   return (
     <>
       <HeroSection />
-      <StandCards stands={mockStands} />
+      <StandCards stands={stands} />
       <OrderInformation />
     </>
   );

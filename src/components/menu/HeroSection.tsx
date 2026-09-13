@@ -1,13 +1,16 @@
 import Link from "next/link";
-import { Stand } from "@/data/mockData";
+
+export interface StandInfo {
+  nama_stand: string;
+  deskripsi?: string;
+}
 
 interface HeroSectionProps {
-  stand?: Stand;
+  stand?: StandInfo;
 }
 
 export default function HeroSection({ stand }: HeroSectionProps) {
-  const defaultStand: Stand = {
-    id: 1,
+  const defaultStand: StandInfo = {
     nama_stand: "Kantin Utama",
     deskripsi: "Pilihan menu makanan dan minuman lezat untuk menemani harimu.",
   };

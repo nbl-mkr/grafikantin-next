@@ -4,9 +4,13 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
-import { mockStands } from "@/data/mockData";
 
-export default function CartCard() {
+interface StandRef {
+  id: number;
+  nama_stand: string;
+}
+
+export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
   const { cart, updateQuantity, removeFromCart } = useCart();
   const [selectedIds, setSelectedIds] = useState<(string | number)[]>([]);
 
@@ -126,8 +130,8 @@ export default function CartCard() {
       <div className="flex flex-col gap-4">
         {Object.entries(groupedCart).map(([standId, items]) => {
           const standName =
-            mockStands.find((s) => String(s.id) === String(standId))
-              ?.nama_stand || "Stand Melati";
+            stands.find((s) => String(s.id) === String(standId))
+              ?.nama_stand || "Stand";
 
           const isStandAllSelected = items.every((item) =>
             selectedIds.includes(item.id)
