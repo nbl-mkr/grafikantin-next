@@ -1,8 +1,9 @@
 import { redirect } from "next/navigation";
 import OrderTargetChart from "@/components/dashboard/order/OrderTargetChart";
-import OrderTable from "@/components/dashboard/order/OrderTable";
+import OrderTable, { type OrderView } from "@/components/dashboard/order/OrderTable";
 import { getDashboardContext } from "@/lib/data/context";
 import { fetchOrders } from "@/lib/data/queries";
+import { buildOrderCharts } from "@/lib/data/aggregate";
 
 function formatTanggal(iso: string) {
   return new Date(iso).toLocaleDateString("id-ID", {
@@ -18,12 +19,18 @@ export default async function DashboardOrdersPage() {
 
   const orders = await fetchOrders(ctx);
 
-  const rows = orders.map((o) => ({
+  const rows: OrderView[] = orders.map((o) => ({
     id: o.kode_transaksi,
     customer: o.user?.username ?? "Pengunjung",
+    phone: "-",
     date: formatTanggal(o.created_at),
+    createdAt: o.created_at,
     status: o.status,
-    amount: Number(o.total_harga),
+    stand: o.stand?.nama_stand ?? "-",
+    menu: o.menu?.nama ?? "-",
+    jumlah: o.jumlah,
+    metode: o.metode_pembayaran ?? "-",
+    total: Number(o.total_harga),
   }));
 
   return (
@@ -38,7 +45,7 @@ export default async function DashboardOrdersPage() {
         </button>
       </div>
 
-      <OrderTargetChart />
+      <OrderTargetChart data={buildOrderCharts(orders)} />
       <OrderTable orders={rows} />
     </div>
   );

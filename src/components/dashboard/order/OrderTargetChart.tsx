@@ -15,7 +15,7 @@ import {
   Legend,
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
-import { orderTargetData } from "@/data/dashboardMockData";
+import type { OrderChartData } from "@/lib/data/aggregate";
 
 ChartJS.register(
   CategoryScale,
@@ -30,18 +30,18 @@ ChartJS.register(
   Legend
 );
 
-export default function OrderTargetChart() {
+export default function OrderTargetChart({ data }: { data: OrderChartData }) {
   const [range, setRange] = useState<"6m" | "12m">("6m");
 
-  const filteredData = range === "6m" ? orderTargetData.slice(0, 6) : orderTargetData;
+  const period = data[range];
 
   const chartData = {
-    labels: filteredData.map((d) => d.month),
+    labels: period.labels,
     datasets: [
       {
         type: "line" as const,
         label: "Target",
-        data: filteredData.map((d) => d.target),
+        data: period.labels.map(() => data.target),
         borderColor: "#f43f5e",
         backgroundColor: "#f43f5e",
         borderWidth: 2,
@@ -58,7 +58,7 @@ export default function OrderTargetChart() {
       {
         type: "bar" as const,
         label: "Pesanan",
-        data: filteredData.map((d) => d.orders),
+        data: period.pesanan,
         backgroundColor: "#e76f51",
         hoverBackgroundColor: "#d95f43",
         borderRadius: 4,
