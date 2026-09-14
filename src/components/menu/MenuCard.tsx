@@ -11,21 +11,27 @@ export interface MenuItem {
   rating?: string;
 }
 
+import AdaptiveImage from "@/components/common/AdaptiveImage";
+
 interface MenuCardProps {
   item: MenuItem;
   category?: "makanan" | "camilan" | string;
   onSelect?: (item: MenuItem, category: string) => void;
+  preload?: boolean;
 }
 
-export default function MenuCard({ item }: MenuCardProps) {
+export default function MenuCard({ item, preload }: MenuCardProps) {
   return (
     <div className="group rounded-lg bg-white p-4 shadow-sm hover:shadow-[0_0_16px_rgba(15,23,42,0.05)] hover:-translate-y-1 transition-all duration-300 border border-gray-100 flex flex-col justify-between">
       <div>
-        <div className="relative overflow-hidden rounded-lg">
-          <img
+        <div className="relative h-52 overflow-hidden rounded-lg">
+          <AdaptiveImage
             src={item.gambar}
             alt={item.nama_menu}
-            className="h-52 w-full object-cover"
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover"
+            preload={preload}
           />
         </div>
 
