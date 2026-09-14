@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { dashboardNavItems, publicLinks } from "@/data/dashboardMockData";
+import { logout } from "@/lib/actions";
 import type { Role } from "@/lib/roles";
 import type { DashboardProfile } from "@/components/dashboard/DashboardShell";
 
@@ -164,28 +165,39 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
               </svg>
             </button>
 
-            {isLainnyaOpen && (
-              <ul id="sidebar-lainnya" className="space-y-1 pt-2">
-                {publicLinks.map((link) => {
-                  const isActive = pathname === link.href;
-                  return (
-                    <li key={link.href}>
-                      <Link
-                        href={link.href}
+              {isLainnyaOpen && (
+                <ul id="sidebar-lainnya" className="space-y-1 pt-2">
+                  {publicLinks.map((link) => {
+                    const isActive = pathname === link.href;
+                    return (
+                      <li key={link.href}>
+                        <Link
+                          href={link.href}
+                          onClick={onClose}
+                          className={`block rounded-xl px-4 py-2.5 text-sm transition ${
+                            isActive
+                              ? "bg-gray-50 font-semibold text-[#e76f51]"
+                              : "text-gray-600 hover:bg-gray-50 hover:text-[#e76f51]"
+                          }`}
+                        >
+                          {link.label}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                  <li className="pt-2 border-t border-gray-100">
+                    <form action={logout}>
+                      <button
+                        type="submit"
                         onClick={onClose}
-                        className={`block rounded-xl px-4 py-2.5 text-sm transition ${
-                          isActive
-                            ? "bg-gray-50 font-semibold text-[#e76f51]"
-                            : "text-gray-600 hover:bg-gray-50 hover:text-[#e76f51]"
-                        }`}
+                        className="block w-full rounded-xl px-4 py-2.5 text-left text-sm text-[#e76f51] transition hover:bg-gray-50"
                       >
-                        {link.label}
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
+                        Logout
+                      </button>
+                    </form>
+                  </li>
+                </ul>
+              )}
           </div>
         </nav>
 
