@@ -64,7 +64,7 @@ export default function LoginForm() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="nama@smkn4malang.sch.id"
+                  placeholder="nis@grafikantin.com"
                   className="w-full rounded-xl border border-gray-200 bg-white py-2.5 sm:py-3 pl-3.5 sm:pl-4 pr-10 sm:pr-11 text-xs sm:text-sm text-gray-900 placeholder-gray-400 focus:border-[#62748e] focus:outline-none focus:ring-1 focus:ring-[#62748e] shadow-sm transition"
                 />
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 sm:pr-3.5 text-gray-400">
