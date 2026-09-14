@@ -6,6 +6,7 @@ import { logout } from "@/lib/actions";
 import { User } from "@supabase/supabase-js";
 import Link from "next/link";
 import Image from "next/image";
+import AdaptiveImage from "@/components/common/AdaptiveImage";
 import { usePathname } from "next/navigation";
 
 export default function Navbar() {
@@ -212,10 +213,12 @@ export default function Navbar() {
                 href="/dashboard"
                 className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full border border-gray-200 bg-white shadow-sm transition hover:opacity-80"
               >
-                <img
+                <AdaptiveImage
                   src={photoProfile}
                   alt="Foto profil"
-                  className="h-full w-full object-cover"
+                  fill
+                  sizes="32px"
+                  className="object-cover"
                 />
               </Link>
             )}
