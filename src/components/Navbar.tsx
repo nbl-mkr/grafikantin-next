@@ -9,34 +9,45 @@ import Image from "next/image";
 import AdaptiveImage from "@/components/common/AdaptiveImage";
 import { usePathname } from "next/navigation";
 
-export default function Navbar() {
+interface NavbarUser {
+  id: string;
+  email?: string | null;
+}
+
+interface NavbarProps {
+  initialUser: NavbarUser | null;
+  initialPhoto: string | null;
+}
+
+const DEFAULT_PHOTO = "/assets/photo_profile.jpg";
+
+export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
-  const [photoProfile, setPhotoProfile] = useState("/assets/photo_profile.jpg");
+  const [user, setUser] = useState<NavbarUser | null>(initialUser);
+  const [photoProfile, setPhotoProfile] = useState(initialPhoto ?? DEFAULT_PHOTO);
+
+  useEffect(() => {
+    setUser(initialUser);
+    setPhotoProfile(initialPhoto ?? DEFAULT_PHOTO);
+  }, [initialUser, initialPhoto]);
 
   useEffect(() => {
     const supabase = createClient();
-    
+
     const syncProfile = async (u: User | null) => {
-      setUser(u);
+      setUser(u ? { id: u.id, email: u.email } : null);
       if (!u) return;
       const { data: profile } = await supabase
         .from("users")
         .select("foto")
         .eq("id", u.id)
         .single();
-      if (profile?.foto) setPhotoProfile(profile.foto);
+      setPhotoProfile(profile?.foto ?? DEFAULT_PHOTO);
     };
 
-    const init = async () => {
-      const { data } = await supabase.auth.getUser();
-      syncProfile(data.user);
-    };
-
-    init();
-
-    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "INITIAL_SESSION") return;
       syncProfile(session?.user ?? null);
     });
 
