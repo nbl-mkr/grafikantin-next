@@ -3,6 +3,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import AdaptiveImage from "@/components/common/AdaptiveImage";
 import { dashboardNavItems, publicLinks } from "@/data/dashboardMockData";
 import { logout } from "@/lib/actions";
 import type { Role } from "@/lib/roles";
@@ -205,11 +206,12 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
           <div className="rounded-2xl border border-gray-100 bg-slate-50 p-3 shadow-sm">
             <div className="flex flex-col items-center gap-3 text-center">
               <div className="relative h-16 w-16 overflow-hidden rounded-full border border-gray-200 bg-white shadow-sm">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <AdaptiveImage
                   src={photoProfile}
                   alt={fullName}
-                  className="h-full w-full object-cover"
+                  fill
+                  sizes="64px"
+                  className="object-cover"
                 />
               </div>
               <div>
@@ -262,11 +264,12 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
                     <div className="sm:col-span-2 flex flex-col items-center justify-center gap-4">
                       <label htmlFor="photo-profile-upload" className="cursor-pointer">
                         <div className="relative h-32 w-32 overflow-hidden rounded-full border border-gray-200">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
+                          <AdaptiveImage
                             src={photoProfile}
                             alt="Foto Profil"
-                            className="h-full w-full object-cover"
+                            fill
+                            sizes="128px"
+                            className="object-cover"
                           />
                         </div>
                       </label>
