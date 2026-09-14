@@ -99,38 +99,6 @@ export function buildStats(orders: OrderRow[], stands: StandRow[], menus: MenuRo
   ];
 }
 
-export function buildTopMenus(orders: OrderRow[], menus: MenuRow[]) {
-  const sold = new Map<number, number>();
-  for (const o of orders) {
-    if (o.status === "Dibatalkan" || !o.menu) continue;
-    sold.set(o.menu.id, (sold.get(o.menu.id) ?? 0) + o.jumlah);
-  }
-  return menus
-    .map((m) => ({
-      id: m.id,
-      nama_menu: m.nama,
-      stand: m.stand?.nama_stand ?? "-",
-      terjual: sold.get(m.id) ?? 0,
-      gambar: m.gambar,
-    }))
-    .sort((a, b) => b.terjual - a.terjual)
-    .slice(0, 5);
-}
-
-export function buildStandStatuses(stands: StandRow[], orders: OrderRow[]) {
-  const soldByStand = new Map<number, number>();
-  for (const o of orders) {
-    if (o.status === "Dibatalkan") continue;
-    soldByStand.set(o.id_stand, (soldByStand.get(o.id_stand) ?? 0) + o.jumlah);
-  }
-  return stands.map((s) => ({
-    id: s.id,
-    nama_stand: s.nama_stand,
-    status: s.status,
-    terjual: soldByStand.get(s.id) ?? 0,
-  }));
-}
-
 export function buildStandRevenue(orders: OrderRow[]) {
   const map = new Map<number, number>();
   for (const o of orders) {
@@ -162,6 +130,40 @@ export function buildReportCharts(orders: OrderRow[]): {
     return { labels, pendapatan, pesanan };
   };
   return { "6m": make(6), "12m": make(12) };
+}
+
+export interface OrderChartPeriod {
+  labels: string[];
+  pesanan: number[];
+}
+
+export interface OrderChartData {
+  "6m": OrderChartPeriod;
+  "12m": OrderChartPeriod;
+  target: number;
+}
+
+export function buildOrderCharts(orders: OrderRow[]): OrderChartData {
+  const now = new Date();
+  const make = (months: number): OrderChartPeriod => {
+    const labels: string[] = [];
+    const pesanan: number[] = [];
+    for (let i = months - 1; i >= 0; i--) {
+      const start = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const end = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
+      labels.push(MONTHS_ID[start.getMonth()]);
+      pesanan.push(
+        orders.filter(
+          (o) => o.status !== "Dibatalkan" && inRange(new Date(o.created_at), start, end)
+        ).length
+      );
+    }
+    return { labels, pesanan };
+  };
+  const twelve = make(12);
+  const avg = twelve.pesanan.reduce((s, v) => s + v, 0) / 12;
+  const target = Math.max(5, Math.round(avg / 5) * 5);
+  return { "6m": make(6), "12m": twelve, target };
 }
 
 export interface ReportData {
