@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { logout } from "@/lib/actions";
 import { User } from "@supabase/supabase-js";
 import Link from "next/link";
 import Image from "next/image";
@@ -163,17 +164,29 @@ export default function Navbar() {
                   </div>
 
                   <div className="py-1">
-                    <Link
-                      href="/auth/login"
-                      className={`block px-4 py-2 text-xs transition-colors hover:bg-blue-50 ${
-                        isActive("/auth/login")
-                          ? "font-semibold text-[#e76f51]"
-                          : "font-medium text-[#e76f51]"
-                      }`}
-                      role="menuitem"
-                    >
-                      Login
-                    </Link>
+                    {user ? (
+                      <form action={logout}>
+                        <button
+                          type="submit"
+                          className="block w-full px-4 py-2 text-left text-xs font-medium text-[#e76f51] transition-colors hover:bg-blue-50"
+                          role="menuitem"
+                        >
+                          Logout
+                        </button>
+                      </form>
+                    ) : (
+                      <Link
+                        href="/auth/login"
+                        className={`block px-4 py-2 text-xs transition-colors hover:bg-blue-50 ${
+                          isActive("/auth/login")
+                            ? "font-semibold text-[#e76f51]"
+                            : "font-medium text-[#e76f51]"
+                        }`}
+                        role="menuitem"
+                      >
+                        Login
+                      </Link>
+                    )}
                   </div>
                 </div>
               </li>
@@ -319,13 +332,25 @@ export default function Navbar() {
               </Link>
             </li>
             <li className="pt-2 border-t border-gray-100">
-              <Link
-                href="/auth/login"
-                onClick={() => setIsOpen(false)}
-                className="block w-full text-center rounded-lg bg-[#e76f51] px-4 py-2.5 font-semibold text-white shadow-sm transition hover:bg-[#2b2bad]"
-              >
-                Login
-              </Link>
+              {user ? (
+                <form action={logout}>
+                  <button
+                    type="submit"
+                    onClick={() => setIsOpen(false)}
+                    className="block w-full text-center rounded-lg bg-[#e76f51] px-4 py-2.5 font-semibold text-white shadow-sm transition hover:bg-[#2b2bad]"
+                  >
+                    Logout
+                  </button>
+                </form>
+              ) : (
+                <Link
+                  href="/auth/login"
+                  onClick={() => setIsOpen(false)}
+                  className="block w-full text-center rounded-lg bg-[#e76f51] px-4 py-2.5 font-semibold text-white shadow-sm transition hover:bg-[#2b2bad]"
+                >
+                  Login
+                </Link>
+              )}
             </li>
           </ul>
         </div>
