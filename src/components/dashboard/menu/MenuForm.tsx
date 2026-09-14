@@ -1,6 +1,7 @@
 "use client";
 
 import CustomSelect from "@/components/CustomSelect";
+import ImageUploadField from "@/components/dashboard/ImageUploadField";
 
 export type MenuKategori = "Makanan" | "Minuman" | "Snack";
 
@@ -141,28 +142,14 @@ export default function MenuForm({ form, onChange, stands }: MenuFormProps) {
         >
           Gambar
         </label>
-        <div className="mt-2 flex items-center gap-3">
-          {form.gambarPreview && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={form.gambarPreview}
-              alt="Preview"
-              className="size-16 rounded-lg object-cover border border-gray-200"
-            />
-          )}
-          <input
-            type="file"
-            id="menu-gambar"
-            accept="image/*"
-            onChange={(e) => {
-              const file = e.target.files?.[0] ?? null;
-              const preview = file ? URL.createObjectURL(file) : form.gambarPreview;
-              update("gambarFile", file);
-              onChange({ ...form, gambarFile: file, gambarPreview: preview });
-            }}
-            className="block w-full text-sm text-gray-600 file:mr-3 file:rounded-md file:border-0 file:bg-gray-100 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-gray-700 hover:file:bg-gray-200"
-          />
-        </div>
+        <ImageUploadField
+          id="menu-gambar"
+          preview={form.gambarPreview}
+          onSelect={(file) => {
+            const nextPreview = file ? URL.createObjectURL(file) : null;
+            onChange({ ...form, gambarFile: file, gambarPreview: nextPreview });
+          }}
+        />
       </div>
 
       <div className="sm:col-span-2">
