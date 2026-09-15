@@ -110,7 +110,6 @@ export default function ProductDetail({ product, standName }: ProductDetailProps
 
           <div className="mt-6 lg:mt-8">
             <ProductActionBar
-              price={product.harga}
               quantity={quantity}
               onDecrease={handleDecrease}
               onIncrease={handleIncrease}

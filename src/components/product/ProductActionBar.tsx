@@ -1,9 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface ProductActionBarProps {
-  price: number;
   quantity: number;
   onDecrease: () => void;
   onIncrease: () => void;
@@ -11,7 +11,6 @@ interface ProductActionBarProps {
 }
 
 export default function ProductActionBar({
-  price,
   quantity,
   onDecrease,
   onIncrease,
@@ -56,9 +55,16 @@ export default function ProductActionBar({
         <button
           type="button"
           onClick={handleAddToCartAndRedirect}
-          className="flex h-11 items-center justify-center w-full sm:w-auto flex-1 max-w-xs truncate rounded-xl bg-[#e76f51] px-4 sm:px-6 text-center text-sm font-bold text-white transition hover:bg-[#d55f43] active:scale-95"
+          className="flex h-11 items-center justify-center gap-2 w-full sm:w-auto flex-1 max-w-xs truncate rounded-xl bg-[#e76f51] px-4 sm:px-6 text-center text-sm font-bold text-white transition hover:bg-[#d55f43] active:scale-95"
         >
-          Rp {(price * quantity).toLocaleString("id-ID")}
+          <Image
+            src="/assets/shopping-cart.png"
+            alt=""
+            width={16}
+            height={16}
+            className="h-4 w-4 object-contain brightness-0 invert"
+          />
+          Masukkan Keranjang
         </button>
       </div>
     </div>
