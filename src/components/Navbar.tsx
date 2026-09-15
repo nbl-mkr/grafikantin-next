@@ -66,7 +66,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-100 print:hidden">
       <div className="w-full flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 md:grid md:grid-cols-[1fr_auto_1fr]">
-        <Link href="/" className="flex items-center gap-4 text-gray-900 text-lg">
+        <Link href="/" className="flex items-center gap-4 text-gray-600 text-lg">
           <Image
             src="/assets/logo_header1.png"
             alt="Logo Grafikantin"
@@ -74,7 +74,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
             height={128}
             className="h-8 w-auto object-contain"
           />
-          <span>Grafikantin</span>
+          <span className="font-semibold">Grafikantin</span>
         </Link>
 
         <div className="flex flex-1 items-center justify-end md:contents">
