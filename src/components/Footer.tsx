@@ -16,7 +16,7 @@ export default function Footer() {
                         height={128}
                         className="h-8 w-auto object-contain"
                     />
-                    <span>Grafikantin</span>
+                    <span className="font-semibold">Grafikantin</span>
                 </Link>
                 <p className="mt-4 max-w-xs text-sm leading-relaxed text-gray-600">
                     Kantin SMK Negeri 4 Malang yang menyediakan berbagai pilihan makanan dan minuman dengan pelayanan
