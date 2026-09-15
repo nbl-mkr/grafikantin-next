@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -7,7 +8,16 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
 
             <div className="lg:col-span-1">
-                <h3 className="text-2xl font-bold text-gray-900 tracking-tight">Grafikantin</h3>
+                <Link href="/" className="flex items-center gap-4 text-gray-900 text-lg">
+                    <Image
+                        src="/assets/logo_footer.png"
+                        alt="Logo Grafikantin"
+                        width={128}
+                        height={128}
+                        className="h-8 w-auto object-contain"
+                    />
+                    <span>Grafikantin</span>
+                </Link>
                 <p className="mt-4 max-w-xs text-sm leading-relaxed text-gray-600">
                     Kantin SMK Negeri 4 Malang yang menyediakan berbagai pilihan makanan dan minuman dengan pelayanan
                     cepat, bersih, dan nyaman.
