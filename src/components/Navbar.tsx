@@ -68,7 +68,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
       <div className="w-full flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 md:grid md:grid-cols-[1fr_auto_1fr]">
         <Link href="/" className="flex items-center gap-4 text-gray-900 text-lg">
           <Image
-            src="/assets/logo_header.png"
+            src="/assets/logo_header1.png"
             alt="Logo Grafikantin"
             width={128}
             height={128}
