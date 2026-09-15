@@ -141,7 +141,7 @@ export default function CheckoutCard() {
                     className="object-contain"
                   />
                 </div>
-                <span className="text-[11px] font-medium text-gray-600 mt-4">
+                <span className="text-xs font-medium text-gray-600 mt-4">
                   NMAS: Kantin SMKN 4 Malang
                 </span>
               </div>

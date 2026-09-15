@@ -18,7 +18,7 @@ export default function PromoBanner() {
         </div>
 
         <div className="w-full text-center md:w-auto md:text-left">
-          <p className="text-[24px] md:text-[30px] italic leading-snug">
+          <p className="text-2xl md:text-3xl italic leading-snug">
             Pesan, Tanpa Antre. <br className="hidden sm:block" />
             Siap Dalam 15 Menit!
           </p>
@@ -27,7 +27,7 @@ export default function PromoBanner() {
         <div className="w-full text-center md:w-auto md:text-right">
           <a
             href="/order"
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#e76f51] px-5 py-2.5 text-[16px] font-semibold text-white shadow-sm transition-all duration-200 hover:bg-[#d55f43] active:scale-[0.98]"
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#e76f51] px-5 py-2.5 text-base font-semibold text-white shadow-sm transition-all duration-200 hover:bg-[#d55f43] active:scale-[0.98]"
           >
             <span>Pesan Di Sini</span>
           </a>

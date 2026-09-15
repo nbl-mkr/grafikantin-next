@@ -12,7 +12,7 @@ export default function ComplaintBanner() {
 
         <div className="relative flex flex-col items-center justify-between gap-6 md:flex-row">
           <div className="w-full text-center md:w-3/4 md:text-left">
-            <h3 className="text-3xl font-extrabold tracking-tight leading-tight mb-3 md:text-[40px]">
+            <h3 className="text-3xl font-extrabold tracking-tight leading-tight mb-3 md:text-4xl">
               Keluhan Siswa
             </h3>
             <p className="text-base leading-relaxed md:text-lg">
