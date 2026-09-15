@@ -11,7 +11,7 @@ export default function PromoBanner() {
 
       <div className="relative mx-auto flex max-w-[75vw] flex-col items-center justify-between gap-6 p-12 md:flex-row">
         <div className="w-full text-center md:w-auto md:text-left">
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight">
             AMBIL <br className="hidden sm:block" />
             <span className="italic">DI KANTIN</span>
           </h2>
