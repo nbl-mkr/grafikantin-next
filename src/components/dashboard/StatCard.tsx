@@ -43,11 +43,11 @@ export default function StatCard({ label, value, change, positive, period }: Sta
       </div>
 
       <div>
-        <strong className="block text-sm font-medium text-gray-500">{label}</strong>
+        <strong className="block text-sm font-medium text-gray-600">{label}</strong>
 
         <p className="mt-1 flex items-baseline gap-2">
           <span className="text-2xl font-extrabold tracking-tight text-gray-900">{value}</span>
-          <span className="text-xs text-gray-400">{period}</span>
+          <span className="text-xs text-gray-600">{period}</span>
         </p>
       </div>
     </article>

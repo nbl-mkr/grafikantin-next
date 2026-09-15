@@ -59,7 +59,7 @@ export default function CustomSelect({
         onClick={() => setOpen((prev) => !prev)}
         className="mt-1 inline-flex h-9 w-full items-center justify-between rounded-md border border-gray-200 bg-white px-3 text-sm text-gray-900 focus:border-[#e76f51] focus:outline-none transition-colors"
       >
-        <span className={selected ? "" : "text-gray-400"}>
+        <span className={selected ? "" : "text-gray-600"}>
           {selected ? selected.label : "Pilih..."}
         </span>
         <svg
@@ -68,7 +68,7 @@ export default function CustomSelect({
           viewBox="0 0 24 24"
           strokeWidth="2"
           stroke="currentColor"
-          className={`size-3.5 shrink-0 text-gray-400 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          className={`size-3.5 shrink-0 text-gray-600 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
         </svg>

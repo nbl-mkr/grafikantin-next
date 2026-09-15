@@ -46,7 +46,7 @@ export default function LoginForm() {
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">
               Login
             </h1>
-            <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-gray-500">
+            <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-gray-600">
               Masuk ke akun Grafikantin kamu
             </p>
           </div>
@@ -67,7 +67,7 @@ export default function LoginForm() {
                   placeholder="nis@grafikantin.com"
                   className="w-full rounded-xl border border-gray-200 bg-white py-2.5 sm:py-3 pl-3.5 sm:pl-4 pr-10 sm:pr-11 text-xs sm:text-sm text-gray-900 placeholder-gray-400 focus:border-[#62748e] focus:outline-none focus:ring-1 focus:ring-[#62748e] shadow-sm transition"
                 />
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 sm:pr-3.5 text-gray-400">
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 sm:pr-3.5 text-gray-600">
                   <svg className="size-4 sm:size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
@@ -90,7 +90,7 @@ export default function LoginForm() {
                   placeholder="••••••••••••"
                   className="w-full rounded-xl border border-gray-200 bg-white py-2.5 sm:py-3 pl-3.5 sm:pl-4 pr-10 sm:pr-11 text-xs sm:text-sm text-gray-900 placeholder-gray-400 focus:border-[#62748e] focus:outline-none focus:ring-1 focus:ring-[#62748e] shadow-sm transition"
                 />
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 sm:pr-3.5 text-gray-400">
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 sm:pr-3.5 text-gray-600">
                   <svg className="size-4 sm:size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>

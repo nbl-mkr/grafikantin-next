@@ -108,7 +108,7 @@ export default function HeroSection() {
           Pesan Menu <span className="text-[#e76f51]">Favoritmu</span> Tanpa Antre.
         </h1>
 
-        <p className="mt-8 text-sm sm:text-base text-slate-500 max-w-2xl mx-auto font-normal">
+        <p className="mt-8 text-sm sm:text-base text-gray-600 max-w-2xl mx-auto font-normal">
           Nikmati santapan kantin dengan penyajian cepat, rasa terjamin, dan pengalaman pemesanan yang serba praktis langsung dari perangkatmu.
         </p>
 
@@ -122,19 +122,19 @@ export default function HeroSection() {
         <div className="mt-8 pt-8 border-t border-slate-100 grid grid-cols-2 sm:grid-cols-4 gap-16 text-center">
           <div>
             <p className="text-2xl font-black text-slate-900">15m</p>
-            <p className="text-xs font-medium text-slate-500">Estimasi Penyajian</p>
+            <p className="text-xs font-medium text-gray-600">Estimasi Penyajian</p>
           </div>
           <div>
             <p className="text-2xl font-black text-slate-900">10+</p>
-            <p className="text-xs font-medium text-slate-500">Stand Kantin</p>
+            <p className="text-xs font-medium text-gray-600">Stand Kantin</p>
           </div>
           <div>
             <p className="text-2xl font-black text-slate-900">100%</p>
-            <p className="text-xs font-medium text-slate-500">Higienis & Segar</p>
+            <p className="text-xs font-medium text-gray-600">Higienis & Segar</p>
           </div>
           <div>
             <p className="text-2xl font-black text-slate-900">4.8/5</p>
-            <p className="text-xs font-medium text-slate-500">Rating Siswa</p>
+            <p className="text-xs font-medium text-gray-600">Rating Siswa</p>
           </div>
         </div>
       </div>

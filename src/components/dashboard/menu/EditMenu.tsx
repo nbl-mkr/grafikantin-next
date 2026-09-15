@@ -35,7 +35,7 @@ export default function EditMenu({ menuId }: EditMenuProps) {
     return (
       <div className="rounded-2xl border border-gray-100 bg-white p-6 text-center shadow-sm">
         <h2 className="text-base font-semibold text-gray-900">Menu Tidak Ditemukan</h2>
-        <p className="mt-2 text-sm text-gray-500">
+        <p className="mt-2 text-sm text-gray-600">
           Menu dengan ID {menuId} tidak ada di sistem.
         </p>
         <Link
@@ -68,7 +68,7 @@ export default function EditMenu({ menuId }: EditMenuProps) {
       <div className="flex items-center justify-between rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
         <div>
           <h1 className="text-xl font-bold text-gray-900">Edit Menu</h1>
-          <p className="mt-1 text-xs text-gray-500">
+          <p className="mt-1 text-xs text-gray-600">
             Perbarui informasi {menu.nama}.
           </p>
         </div>

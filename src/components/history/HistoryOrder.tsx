@@ -16,7 +16,7 @@ export default function HistoryOrder() {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="size-8 text-gray-400"
+            className="size-8 text-gray-600"
           >
             <path
               strokeLinecap="round"
@@ -30,7 +30,7 @@ export default function HistoryOrder() {
           Belum Ada Riwayat Pesanan
         </h2>
 
-        <p className="mt-2 text-sm text-gray-500 max-w-md">
+        <p className="mt-2 text-sm text-gray-600 max-w-md">
           Kamu belum pernah melakukan pemesanan makanan atau minuman. Yuk, pesan makanan favoritmu sekarang!
         </p>
 
@@ -39,7 +39,7 @@ export default function HistoryOrder() {
           className="mt-6 block w-full max-w-sm rounded-xl border border-gray-100 bg-slate-50 p-4 text-left transition-colors duration-300 hover:bg-slate-100"
         >
           <p className="text-sm font-bold text-gray-900">Menu Populer</p>
-          <p className="text-xs text-gray-500 mt-0.5">
+          <p className="text-xs text-gray-600 mt-0.5">
             Temukan rekomendasi menu paling laris hari ini
           </p>
         </Link>

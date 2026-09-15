@@ -47,12 +47,12 @@ export default function StandCards({ stands }: StandCardsProps) {
                       {stand.nama_stand}
                     </h5>
 
-                    <p className="text-sm text-gray-500 mt-2 line-clamp-2">
+                    <p className="text-sm text-gray-600 mt-2 line-clamp-2">
                       {stand.deskripsi}
                     </p>
                   </div>
 
-                  <div className="mt-4 flex items-center justify-center gap-2 text-xs border-t border-gray-100 pt-3 text-gray-500">
+                  <div className="mt-4 flex items-center justify-center gap-2 text-xs border-t border-gray-100 pt-3 text-gray-600">
                     <svg
                       className="size-4 text-[#e76f51] shrink-0"
                       xmlns="http://www.w3.org/2000/svg"

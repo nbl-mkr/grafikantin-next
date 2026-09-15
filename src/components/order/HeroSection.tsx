@@ -21,7 +21,7 @@ export default function HeroSection() {
             Cari stand dan makanan favoritmu di Grafikantin.
           </p>
 
-          <div className="mt-4 flex flex-wrap items-center justify-center md:justify-start gap-3 text-xs font-medium text-gray-500">
+          <div className="mt-4 flex flex-wrap items-center justify-center md:justify-start gap-3 text-xs font-medium text-gray-600">
             <span className="flex items-center gap-1.5">
               <span className="size-1.5 rounded-full bg-[#e76f51]"></span>
               Penyajian Cepat

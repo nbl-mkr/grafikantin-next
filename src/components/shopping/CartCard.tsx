@@ -63,7 +63,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
         <div className="flex flex-col items-center justify-center rounded-2xl border border-gray-100 bg-white p-8 sm:p-12 text-center shadow-sm">
           <div className="mb-4 rounded-full bg-slate-50 p-6">
             <svg
-              className="size-8 text-gray-400"
+              className="size-8 text-gray-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -79,7 +79,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
           <h2 className="text-xl font-bold text-gray-900">
             Keranjang Masih Kosong
           </h2>
-          <p className="mt-2 text-sm text-gray-500 max-w-md">
+          <p className="mt-2 text-sm text-gray-600 max-w-md">
             Kamu belum menambahkan menu ke keranjang. Yuk, cari makanan
             favoritmu sekarang!
           </p>
@@ -88,7 +88,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
             className="mt-6 block w-full max-w-sm rounded-xl border border-gray-100 bg-slate-50 p-4 text-left transition-colors duration-300 hover:bg-slate-100"
           >
             <p className="text-sm font-bold text-gray-900">Menu Populer</p>
-            <p className="text-xs text-gray-500 mt-0.5">
+            <p className="text-xs text-gray-600 mt-0.5">
               Temukan rekomendasi menu paling laris hari ini
             </p>
           </Link>
@@ -109,7 +109,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
         Keranjang Belanja Saya
       </h1>
 
-      <div className="mb-4 flex items-center justify-between rounded-2xl border border-gray-100 bg-white px-6 py-4 text-sm font-semibold text-gray-500 shadow-sm">
+      <div className="mb-4 flex items-center justify-between rounded-2xl border border-gray-100 bg-white px-6 py-4 text-sm font-semibold text-gray-600 shadow-sm">
         <div className="flex items-center gap-4 w-2/5">
           <input
             type="checkbox"
@@ -207,7 +207,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
                           <span className="font-bold text-gray-900">
                             {item.nama_menu}
                           </span>
-                          <span className="w-fit rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-gray-500">
+                          <span className="w-fit rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-gray-600">
                             Makanan
                           </span>
                         </div>
@@ -225,7 +225,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
                               onClick={() =>
                                 updateQuantity(item.id, item.quantity - 1)
                               }
-                              className="px-2 py-0.5 text-xs text-gray-500 hover:bg-gray-200"
+                              className="px-2 py-0.5 text-xs text-gray-600 hover:bg-gray-200"
                             >
                               -
                             </button>
@@ -237,7 +237,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
                               onClick={() =>
                                 updateQuantity(item.id, item.quantity + 1)
                               }
-                              className="px-2 py-0.5 text-xs text-gray-500 hover:bg-gray-200"
+                              className="px-2 py-0.5 text-xs text-gray-600 hover:bg-gray-200"
                             >
                               +
                             </button>
@@ -296,7 +296,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
               <button
                 type="button"
                 onClick={handleRemoveSelected}
-                className="text-xs font-medium text-gray-500 hover:text-red-500 transition"
+                className="text-xs font-medium text-gray-600 hover:text-red-500 transition"
               >
                 Hapus Terpilih
               </button>
@@ -305,7 +305,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
 
           <div className="flex items-center gap-6">
             <div className="flex flex-col items-end">
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-gray-600">
                 Total ({totalProduk} Produk):
               </span>
               <span className="text-xl font-extrabold text-[#e76f51]">

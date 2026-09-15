@@ -69,7 +69,7 @@ export default function MenuCard({ item, preload }: MenuCardProps) {
                 />
               </svg>
               <div className="mt-1.5 sm:mt-0">
-                <p className="text-gray-400">Estimasi</p>
+                <p className="text-gray-600">Estimasi</p>
                 <p className="font-medium text-gray-700">
                   {item.estimasi || "10-15 Mnt"}
                 </p>
@@ -92,7 +92,7 @@ export default function MenuCard({ item, preload }: MenuCardProps) {
                 />
               </svg>
               <div className="mt-1.5 sm:mt-0">
-                <p className="text-gray-400">Rating</p>
+                <p className="text-gray-600">Rating</p>
                 <p className="font-medium text-gray-700">
                   {item.rating || "4.8 / 5.0"}
                 </p>

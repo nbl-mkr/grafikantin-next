@@ -37,7 +37,7 @@ export default function MenuSection({
           ))}
         </div>
       ) : (
-        <p className="text-slate-400 italic mb-10">{emptyMessage}</p>
+        <p className="text-gray-600 italic mb-10">{emptyMessage}</p>
       )}
     </div>
   );

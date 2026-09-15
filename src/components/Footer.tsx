@@ -63,7 +63,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-100 pt-6">
-            <p className="text-xs text-center text-gray-500">
+            <p className="text-xs text-center text-gray-600">
                 &copy; 2026 Grafikantin | SMK Negeri 4 Malang. All rights reserved.
             </p>
         </div>

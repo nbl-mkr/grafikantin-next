@@ -31,7 +31,7 @@ export default function AddMenu() {
       <div className="flex items-center justify-between rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
         <div>
           <h1 className="text-xl font-bold text-gray-900">Tambah Menu</h1>
-          <p className="mt-1 text-xs text-gray-500">
+          <p className="mt-1 text-xs text-gray-600">
             Lengkapi informasi menu baru yang akan ditambahkan.
           </p>
         </div>

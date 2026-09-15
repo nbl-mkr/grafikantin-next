@@ -26,7 +26,7 @@ export default function ProductActionBar({
   return (
     <div className="flex items-center justify-between gap-3 sm:gap-4 border-t border-gray-100 pt-6">
       <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-        <span className="text-xs font-bold uppercase tracking-wider text-gray-400">
+        <span className="text-xs font-bold uppercase tracking-wider text-gray-600">
           Jumlah
         </span>
         <div className="flex h-11 items-center rounded-xl bg-white ring-1 ring-gray-200">

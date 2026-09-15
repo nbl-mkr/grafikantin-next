@@ -151,7 +151,7 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
               onClick={() => setIsLainnyaOpen(!isLainnyaOpen)}
               aria-expanded={isLainnyaOpen}
               aria-controls="sidebar-lainnya"
-              className="flex w-full cursor-pointer items-center justify-between rounded-xl px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-400 transition hover:text-[#e76f51]"
+              className="flex w-full cursor-pointer items-center justify-between rounded-xl px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-600 transition hover:text-[#e76f51]"
             >
               Lainnya
               <svg
@@ -216,7 +216,7 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
               </div>
               <div>
                 <p className="text-sm font-semibold text-gray-900">{fullName}</p>
-                <p className="text-xs text-gray-500">{email}</p>
+                <p className="text-xs text-gray-600">{email}</p>
               </div>
             </div>
           </div>
@@ -239,7 +239,7 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
                       type="button"
                       aria-label="Tutup profil"
                       onClick={closeProfileModal}
-                      className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-500 transition hover:bg-gray-50 hover:text-gray-700"
+                      className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition hover:bg-gray-50 hover:text-gray-700"
                     >
                       ✕
                     </button>

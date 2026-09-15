@@ -30,7 +30,7 @@ export default function EditStand({ standId }: EditStandProps) {
     return (
       <div className="rounded-2xl border border-gray-100 bg-white p-6 text-center shadow-sm">
         <h2 className="text-base font-semibold text-gray-900">Stand Tidak Ditemukan</h2>
-        <p className="mt-2 text-sm text-gray-500">
+        <p className="mt-2 text-sm text-gray-600">
           Stand dengan ID {standId} tidak ada di sistem.
         </p>
         <Link
@@ -55,7 +55,7 @@ export default function EditStand({ standId }: EditStandProps) {
       <div className="flex items-center justify-between rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
         <div>
           <h1 className="text-xl font-bold text-gray-900">Edit Stand</h1>
-          <p className="mt-1 text-xs text-gray-500">
+          <p className="mt-1 text-xs text-gray-600">
             Perbarui informasi {stand.nama}.
           </p>
         </div>

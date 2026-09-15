@@ -29,14 +29,14 @@ export default function HeroSection({ stand }: HeroSectionProps) {
 
       <div className="relative mx-auto flex max-w-6xl flex-col items-start justify-between gap-8 px-6 md:flex-row md:items-center">
         <div className="w-full text-left md:w-8/12">
-          <nav className="mb-3 text-sm text-gray-500">
+          <nav className="mb-3 text-sm text-gray-600">
             <ol className="flex items-center space-x-2">
               <li>
                 <Link href="/order" className="text-[#e76f51] hover:underline font-medium">
                   Stand
                 </Link>
               </li>
-              <li><span className="text-gray-400">/</span></li>
+              <li><span className="text-gray-600">/</span></li>
               <li className="text-gray-600 font-medium" aria-current="page">
                 {activeStand.nama_stand}
               </li>

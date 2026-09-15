@@ -49,7 +49,7 @@ export default function ProductDetail({ product, standName }: ProductDetailProps
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 md:py-10">
-      <nav className="mb-6 flex items-center gap-2 text-sm text-gray-500">
+      <nav className="mb-6 flex items-center gap-2 text-sm text-gray-600">
         <Link href="/" className="hover:text-[#e76f51] transition">
           Beranda
         </Link>
@@ -69,7 +69,7 @@ export default function ProductDetail({ product, standName }: ProductDetailProps
             <span className="rounded-full bg-[#e76f51]/10 px-3 py-1 text-xs font-semibold text-[#e76f51]">
               {resolvedStandName}
             </span>
-            <div className="flex items-center gap-1 text-xs text-gray-500">
+            <div className="flex items-center gap-1 text-xs text-gray-600">
               <span className="text-amber-400 text-sm">★</span>
               <span className="font-bold text-gray-800">
                 {product.rating || "4.8 / 5.0"}
@@ -86,7 +86,7 @@ export default function ProductDetail({ product, standName }: ProductDetailProps
           </p>
 
           <div className="mt-6 border-t border-gray-100 pt-5">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
               Deskripsi Menu
             </h2>
             <p className="text-sm leading-relaxed text-gray-600 max-w-prose">
@@ -96,14 +96,14 @@ export default function ProductDetail({ product, standName }: ProductDetailProps
 
           <div className="mt-5 flex items-center justify-between rounded-2xl bg-slate-50 p-4 border border-gray-100 text-sm">
             <div>
-              <p className="text-gray-400 text-xs">Estimasi Penyajian</p>
+              <p className="text-gray-600 text-xs">Estimasi Penyajian</p>
               <p className="font-bold text-gray-800 mt-0.5">
                 {product.estimasi || "10-15 Mnt"}
               </p>
             </div>
             <div className="h-8 w-px bg-gray-200" />
             <div>
-              <p className="text-gray-400 text-xs">Status Stok</p>
+              <p className="text-gray-600 text-xs">Status Stok</p>
               <p className="font-bold text-emerald-600 mt-0.5">Tersedia</p>
             </div>
           </div>

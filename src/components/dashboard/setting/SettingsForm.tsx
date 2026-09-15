@@ -136,7 +136,7 @@ export default function SettingsForm({
               <p className="text-sm font-medium text-gray-900">
                 Notifikasi email
               </p>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-600">
                 Dapatkan notifikasi saat pelanggan membuat pesanan.
               </p>
             </div>
@@ -163,7 +163,7 @@ export default function SettingsForm({
               <p className="text-sm font-medium text-gray-900">
                 Pembaruan produk
               </p>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-600">
                 Email berkala mengenai fitur-fitur baru.
               </p>
             </div>
@@ -190,7 +190,7 @@ export default function SettingsForm({
               <p className="text-sm font-medium text-gray-900">
                 Ringkasan mingguan
               </p>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-600">
                 Ringkasan pendapatan dan pesanan setiap hari Senin.
               </p>
             </div>
@@ -217,7 +217,7 @@ export default function SettingsForm({
       <div className="rounded-2xl border border-red-100 bg-white p-6 shadow-sm">
         <h2 className="text-sm font-medium text-gray-900">Zona berbahaya</h2>
 
-        <p className="mt-2 text-sm text-gray-500">
+        <p className="mt-2 text-sm text-gray-600">
           Menghapus tim Anda akan menghapus semua pelanggan, pesanan, dan riwayat pembayaran.
           Tindakan ini tidak dapat dibatalkan.
         </p>

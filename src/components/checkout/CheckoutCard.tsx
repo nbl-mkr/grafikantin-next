@@ -70,7 +70,7 @@ export default function CheckoutCard() {
           Pembayaran Pesanan
         </h1>
         <div className="flex flex-col items-center justify-center rounded-2xl border border-gray-100 bg-white p-8 sm:p-12 text-center shadow-sm">
-          <p className="text-gray-500 mb-4">
+          <p className="text-gray-600 mb-4">
             Tidak ada item yang dipilih untuk dibayar.
           </p>
           <Link
@@ -106,7 +106,7 @@ export default function CheckoutCard() {
                     <p className="font-bold text-gray-900 text-sm">
                       {item.nama_menu}
                     </p>
-                    <p className="text-xs text-gray-400 mt-0.5">
+                    <p className="text-xs text-gray-600 mt-0.5">
                       {item.quantity}x Rp {item.harga.toLocaleString("id-ID")}
                     </p>
                   </div>
@@ -122,7 +122,7 @@ export default function CheckoutCard() {
             <h2 className="text-base font-bold text-gray-900 mb-1">
               Metode Pembayaran (Cashless)
             </h2>
-            <p className="text-xs text-gray-400 mb-6">
+            <p className="text-xs text-gray-600 mb-6">
               Silakan scan QRIS di bawah ini menggunakan DANA, GoPay, OVO, ShopeePay, atau Mobile Banking lainnya.
             </p>
 
@@ -141,7 +141,7 @@ export default function CheckoutCard() {
                     className="object-contain"
                   />
                 </div>
-                <span className="text-[11px] font-medium text-gray-400 mt-4">
+                <span className="text-[11px] font-medium text-gray-600 mt-4">
                   NMAS: Kantin SMKN 4 Malang
                 </span>
               </div>

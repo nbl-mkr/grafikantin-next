@@ -131,7 +131,7 @@ export default function ReportSection({ summary, rows, charts }: ReportSectionPr
         <div className="mt-4 overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-100 text-sm">
             <thead>
-              <tr className="text-left font-medium text-gray-500">
+              <tr className="text-left font-medium text-gray-600">
                 <th className="px-4 py-3 whitespace-nowrap">Stand</th>
                 <th className="px-4 py-3 whitespace-nowrap text-center">Pesanan</th>
                 <th className="px-4 py-3 whitespace-nowrap text-right">Pendapatan</th>
@@ -156,7 +156,7 @@ export default function ReportSection({ summary, rows, charts }: ReportSectionPr
                           style={{ width: `${row.persentase}%` }}
                         />
                       </div>
-                      <span className="text-xs text-gray-500 w-10 text-right">{row.persentase}%</span>
+                      <span className="text-xs text-gray-600 w-10 text-right">{row.persentase}%</span>
                     </div>
                   </td>
                 </tr>

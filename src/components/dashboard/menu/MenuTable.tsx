@@ -98,7 +98,7 @@ export default function MenuTable() {
                 }}
                 className="h-9 w-full rounded-md border border-gray-200 pl-3 pr-9 text-sm text-gray-900 focus:border-[#62748e] focus:outline-none sm:w-56"
               />
-              <span className="pointer-events-none absolute inset-y-0 right-0 grid w-8 place-content-center text-gray-400">
+              <span className="pointer-events-none absolute inset-y-0 right-0 grid w-8 place-content-center text-gray-600">
                 <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-4">
                   <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>
@@ -117,7 +117,7 @@ export default function MenuTable() {
                   viewBox="0 0 24 24"
                   strokeWidth="2"
                   stroke="currentColor"
-                  className="size-3.5 text-gray-400 group-hover:text-[#62748e] group-hover:rotate-180 transition-transform duration-200"
+                  className="size-3.5 text-gray-600 group-hover:text-[#62748e] group-hover:rotate-180 transition-transform duration-200"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                 </svg>
@@ -195,12 +195,12 @@ export default function MenuTable() {
         <div className="mt-4 overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-100 text-sm">
             <thead>
-              <tr className="text-left font-medium text-gray-500">
+              <tr className="text-left font-medium text-gray-600">
                 <th className="px-4 py-3 whitespace-nowrap w-12 text-center">#</th>
                 <th className="px-4 py-3 whitespace-nowrap">
                   <button type="button" onClick={() => handleSort("nama")} className="inline-flex items-center gap-1 hover:text-gray-900">
                     Nama Menu
-                    <span className="text-xs text-gray-400">{sortField === "nama" ? (sortOrder === "asc" ? "↑" : "↓") : "↕"}</span>
+                    <span className="text-xs text-gray-600">{sortField === "nama" ? (sortOrder === "asc" ? "↑" : "↓") : "↕"}</span>
                   </button>
                 </th>
                 <th className="px-4 py-3 whitespace-nowrap">Stand</th>
@@ -208,19 +208,19 @@ export default function MenuTable() {
                 <th className="px-4 py-3 whitespace-nowrap text-right">
                   <button type="button" onClick={() => handleSort("harga")} className="inline-flex items-center gap-1 hover:text-gray-900">
                     Harga
-                    <span className="text-xs text-gray-400">{sortField === "harga" ? (sortOrder === "asc" ? "↑" : "↓") : "↕"}</span>
+                    <span className="text-xs text-gray-600">{sortField === "harga" ? (sortOrder === "asc" ? "↑" : "↓") : "↕"}</span>
                   </button>
                 </th>
                 <th className="px-4 py-3 whitespace-nowrap text-center">
                   <button type="button" onClick={() => handleSort("stok")} className="inline-flex items-center gap-1 hover:text-gray-900">
                     Stok
-                    <span className="text-xs text-gray-400">{sortField === "stok" ? (sortOrder === "asc" ? "↑" : "↓") : "↕"}</span>
+                    <span className="text-xs text-gray-600">{sortField === "stok" ? (sortOrder === "asc" ? "↑" : "↓") : "↕"}</span>
                   </button>
                 </th>
                 <th className="px-4 py-3 whitespace-nowrap text-center">
                   <button type="button" onClick={() => handleSort("terjual")} className="inline-flex items-center gap-1 hover:text-gray-900">
                     Terjual
-                    <span className="text-xs text-gray-400">{sortField === "terjual" ? (sortOrder === "asc" ? "↑" : "↓") : "↕"}</span>
+                    <span className="text-xs text-gray-600">{sortField === "terjual" ? (sortOrder === "asc" ? "↑" : "↓") : "↕"}</span>
                   </button>
                 </th>
                 <th className="px-4 py-3 whitespace-nowrap text-center">Tersedia</th>
@@ -233,7 +233,7 @@ export default function MenuTable() {
                   const rowNumber = (validCurrentPage - 1) * itemsPerPage + index + 1;
                   return (
                     <tr key={menu.id} className="hover:bg-gray-50/50 transition-colors">
-                      <td className="px-4 py-3 whitespace-nowrap text-center text-xs font-semibold text-gray-400">{rowNumber}</td>
+                      <td className="px-4 py-3 whitespace-nowrap text-center text-xs font-semibold text-gray-600">{rowNumber}</td>
                       <td className="px-4 py-3 whitespace-nowrap font-medium text-gray-900">{menu.nama}</td>
                       <td className="px-4 py-3 whitespace-nowrap text-gray-600">{menu.stand}</td>
                       <td className="px-4 py-3 whitespace-nowrap">
@@ -281,7 +281,7 @@ export default function MenuTable() {
                 })
               ) : (
                 <tr>
-                  <td className="px-4 py-6 text-center text-gray-500" colSpan={9}>
+                  <td className="px-4 py-6 text-center text-gray-600" colSpan={9}>
                     Tidak ada menu yang sesuai dengan pencarian.
                   </td>
                 </tr>
@@ -305,7 +305,7 @@ export default function MenuTable() {
                   viewBox="0 0 24 24"
                   strokeWidth="2"
                   stroke="currentColor"
-                  className="size-3.5 text-gray-400 group-hover:text-[#62748e] group-hover:rotate-180 transition-transform duration-200"
+                  className="size-3.5 text-gray-600 group-hover:text-[#62748e] group-hover:rotate-180 transition-transform duration-200"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                 </svg>
@@ -384,7 +384,7 @@ export default function MenuTable() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
           <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
             <h3 className="text-base font-semibold text-gray-900">Hapus Menu</h3>
-            <p className="mt-2 text-sm text-gray-500">
+            <p className="mt-2 text-sm text-gray-600">
               Apakah kamu yakin ingin menghapus <strong>{deleteTarget.nama}</strong>? Tindakan ini tidak dapat dibatalkan.
             </p>
             <div className="mt-6 flex justify-end gap-2">

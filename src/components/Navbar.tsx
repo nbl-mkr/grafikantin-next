@@ -86,7 +86,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                   className={`transition-colors hover:text-[#e76f51] ${
                     isActive("/")
                       ? "font-semibold text-[#e76f51]"
-                      : "font-normal text-gray-500"
+                      : "font-normal text-gray-600"
                   }`}
                 >
                   Beranda
@@ -99,7 +99,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                   className={`transition-colors hover:text-[#e76f51] ${
                     isActive("/order")
                       ? "font-semibold text-[#e76f51]"
-                      : "font-normal text-gray-500"
+                      : "font-normal text-gray-600"
                   }`}
                 >
                   Pesan
@@ -112,7 +112,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                   className={`transition-colors hover:text-[#e76f51] ${
                     isActive("/about")
                       ? "font-semibold text-[#e76f51]"
-                      : "font-normal text-gray-500"
+                      : "font-normal text-gray-600"
                   }`}
                 >
                   Tentang
@@ -125,7 +125,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                   className={`inline-flex items-center gap-1 py-2 transition-colors hover:text-[#e76f51] focus:outline-none ${
                     isDropdownActive
                       ? "font-semibold text-[#e76f51]"
-                      : "font-normal text-gray-500"
+                      : "font-normal text-gray-600"
                   }`}
                 >
                   <span>Lainnya</span>
@@ -135,7 +135,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                     viewBox="0 0 24 24"
                     strokeWidth="2"
                     stroke="currentColor"
-                    className="size-3.5 text-gray-400 group-hover:text-[#e76f51] group-hover:rotate-180 transition-transform duration-200"
+                    className="size-3.5 text-gray-600 group-hover:text-[#e76f51] group-hover:rotate-180 transition-transform duration-200"
                   >
                     <path
                       strokeLinecap="round"

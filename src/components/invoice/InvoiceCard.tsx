@@ -52,7 +52,7 @@ export default function InvoiceCard() {
     return (
       <div className="mx-auto max-w-md px-4 py-12 text-center">
         <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm">
-          <p className="text-sm font-medium text-gray-500 mb-6">
+          <p className="text-sm font-medium text-gray-600 mb-6">
             Riwayat bukti pembayaran tidak ditemukan.
           </p>
           <button
@@ -74,7 +74,7 @@ export default function InvoiceCard() {
           <h1 className="text-2xl font-black tracking-wider text-gray-900">
             GRAFIKANTIN
           </h1>
-          <p className="text-xs font-medium text-gray-500 mt-1">
+          <p className="text-xs font-medium text-gray-600 mt-1">
             SMK Negeri 4 Malang
           </p>
           <div className="mt-4 inline-flex items-center rounded-full bg-emerald-50 px-3 py-1 border border-emerald-200">
@@ -86,15 +86,15 @@ export default function InvoiceCard() {
 
         <div className="space-y-2 text-xs text-gray-600 border-t border-b border-gray-100 py-4 mb-4">
           <div className="flex justify-between">
-            <span className="text-gray-400">Kode Pesanan</span>
+            <span className="text-gray-600">Kode Pesanan</span>
             <span className="font-semibold text-gray-900">{order.orderId}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-400">Waktu</span>
+            <span className="text-gray-600">Waktu</span>
             <span className="font-semibold text-gray-900">{order.date}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-400">Metode</span>
+            <span className="text-gray-600">Metode</span>
             <span className="font-semibold text-gray-900">{order.paymentMethod}</span>
           </div>
         </div>

@@ -23,7 +23,7 @@ export default function AddStand() {
       <div className="flex items-center justify-between rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
         <div>
           <h1 className="text-xl font-bold text-gray-900">Tambah Stand</h1>
-          <p className="mt-1 text-xs text-gray-500">
+          <p className="mt-1 text-xs text-gray-600">
             Lengkapi informasi stand baru yang akan ditambahkan.
           </p>
         </div>

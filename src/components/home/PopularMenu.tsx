@@ -43,7 +43,7 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
             {featured && (
               <>
                 <div className="mt-8">
-                  <p className="text-xs font-medium text-gray-400">Harga mulai dari</p>
+                  <p className="text-xs font-medium text-gray-600">Harga mulai dari</p>
                   <p className="mt-1 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
                     Rp {featured.harga.toLocaleString("id-ID")}
                   </p>
@@ -54,13 +54,13 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
                     <p className="text-lg font-bold text-gray-900">
                       {featured.estimasi || "10-15 Mnt"}
                     </p>
-                    <p className="text-xs text-gray-500">Estimasi Penyajian</p>
+                    <p className="text-xs text-gray-600">Estimasi Penyajian</p>
                   </div>
                   <div className="border-l-2 border-[#e76f51] pl-4">
                     <p className="text-lg font-bold text-gray-900">
                       {featured.rating || "4.8 / 5.0"}
                     </p>
-                    <p className="text-xs text-gray-500">Rating Siswa</p>
+                    <p className="text-xs text-gray-600">Rating Siswa</p>
                   </div>
                 </div>
               </>
@@ -122,7 +122,7 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
                         />
                       </svg>
                       <div className="mt-1.5 sm:mt-0">
-                        <p className="text-gray-400">Estimasi</p>
+                        <p className="text-gray-600">Estimasi</p>
                         <p className="font-medium text-gray-700">
                           {featured.estimasi || "10-15 Mnt"}
                         </p>
@@ -145,7 +145,7 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
                         />
                       </svg>
                       <div className="mt-1.5 sm:mt-0">
-                        <p className="text-gray-400">Rating</p>
+                        <p className="text-gray-600">Rating</p>
                         <p className="font-medium text-gray-700">
                           {featured.rating || "4.8 / 5.0"}
                         </p>

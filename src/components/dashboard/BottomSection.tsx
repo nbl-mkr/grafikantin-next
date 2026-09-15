@@ -95,7 +95,7 @@ export default function BottomSection({ recentOrders = [] }: { recentOrders?: Pe
         className="inline-flex items-center gap-1 hover:text-gray-900"
       >
         {label}
-        <span className="text-xs text-gray-400">
+        <span className="text-xs text-gray-600">
           {sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↕"}
         </span>
       </button>
@@ -119,7 +119,7 @@ export default function BottomSection({ recentOrders = [] }: { recentOrders?: Pe
               }}
               className="h-9 w-full rounded-md border border-gray-200 pl-3 pr-9 text-sm text-gray-900 focus:border-[#62748e] focus:outline-none sm:w-56"
             />
-            <span className="pointer-events-none absolute inset-y-0 right-0 grid w-8 place-content-center text-gray-400">
+            <span className="pointer-events-none absolute inset-y-0 right-0 grid w-8 place-content-center text-gray-600">
               <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-4">
                 <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
               </svg>
@@ -149,7 +149,7 @@ export default function BottomSection({ recentOrders = [] }: { recentOrders?: Pe
       <div className="mt-4 overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-100 text-sm">
           <thead>
-            <tr className="text-left font-medium text-gray-500">
+            <tr className="text-left font-medium text-gray-600">
               <th className="px-4 py-3 whitespace-nowrap w-12 text-center">#</th>
               <SortHeader field="id" label="ID Pesanan" />
               <SortHeader field="customer" label="Pelanggan" />
@@ -165,14 +165,14 @@ export default function BottomSection({ recentOrders = [] }: { recentOrders?: Pe
                 const rowNumber = (validCurrentPage - 1) * itemsPerPage + index + 1;
                 return (
                   <tr key={order.id} className="hover:bg-gray-50/50 transition-colors">
-                    <td className="px-4 py-3 whitespace-nowrap text-center text-xs font-semibold text-gray-400">{rowNumber}</td>
+                    <td className="px-4 py-3 whitespace-nowrap text-center text-xs font-semibold text-gray-600">{rowNumber}</td>
                     <td className="px-4 py-3 whitespace-nowrap font-medium text-gray-900">
                       {order.id}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap text-gray-600">
                       {order.customer}
                     </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-gray-500">
+                    <td className="px-4 py-3 whitespace-nowrap text-gray-600">
                       {order.time}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">
@@ -192,7 +192,7 @@ export default function BottomSection({ recentOrders = [] }: { recentOrders?: Pe
               })
             ) : (
               <tr>
-                <td className="px-4 py-6 text-center text-gray-500" colSpan={6}>
+                <td className="px-4 py-6 text-center text-gray-600" colSpan={6}>
                   Tidak ada pesanan yang sesuai.
                 </td>
               </tr>
@@ -216,7 +216,7 @@ export default function BottomSection({ recentOrders = [] }: { recentOrders?: Pe
                 viewBox="0 0 24 24"
                 strokeWidth="2"
                 stroke="currentColor"
-                className="size-3.5 text-gray-400 group-hover:text-[#62748e] group-hover:rotate-180 transition-transform duration-200"
+                className="size-3.5 text-gray-600 group-hover:text-[#62748e] group-hover:rotate-180 transition-transform duration-200"
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
               </svg>

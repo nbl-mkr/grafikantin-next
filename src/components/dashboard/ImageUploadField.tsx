@@ -89,13 +89,13 @@ export default function ImageUploadField({
               : "border-gray-200 bg-gray-50/50 hover:border-[#e76f51] focus-visible:border-[#e76f51]"
           }`}
         >
-          <span className="grid size-10 place-content-center rounded-full bg-gray-100 text-gray-500">
+          <span className="grid size-10 place-content-center rounded-full bg-gray-100 text-gray-600">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
             </svg>
           </span>
           <span className="text-sm font-medium text-gray-900">Upload a File</span>
-          <span className="text-xs text-gray-500">
+          <span className="text-xs text-gray-600">
             Drag and drop files here, or{" "}
             <span className="font-medium text-[#e76f51]">browse</span>
           </span>
