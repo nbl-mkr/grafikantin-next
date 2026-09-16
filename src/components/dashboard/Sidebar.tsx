@@ -1,11 +1,12 @@
 "use client";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import AdaptiveImage from "@/components/common/AdaptiveImage";
 import { dashboardNavItems, publicLinks } from "@/data/dashboardMockData";
 import { logout } from "@/lib/actions";
+import { updateProfileAction } from "@/lib/data/profile";
 import type { Role } from "@/lib/roles";
 import type { DashboardProfile } from "@/components/dashboard/DashboardShell";
 
@@ -18,6 +19,7 @@ interface SidebarProps {
 
 export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const visibleNavItems = dashboardNavItems.filter(
     (item) => role !== null && item.roles.includes(role)
   );
@@ -61,8 +63,19 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
 
   const [fullName, setFullName] = useState(profile.fullName);
   const [email, setEmail] = useState(profile.email);
-  const [teamName, setTeamName] = useState("Grafikantin");
   const [photoProfile, setPhotoProfile] = useState(profile.photoProfile);
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [savingProfile, setSavingProfile] = useState(false);
+  const profileFileInputRef = useRef<HTMLInputElement>(null);
+
+  const [prevProfile, setPrevProfile] = useState(profile);
+  if (prevProfile !== profile) {
+    setPrevProfile(profile);
+    setFullName(profile.fullName);
+    setEmail(profile.email);
+    setPhotoProfile(profile.photoProfile);
+    setPhotoFile(null);
+  }
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -72,13 +85,29 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
         setPhotoProfile(reader.result as string);
       };
       reader.readAsDataURL(file);
+      setPhotoFile(file);
     }
   };
 
   const closeProfileModal = () => setIsProfileModalOpen(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (savingProfile) return;
+    setSavingProfile(true);
+    const res = await updateProfileAction({
+      username: fullName,
+      email,
+      fotoFile: photoFile,
+    });
+    setSavingProfile(false);
+    if (!res.ok) {
+      alert(res.error ?? "Gagal menyimpan perubahan");
+      return;
+    }
+    setPhotoFile(null);
+    if (profileFileInputRef.current) profileFileInputRef.current.value = "";
+    router.refresh();
     closeProfileModal();
   };
 
@@ -246,9 +275,10 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
                     <button
                       type="submit"
                       form="profile-form"
-                      className="rounded-lg bg-[#e76f51] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#d55f43]"
+                      disabled={savingProfile}
+                      className="rounded-lg bg-[#e76f51] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#d55f43] disabled:cursor-not-allowed disabled:opacity-60"
                     >
-                      Simpan perubahan
+                      {savingProfile ? "Menyimpan..." : "Simpan Perubahan"}
                     </button>
                   </div>
                 </div>
@@ -262,7 +292,7 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
 
                   <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div className="sm:col-span-2 flex flex-col items-center justify-center gap-4">
-                      <label htmlFor="photo-profile-upload" className="cursor-pointer">
+                      <label htmlFor="sidebar-photo-profile-upload" className="cursor-pointer">
                         <div className="relative h-32 w-32 overflow-hidden rounded-full border border-gray-200">
                           <AdaptiveImage
                             src={photoProfile}
@@ -276,7 +306,8 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
                       <span className="text-sm font-medium text-gray-900">{fullName}</span>
                       <input
                         type="file"
-                        id="photo-profile-upload"
+                        id="sidebar-photo-profile-upload"
+                        ref={profileFileInputRef}
                         accept="image/*"
                         onChange={handlePhotoChange}
                         className="hidden"
@@ -285,14 +316,14 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
 
                     <div>
                       <label
-                        htmlFor="full-name"
+                        htmlFor="sidebar-full-name"
                         className="block text-sm font-medium text-gray-700"
                       >
-                        Nama lengkap
+                        Nama
                       </label>
                       <input
                         type="text"
-                        id="full-name"
+                        id="sidebar-full-name"
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
                         className="mt-1 h-9 w-full rounded-md border border-gray-200 px-3 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none"
@@ -301,32 +332,16 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
 
                     <div>
                       <label
-                        htmlFor="email-address"
+                        htmlFor="sidebar-email-address"
                         className="block text-sm font-medium text-gray-700"
                       >
-                        Alamat email
+                        Alamat Email
                       </label>
                       <input
                         type="email"
-                        id="email-address"
+                        id="sidebar-email-address"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="mt-1 h-9 w-full rounded-md border border-gray-200 px-3 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none"
-                      />
-                    </div>
-
-                    <div className="sm:col-span-2">
-                      <label
-                        htmlFor="team-name"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Nama tim
-                      </label>
-                      <input
-                        type="text"
-                        id="team-name"
-                        value={teamName}
-                        onChange={(e) => setTeamName(e.target.value)}
                         className="mt-1 h-9 w-full rounded-md border border-gray-200 px-3 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none"
                       />
                     </div>
