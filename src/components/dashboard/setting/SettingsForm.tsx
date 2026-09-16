@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { updateProfileAction } from "@/lib/data/profile";
 
 interface SettingsFormProps {
   initialFullName: string;
@@ -13,13 +15,17 @@ export default function SettingsForm({
   initialEmail,
   initialPhotoProfile,
 }: SettingsFormProps) {
+  const router = useRouter();
   const [fullName, setFullName] = useState(initialFullName);
   const [email, setEmail] = useState(initialEmail);
-  const [teamName, setTeamName] = useState("Grafikantin");
   const [photoProfile, setPhotoProfile] = useState(initialPhotoProfile);
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [savedMessage, setSavedMessage] = useState("");
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [productUpdates, setProductUpdates] = useState(false);
   const [weeklySummary, setWeeklySummary] = useState(true);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -29,24 +35,48 @@ export default function SettingsForm({
         setPhotoProfile(reader.result as string);
       };
       reader.readAsDataURL(file);
+      setPhotoFile(file);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (saving) return;
+    setSaving(true);
+    setSavedMessage("");
+    const res = await updateProfileAction({
+      username: fullName,
+      email,
+      fotoFile: photoFile,
+    });
+    setSaving(false);
+    if (!res.ok) {
+      alert(res.error ?? "Gagal menyimpan perubahan");
+      return;
+    }
+    setPhotoFile(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+    setSavedMessage("Perubahan tersimpan");
+    router.refresh();
   };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
         <h1 className="text-xl font-bold text-gray-900">Pengaturan</h1>
-        <button
-          type="submit"
-          form="account-settings-form"
-          className="rounded-lg bg-[#e76f51] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#d55f43]"
-        >
-          Simpan perubahan
-        </button>
+        <div className="flex items-center gap-3">
+          {savedMessage && (
+            <span className="text-sm font-semibold text-gray-600">{savedMessage}</span>
+          )}
+          <button
+            type="submit"
+            form="account-settings-form"
+            disabled={saving}
+            className="rounded-lg bg-[#e76f51] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#d55f43] disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {saving ? "Menyimpan..." : "Simpan Perubahan"}
+          </button>
+        </div>
       </div>
 
       <form
@@ -60,6 +90,7 @@ export default function SettingsForm({
           <div className="sm:col-span-2 flex flex-col items-center justify-center gap-4">
             <label htmlFor="photo-profile-upload" className="cursor-pointer">
               <div className="relative h-32 w-32 overflow-hidden rounded-full border border-gray-200">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={photoProfile}
                   alt="Foto Profil"
@@ -71,6 +102,7 @@ export default function SettingsForm({
             <input
               type="file"
               id="photo-profile-upload"
+              ref={fileInputRef}
               accept="image/*"
               onChange={handlePhotoChange}
               className="hidden"
@@ -82,7 +114,7 @@ export default function SettingsForm({
               htmlFor="full-name"
               className="block text-sm font-medium text-gray-700"
             >
-              Nama lengkap
+              Nama
             </label>
             <input
               type="text"
@@ -98,29 +130,13 @@ export default function SettingsForm({
               htmlFor="email-address"
               className="block text-sm font-medium text-gray-700"
             >
-              Alamat email
+              Alamat Email
             </label>
             <input
               type="email"
               id="email-address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 h-9 w-full rounded-md border border-gray-200 px-3 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none"
-            />
-          </div>
-
-          <div className="sm:col-span-2">
-            <label
-              htmlFor="team-name"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Nama tim
-            </label>
-            <input
-              type="text"
-              id="team-name"
-              value={teamName}
-              onChange={(e) => setTeamName(e.target.value)}
               className="mt-1 h-9 w-full rounded-md border border-gray-200 px-3 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none"
             />
           </div>
@@ -215,10 +231,10 @@ export default function SettingsForm({
       </div>
 
       <div className="rounded-2xl border border-red-100 bg-white p-6 shadow-sm">
-        <h2 className="text-sm font-medium text-gray-900">Zona berbahaya</h2>
+        <h2 className="text-sm font-medium text-gray-900">Zona Berbahaya</h2>
 
         <p className="mt-2 text-sm text-gray-600">
-          Menghapus tim Anda akan menghapus semua pelanggan, pesanan, dan riwayat pembayaran.
+          Menghapus akun Anda akan menghapus semua pesanan dan riwayat pembayaran.
           Tindakan ini tidak dapat dibatalkan.
         </p>
 
@@ -226,7 +242,7 @@ export default function SettingsForm({
           type="button"
           className="mt-4 inline-block rounded-md border border-red-200 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50"
         >
-          Hapus tim
+          Hapus akun
         </button>
       </div>
     </div>
