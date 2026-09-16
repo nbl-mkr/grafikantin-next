@@ -1,9 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 import type { InvoiceData } from "@/lib/data/queries";
 
 export default function InvoiceCard({ order }: { order: InvoiceData | null }) {
+  const t = useTranslations("invoice");
   const router = useRouter();
 
   const handlePrint = () => {
@@ -19,14 +21,14 @@ export default function InvoiceCard({ order }: { order: InvoiceData | null }) {
       <div className="mx-auto max-w-md px-4 py-12 text-center">
         <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm">
           <p className="text-sm font-medium text-gray-600 mb-6">
-            Riwayat bukti pembayaran tidak ditemukan.
+            {t("notFound")}
           </p>
           <button
             type="button"
             onClick={() => router.push("/shopping")}
             className="w-full rounded-xl bg-[#e76f51] py-3 text-sm font-bold text-white transition hover:bg-[#d55f43]"
           >
-            Kembali ke Beranda
+            {t("backToHome")}
           </button>
         </div>
       </div>
@@ -45,22 +47,22 @@ export default function InvoiceCard({ order }: { order: InvoiceData | null }) {
           </p>
           <div className="mt-4 inline-flex items-center rounded-full bg-emerald-50 px-3 py-1 border border-emerald-200">
             <span className="text-xs font-bold text-emerald-600 tracking-wide uppercase">
-              PAID / LUNAS (CASHLESS)
+              {t("paidBadge")}
             </span>
           </div>
         </div>
 
         <div className="space-y-2 text-xs text-gray-600 border-t border-b border-gray-100 py-4 mb-4">
           <div className="flex justify-between">
-            <span className="text-gray-600">Kode Pesanan</span>
+            <span className="text-gray-600">{t("orderCode")}</span>
             <span className="font-semibold text-gray-900">{order.orderId}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">Waktu</span>
+            <span className="text-gray-600">{t("time")}</span>
             <span className="font-semibold text-gray-900">{order.date}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">Metode</span>
+            <span className="text-gray-600">{t("method")}</span>
             <span className="font-semibold text-gray-900">{order.paymentMethod}</span>
           </div>
         </div>
@@ -80,7 +82,7 @@ export default function InvoiceCard({ order }: { order: InvoiceData | null }) {
 
         <div className="border-t border-dashed border-gray-200 pt-4 mb-6">
           <div className="flex justify-between items-center">
-            <span className="text-sm font-bold text-gray-900">Total Bayar</span>
+            <span className="text-sm font-bold text-gray-900">{t("totalPayment")}</span>
             <span className="text-base font-extrabold text-[#e76f51]">
               Rp {order.total.toLocaleString("id-ID")}
             </span>
@@ -93,14 +95,14 @@ export default function InvoiceCard({ order }: { order: InvoiceData | null }) {
             onClick={handlePrint}
             className="w-full rounded-xl border border-gray-200 bg-white py-3 text-center text-sm font-bold text-gray-700 transition hover:bg-gray-50 cursor-pointer"
           >
-            Cetak Bukti Pembayaran
+            {t("print")}
           </button>
           <button
             type="button"
             onClick={handleFinish}
             className="w-full rounded-xl bg-[#e76f51] py-3 text-center text-sm font-bold text-white transition hover:bg-[#d55f43] cursor-pointer"
           >
-            Selesai
+            {t("finish")}
           </button>
         </div>
       </div>

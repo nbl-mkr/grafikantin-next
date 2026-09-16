@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useTranslations, useFormatter } from "next-intl";
 import AdaptiveImage from "@/components/common/AdaptiveImage";
 import ComplaintBanner from "@/components/home/ComplaintBanner";

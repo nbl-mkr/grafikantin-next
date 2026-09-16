@@ -1,6 +1,7 @@
 "use client";
 
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 export interface MenuItem {
   id: number | string;
@@ -21,6 +22,7 @@ interface MenuCardProps {
 }
 
 export default function MenuCard({ item, preload }: MenuCardProps) {
+  const t = useTranslations("menu");
   return (
     <div className="group rounded-lg bg-white p-4 shadow-sm hover:shadow-[0_0_16px_rgba(15,23,42,0.05)] hover:-translate-y-1 transition-all duration-300 border border-gray-100 flex flex-col justify-between">
       <div>
@@ -38,14 +40,14 @@ export default function MenuCard({ item, preload }: MenuCardProps) {
         <div className="mt-2">
           <dl>
             <div>
-              <dt className="sr-only">Harga</dt>
+              <dt className="sr-only">{t("priceLabel")}</dt>
               <dd className="text-lg font-bold text-[#e76f51]">
                 Rp {item.harga.toLocaleString("id-ID")}
               </dd>
             </div>
 
             <div>
-              <dt className="sr-only">Nama Menu</dt>
+              <dt className="sr-only">{t("nameLabel")}</dt>
               <dd className="text-xl font-bold text-gray-900 mt-0.5">
                 {item.nama_menu}
               </dd>
@@ -69,9 +71,9 @@ export default function MenuCard({ item, preload }: MenuCardProps) {
                 />
               </svg>
               <div className="mt-1.5 sm:mt-0">
-                <p className="text-gray-600">Estimasi</p>
+                <p className="text-gray-600">{t("estimateLabel")}</p>
                 <p className="font-medium text-gray-700">
-                  {item.estimasi || "10-15 Mnt"}
+                  {item.estimasi || t("estimateDefault")}
                 </p>
               </div>
             </div>
@@ -92,7 +94,7 @@ export default function MenuCard({ item, preload }: MenuCardProps) {
                 />
               </svg>
               <div className="mt-1.5 sm:mt-0">
-                <p className="text-gray-600">Rating</p>
+                <p className="text-gray-600">{t("ratingLabel")}</p>
                 <p className="font-medium text-gray-700">
                   {item.rating || "4.8 / 5.0"}
                 </p>
@@ -105,7 +107,7 @@ export default function MenuCard({ item, preload }: MenuCardProps) {
               href={`/product/${item.id}`}
               className="block w-full bg-[#e76f51] hover:bg-[#d95d3f] text-white font-semibold py-2.5 rounded-lg transition shadow-sm active:scale-[0.98] text-center"
             >
-              Beli Sekarang
+              {t("buyNow")}
             </Link>
           </div>
         </div>

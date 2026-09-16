@@ -1,4 +1,8 @@
+import { useTranslations } from "next-intl";
+
 export default function HeroSection() {
+  const t = useTranslations("about");
+
   return (
     <section className="relative w-full bg-[#fafafa] py-14 md:py-20 overflow-hidden">
       <div 
@@ -12,11 +16,15 @@ export default function HeroSection() {
       <div className="relative mx-auto flex max-w-6xl flex-col items-start justify-between gap-8 md:gap-12 px-6 md:flex-row md:items-stretch">
         <div className="w-full text-center md:text-left md:w-8/12 flex flex-col justify-center">
             <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl leading-tight">
-                Lebih Dekat Dengan <span className="italic text-[#e76f51]">Grafikantin</span>
+                {t.rich("heroTitle", {
+                  accent: (chunks) => (
+                    <span className="italic text-[#e76f51]">{chunks}</span>
+                  ),
+                })}
             </h1>
 
             <p className="mt-3 text-base text-gray-600 leading-relaxed">
-                Komitmen kami dalam menghadirkan pilihan kuliner yang sehat, bersih, dan higienis untuk mendukung energi dan produktivitas belajar seluruh warga SMK Negeri 4 Malang.
+                {t("heroSubtitle")}
             </p>
         </div>
 
@@ -24,10 +32,10 @@ export default function HeroSection() {
 
         <div className="w-full text-center md:text-left md:w-3/12 flex flex-col justify-center whitespace-nowrap">
             <span className="block text-3xl font-extrabold text-gray-900 sm:text-4xl">
-                SMKN 4
+                {t("schoolName")}
             </span>
             <span className="text-sm sm:text-base font-semibold text-[#e76f51]">
-                Kantin Sehat & Digital
+                {t("tagline")}
             </span>
         </div>
       </div>

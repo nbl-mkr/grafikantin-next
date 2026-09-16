@@ -1,6 +1,9 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 export default function HeroSection() {
+  const t = useTranslations("order");
   const handleScrollToCards = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     const element = document.getElementById("cards");
@@ -14,25 +17,26 @@ export default function HeroSection() {
       <div className="relative mx-auto flex max-w-6xl flex-col items-start justify-between gap-8 px-6 md:flex-row md:items-center">
         <div className="w-full text-center md:text-left md:w-8/12">
           <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl leading-tight">
-            Mau Makan Apa <span className="italic text-[#e76f51]">Hari Ini?</span>
+            {t("heroTitleFirst")}{" "}
+            <span className="italic text-[#e76f51]">{t("heroTitleAccent")}</span>
           </h1>
 
           <p className="mt-3 text-base italic text-gray-600">
-            Cari stand dan makanan favoritmu di Grafikantin.
+            {t("heroSubtitle")}
           </p>
 
           <div className="mt-4 flex flex-wrap items-center justify-center md:justify-start gap-3 text-xs font-medium text-gray-600">
             <span className="flex items-center gap-1.5">
               <span className="size-1.5 rounded-full bg-[#e76f51]"></span>
-              Penyajian Cepat
+              {t("featureFast")}
             </span>
             <span className="flex items-center gap-1.5">
               <span className="size-1.5 rounded-full bg-[#e76f51]"></span>
-              Bebas Antre
+              {t("featureNoQueue")}
             </span>
             <span className="flex items-center gap-1.5">
               <span className="size-1.5 rounded-full bg-[#e76f51]"></span>
-              Menu Variatif
+              {t("featureVariative")}
             </span>
           </div>
         </div>
@@ -43,7 +47,7 @@ export default function HeroSection() {
             onClick={handleScrollToCards}
             className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#e76f51] px-7 py-3.5 text-sm font-semibold text-white shadow-sm shadow-[#E76F51]/25 transition hover:bg-[#d55f43]"
           >
-            <span>Pesan Di Sini</span>
+            <span>{t("heroCta")}</span>
           </a>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 
 export default async function PromoBanner() {
   const t = await getTranslations("promo");
@@ -28,12 +29,12 @@ export default async function PromoBanner() {
         </div>
 
         <div className="w-full text-center md:w-auto md:text-right">
-          <a
+          <Link
             href="/order"
             className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#e76f51] px-5 py-2.5 text-base font-semibold text-white shadow-sm transition-all duration-200 hover:bg-[#d55f43] active:scale-[0.98]"
           >
             <span>{t("cta")}</span>
-          </a>
+          </Link>
         </div>
       </div>
     </section>

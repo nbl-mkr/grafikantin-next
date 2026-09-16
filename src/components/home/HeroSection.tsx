@@ -2,6 +2,7 @@
 
 import { type MouseEvent, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 const GLOW_SIZE = 680;
 const GLOW_LERP = 0.14;
@@ -116,12 +117,12 @@ export default function HeroSection() {
           {t("subtitle")}
         </p>
 
-        <a
+        <Link
             href="/order"
             className="mt-8 inline-flex items-center justify-center rounded-lg bg-[#e76f51] px-7 py-3.5 text-sm font-bold text-white transition hover:bg-[#d55f43] shadow-sm"
         >
           {t("cta")}
-        </a>
+        </Link>
 
         <div className="mt-8 pt-8 border-t border-slate-100 grid grid-cols-2 sm:grid-cols-4 gap-16 text-center">
           <div>

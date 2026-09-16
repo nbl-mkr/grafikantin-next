@@ -1,56 +1,58 @@
 "use client";
 
 import { useState } from "react";
-
-const faqs = [
-  {
-    question: "Dimana lokasi fisik Grafikantin berada?",
-    answer: (
-      <p className="mt-3 text-sm leading-relaxed text-gray-600 sm:text-base">
-        Kantin fisik Grafikantin berlokasi di area dalam SMK Negeri 4 Malang, tepatnya di Area Timur (Dekat Gerbang Samping Sekolah).
-      </p>
-    ),
-  },
-  {
-    question: "Kapan hari & jam operasional layanan kantin?",
-    answer: (
-      <p className="mt-3 text-sm leading-relaxed text-gray-600 sm:text-base">
-        Layanan pemesanan dan pengambilan makanan beroperasi setiap hari Senin hingga Jumat pukul 09.20 - 13.00 WIB mengikuti jam istirahat sekolah.
-      </p>
-    ),
-  },
-  {
-    question: "Bagaimana cara menghubungi pihak layanan Grafikantin?",
-    answer: (
-      <p className="mt-3 text-sm leading-relaxed text-gray-600 sm:text-base">
-        Kamu bisa menghubungi kami via WhatsApp di{" "}
-        <a href="https://wa.me/62341000000" target="_blank" className="font-medium text-[#e76f51] hover:underline">
-          (0341) 000000
-        </a>{" "}
-        atau mengirimkan pesan ke email resmi kami di{" "}
-        <a href="mailto:kantin@smkn4malang.sch.id" className="font-medium text-[#e76f51] hover:underline">
-          kantin@smkn4malang.sch.id
-        </a>.
-      </p>
-    ),
-  },
-];
+import { useTranslations } from "next-intl";
 
 export default function FrequentlyAskedQuestions() {
+  const t = useTranslations("about");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const faqs = [
+    {
+      question: t("q1"),
+      answer: (
+        <p className="mt-3 text-sm leading-relaxed text-gray-600 sm:text-base">
+          {t("a1")}
+        </p>
+      ),
+    },
+    {
+      question: t("q2"),
+      answer: (
+        <p className="mt-3 text-sm leading-relaxed text-gray-600 sm:text-base">
+          {t("a2")}
+        </p>
+      ),
+    },
+    {
+      question: t("q3"),
+      answer: (
+        <p className="mt-3 text-sm leading-relaxed text-gray-600 sm:text-base">
+          {t("a3Prefix")}{" "}
+          <a href="https://wa.me/62341000000" target="_blank" className="font-medium text-[#e76f51] hover:underline">
+            (0341) 000000
+          </a>{" "}
+          {t("a3Mid")}{" "}
+          <a href="mailto:kantin@smkn4malang.sch.id" className="font-medium text-[#e76f51] hover:underline">
+            kantin@smkn4malang.sch.id
+          </a>.
+        </p>
+      ),
+    },
+  ];
 
   return (
     <section className="w-full bg-[#fafafa] py-14 md:py-20 text-gray-900">
       <div className="mx-auto max-w-6xl px-6">
         <div className="mb-12 text-center max-w-xl mx-auto">
           <span className="text-xs font-semibold uppercase tracking-wider text-[#e76f51]">
-            Pertanyaan Umum
+            {t("faqBadge")}
           </span>
           <h2 className="mt-1 text-2xl font-bold text-gray-900 sm:text-3xl tracking-tight">
-            Frequently Asked Questions
+            {t("faqTitle")}
           </h2>
           <p className="mt-2 text-sm sm:text-base text-gray-600">
-            Segala informasi operasional dan bantuan seputar layanan Grafikantin
+            {t("faqSubtitle")}
           </p>
         </div>
 

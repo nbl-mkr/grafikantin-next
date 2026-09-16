@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import HeroSection from "@/components/menu/HeroSection";
 import MenuSection from "@/components/menu/MenuSection";
@@ -13,6 +14,7 @@ interface MenuBrowserProps {
 }
 
 export default function MenuBrowser({ items, stands }: MenuBrowserProps) {
+  const t = useTranslations("menu");
   const searchParams = useSearchParams();
   const standId = searchParams.get("stand_id");
 
@@ -40,19 +42,19 @@ export default function MenuBrowser({ items, stands }: MenuBrowserProps) {
       <main className="w-full mx-auto">
         <MenuSection
           id="food-section"
-          title="Makanan"
+          title={t("foodTitle")}
           items={makanan}
           category="makanan"
-          emptyMessage="Tidak ada menu makanan tersedia."
+          emptyMessage={t("foodEmpty")}
           onSelectItem={handleSelectItem}
         />
 
         <MenuSection
           id="snack-section"
-          title="Camilan & Minuman"
+          title={t("snackTitle")}
           items={camilan}
           category="camilan"
-          emptyMessage="Tidak ada menu camilan tersedia."
+          emptyMessage={t("snackEmpty")}
           onSelectItem={handleSelectItem}
         />
       </main>

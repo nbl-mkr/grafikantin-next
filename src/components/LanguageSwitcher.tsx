@@ -1,77 +1,43 @@
 "use client";
 
-import { useLocale, hasLocale } from "next-intl";
-import { usePathname, useRouter } from "next/navigation";
-import Link from "next/link";
-import { routing } from "@/i18n/routing";
+import { useLocale, useTranslations } from "next-intl";
+import { Link, usePathname } from "@/i18n/navigation";
+import { routing, type AppLocale } from "@/i18n/routing";
 
-function localeFromPathname(pathname: string | null) {
-  const segment = pathname?.split("/")[1];
-  return hasLocale(routing.locales, segment) ? segment : null;
-}
-
-function setLocaleCookie(locale: string) {
-  document.cookie = `NEXT_LOCALE=${locale};path=/;max-age=31536000;samesite=lax`;
-}
+const LABELS: Record<AppLocale, string> = { id: "ID", en: "EN" };
 
 export default function LanguageSwitcher() {
+  const locale = useLocale() as AppLocale;
   const pathname = usePathname();
-  const providerLocale = useLocale();
-  const router = useRouter();
+  const t = useTranslations("nav");
 
-  const pathLocale = localeFromPathname(pathname);
-  const active = pathLocale ?? providerLocale;
-  const isPrefixedHome = pathname === "/id" || pathname === "/en";
+  const base =
+    "rounded-full px-2.5 py-1 text-xs font-bold transition";
 
   return (
-    <div
-      className="inline-flex items-center rounded-full bg-gray-100 p-0.5 text-[11px] font-semibold"
-      role="group"
-      aria-label="Bahasa / Language"
-    >
-      {routing.locales.map((locale) => {
-        const isActive = locale === active;
-        const label = locale.toUpperCase();
+    <div className="flex items-center gap-1 rounded-full bg-[#e76f51]/10 p-1">
+      {routing.locales.map((code) => {
+        const active = code === locale;
+        const className = active
+          ? `${base} bg-[#e76f51] text-white shadow-sm`
+          : `${base} text-gray-500 hover:text-[#e76f51]`;
 
-        if (isActive) {
-          return (
-            <span
-              key={locale}
-              aria-current="true"
-              className="rounded-full bg-[#e76f51] px-2.5 py-1 text-white"
-            >
-              {label}
-            </span>
-          );
-        }
-
-        if (isPrefixedHome) {
-          return (
-            <Link
-              key={locale}
-              href={`/${locale}`}
-              prefetch={false}
-              className="rounded-full px-2.5 py-1 text-gray-600 transition-colors hover:text-gray-900"
-            >
-              {label}
-            </Link>
-          );
-        }
-
+        const target = pathname ?? "/";
         return (
-          <button
-            key={locale}
-            type="button"
-            onClick={() => {
-              setLocaleCookie(locale);
-              router.refresh();
-            }}
-            className="rounded-full px-2.5 py-1 text-gray-600 transition-colors hover:text-gray-900"
+          <Link
+            key={code}
+            href={target}
+            locale={code}
+            scroll={false}
+            replace
+            className={className}
+            aria-current={active ? "true" : undefined}
           >
-            {label}
-          </button>
+            {LABELS[code]}
+          </Link>
         );
       })}
+      <span className="sr-only">{t("language")}</span>
     </div>
   );
 }

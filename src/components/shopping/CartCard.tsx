@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link, useRouter } from "@/i18n/navigation";
 import { useCart } from "@/context/CartContext";
 
 interface StandRef {
@@ -11,6 +12,8 @@ interface StandRef {
 }
 
 export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
+  const t = useTranslations("shopping");
+  const router = useRouter();
   const { cart, updateQuantity, removeFromCart } = useCart();
   const [selectedIds, setSelectedIds] = useState<(string | number)[]>([]);
 
@@ -57,7 +60,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
     return (
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 pb-32">
         <h1 className="text-2xl font-bold text-gray-900 mb-6">
-          Keranjang Belanja Saya
+          {t("title")}
         </h1>
 
         <div className="flex flex-col items-center justify-center rounded-2xl border border-gray-100 bg-white p-8 sm:p-12 text-center shadow-sm">
@@ -77,26 +80,25 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
             </svg>
           </div>
           <h2 className="text-xl font-bold text-gray-900">
-            Keranjang Masih Kosong
+            {t("emptyTitle")}
           </h2>
           <p className="mt-2 text-sm text-gray-600 max-w-md">
-            Kamu belum menambahkan menu ke keranjang. Yuk, cari makanan
-            favoritmu sekarang!
+            {t("emptyBody")}
           </p>
           <Link
             href="/#menu-populer"
             className="mt-6 block w-full max-w-sm rounded-xl border border-gray-100 bg-slate-50 p-4 text-left transition-colors duration-300 hover:bg-slate-100"
           >
-            <p className="text-sm font-bold text-gray-900">Menu Populer</p>
+            <p className="text-sm font-bold text-gray-900">{t("popularTitle")}</p>
             <p className="text-xs text-gray-600 mt-0.5">
-              Temukan rekomendasi menu paling laris hari ini
+              {t("popularSubtitle")}
             </p>
           </Link>
           <Link
             href="/order"
             className="mt-6 w-full max-w-sm rounded-xl bg-[#e76f51] py-3 text-center text-sm font-bold text-white transition hover:bg-[#d55f43]"
           >
-            Lihat Daftar Stand
+            {t("browseStands")}
           </Link>
         </div>
       </div>
@@ -106,7 +108,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 pb-32">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">
-        Keranjang Belanja Saya
+        {t("title")}
       </h1>
 
       <div className="mb-4 flex items-center justify-between rounded-2xl border border-gray-100 bg-white px-6 py-4 text-sm font-semibold text-gray-600 shadow-sm">
@@ -117,13 +119,13 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
             onChange={handleSelectAll}
             className="h-4 w-4 rounded border-gray-300 text-[#e76f51] focus:ring-[#e76f51] cursor-pointer"
           />
-          <span>Produk</span>
+          <span>{t("colProduct")}</span>
         </div>
         <div className="grid grid-cols-4 w-3/5 text-center">
-          <span>Harga Satuan</span>
-          <span>Kuantitas</span>
-          <span>Total Harga</span>
-          <span>Aksi</span>
+          <span>{t("colUnitPrice")}</span>
+          <span>{t("colQuantity")}</span>
+          <span>{t("colTotalPrice")}</span>
+          <span>{t("colAction")}</span>
         </div>
       </div>
 
@@ -131,7 +133,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
         {Object.entries(groupedCart).map(([standId, items]) => {
           const standName =
             stands.find((s) => String(s.id) === String(standId))
-              ?.nama_stand || "Stand";
+              ?.nama_stand || t("defaultStand");
 
           const isStandAllSelected = items.every((item) =>
             selectedIds.includes(item.id)
@@ -208,7 +210,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
                             {item.nama_menu}
                           </span>
                           <span className="w-fit rounded-md bg-slate-100 px-2 py-0.5 text-xs font-medium text-gray-600">
-                            Makanan
+                            {t("categoryFood")}
                           </span>
                         </div>
                       </div>
@@ -267,7 +269,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                               />
                             </svg>
-                            <span>Hapus</span>
+                            <span>{t("delete")}</span>
                           </button>
                         </div>
                       </div>
@@ -290,7 +292,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
                 onChange={handleSelectAll}
                 className="h-4 w-4 rounded border-gray-300 text-[#e76f51] focus:ring-[#e76f51] cursor-pointer"
               />
-              <span>Pilih Semua ({selectedIds.length})</span>
+              <span>{t("selectAll", { count: selectedIds.length })}</span>
             </label>
             {selectedIds.length > 0 && (
               <button
@@ -298,7 +300,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
                 onClick={handleRemoveSelected}
                 className="text-xs font-medium text-gray-600 hover:text-red-500 transition"
               >
-                Hapus Terpilih
+                {t("deleteSelected")}
               </button>
             )}
           </div>
@@ -306,7 +308,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
           <div className="flex items-center gap-6">
             <div className="flex flex-col items-end">
               <span className="text-xs text-gray-600">
-                Total ({totalProduk} Produk):
+                {t("totalLabel", { count: totalProduk })}
               </span>
               <span className="text-xl font-extrabold text-[#e76f51]">
                 Rp {totalHarga.toLocaleString("id-ID")}
@@ -318,7 +320,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
               onClick={() => {
                 if (selectedIds.length > 0) {
                   localStorage.setItem("checkout_items", JSON.stringify(selectedItems));
-                  window.location.href = "/checkout";
+                  router.push("/checkout");
                 }
               }}
               className={`rounded-xl px-8 py-3 text-sm font-bold text-white transition ${
@@ -327,7 +329,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
                   : "bg-gray-300 cursor-not-allowed"
               }`}
             >
-              Checkout
+              {t("checkout")}
             </button>
           </div>
         </div>

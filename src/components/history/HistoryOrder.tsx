@@ -1,10 +1,13 @@
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 export default function HistoryOrder() {
+  const t = useTranslations("history");
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 pb-32">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">
-        Riwayat Pesanan Saya
+        {t("title")}
       </h1>
 
       <div className="flex flex-col items-center justify-center rounded-2xl border border-gray-100 bg-white p-8 sm:p-12 text-center shadow-sm">
@@ -27,20 +30,20 @@ export default function HistoryOrder() {
         </div>
 
         <h2 className="text-xl font-bold text-gray-900">
-          Belum Ada Riwayat Pesanan
+          {t("emptyTitle")}
         </h2>
 
         <p className="mt-2 text-sm text-gray-600 max-w-md">
-          Kamu belum pernah melakukan pemesanan makanan atau minuman. Yuk, pesan makanan favoritmu sekarang!
+          {t("emptyBody")}
         </p>
 
         <Link
           href="/#menu-populer"
           className="mt-6 block w-full max-w-sm rounded-xl border border-gray-100 bg-slate-50 p-4 text-left transition-colors duration-300 hover:bg-slate-100"
         >
-          <p className="text-sm font-bold text-gray-900">Menu Populer</p>
+          <p className="text-sm font-bold text-gray-900">{t("popularTitle")}</p>
           <p className="text-xs text-gray-600 mt-0.5">
-            Temukan rekomendasi menu paling laris hari ini
+            {t("popularSubtitle")}
           </p>
         </Link>
 
@@ -48,7 +51,7 @@ export default function HistoryOrder() {
           href="/order"
           className="mt-6 w-full max-w-sm rounded-xl bg-[#e76f51] py-3 text-center text-sm font-bold text-white transition hover:bg-[#d55f43]"
         >
-          Eksplor Menu Kantin
+          {t("exploreMenu")}
         </Link>
       </div>
     </div>

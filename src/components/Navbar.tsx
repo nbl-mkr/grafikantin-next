@@ -4,11 +4,10 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { logout } from "@/lib/actions";
 import { User } from "@supabase/supabase-js";
-import Link from "next/link";
+import { Link, usePathname } from "@/i18n/navigation";
 import Image from "next/image";
 import AdaptiveImage from "@/components/common/AdaptiveImage";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
-import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 interface NavbarUser {
@@ -59,15 +58,12 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
     };
   }, []);
 
-  const normalizedPathname =
-    pathname === "/id" || pathname === "/en" ? "/" : pathname;
-
-  const isActive = (path: string) => normalizedPathname === path;
+  const isActive = (path: string) => pathname === path;
 
   const isDropdownActive =
-    normalizedPathname === "/history" ||
-    normalizedPathname === "/kritik-saran" ||
-    normalizedPathname === "/auth/login";
+    pathname === "/history" ||
+    pathname === "/kritik-saran" ||
+    pathname === "/auth/login";
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-100 print:hidden">

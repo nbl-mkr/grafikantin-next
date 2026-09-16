@@ -2,12 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { CartItem, useCart } from "@/context/CartContext";
 import { createOrderAction } from "@/lib/data/checkout";
 
 export default function CheckoutCard() {
+  const t = useTranslations("checkout");
   const router = useRouter();
   const { clearCart } = useCart();
   const [items, setItems] = useState<CartItem[]>([]);
@@ -48,7 +50,7 @@ export default function CheckoutCard() {
     );
 
     if (!res.ok) {
-      setError(res.error ?? "Gagal membuat pesanan");
+      setError(res.error ?? t("errorDefault"));
       setSubmitting(false);
       return;
     }
@@ -67,17 +69,17 @@ export default function CheckoutCard() {
     return (
       <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
         <h1 className="text-2xl font-bold text-gray-900 mb-8">
-          Pembayaran Pesanan
+          {t("title")}
         </h1>
         <div className="flex flex-col items-center justify-center rounded-2xl border border-gray-100 bg-white p-8 sm:p-12 text-center shadow-sm">
           <p className="text-gray-600 mb-4">
-            Tidak ada item yang dipilih untuk dibayar.
+            {t("emptyTitle")}
           </p>
           <Link
             href="/shopping"
             className="rounded-xl bg-[#e76f51] px-6 py-2.5 text-sm font-bold text-white transition hover:bg-[#d55f43]"
           >
-            Kembali ke Keranjang
+            {t("backToCart")}
           </Link>
         </div>
       </div>
@@ -87,14 +89,14 @@ export default function CheckoutCard() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">
-        Pembayaran Pesanan
+        {t("title")}
       </h1>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2 flex flex-col gap-6">
           <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
             <h2 className="text-base font-bold text-gray-900 mb-4">
-              Rincian Pesanan
+              {t("orderDetails")}
             </h2>
             <div className="divide-y divide-gray-100">
               {items.map((item) => (
@@ -120,16 +122,16 @@ export default function CheckoutCard() {
 
           <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
             <h2 className="text-base font-bold text-gray-900 mb-1">
-              Metode Pembayaran (Cashless)
+              {t("paymentMethod")}
             </h2>
             <p className="text-xs text-gray-600 mb-6">
-              Silakan scan QRIS di bawah ini menggunakan DANA, GoPay, OVO, ShopeePay, atau Mobile Banking lainnya.
+              {t("qrisInstructions")}
             </p>
 
             <div className="flex justify-center">
               <div className="flex flex-col items-center rounded-2xl border border-gray-100 bg-slate-50 p-6 w-full max-w-sm text-center">
                 <span className="text-xs font-bold text-slate-700 tracking-wider mb-4">
-                  QRIS GRAFIKANTIN
+                  {t("qrisTitle")}
                 </span>
                 <div className="relative h-48 w-48 bg-white p-2 rounded-xl border border-gray-200 shadow-inner flex items-center justify-center">
                   <Image
@@ -142,7 +144,7 @@ export default function CheckoutCard() {
                   />
                 </div>
                 <span className="text-xs font-medium text-gray-600 mt-4">
-                  NMAS: Kantin SMKN 4 Malang
+                  {t("qrisMerchant")}
                 </span>
               </div>
             </div>
@@ -152,21 +154,21 @@ export default function CheckoutCard() {
         <div>
           <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
             <h2 className="text-base font-bold text-gray-900 mb-4">
-              Total Ringkasan
+              {t("summaryTitle")}
             </h2>
             <div className="flex justify-between text-sm text-gray-600 mb-3">
-              <span>Subtotal</span>
+              <span>{t("subtotal")}</span>
               <span className="font-medium text-gray-900">
                 Rp {subtotal.toLocaleString("id-ID")}
               </span>
             </div>
             <div className="flex justify-between text-sm text-gray-600 mb-4">
-              <span>Biaya Layanan</span>
-              <span className="font-semibold text-emerald-600">Gratis</span>
+              <span>{t("serviceFee")}</span>
+              <span className="font-semibold text-emerald-600">{t("free")}</span>
             </div>
             <div className="border-t border-gray-100 pt-4 mb-6 flex justify-between items-center">
               <span className="font-bold text-gray-900 text-sm">
-                Total Bayar
+                {t("totalPayment")}
               </span>
               <span className="text-lg font-extrabold text-[#e76f51]">
                 Rp {subtotal.toLocaleString("id-ID")}
@@ -180,8 +182,7 @@ export default function CheckoutCard() {
                 className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-gray-300 text-[#e76f51] focus:ring-[#e76f51]"
               />
               <span className="text-xs font-medium text-gray-700">
-                Saya sudah memindai QRIS di atas dan menyelesaikan pembayaran
-                sesuai total tagihan.
+                {t("confirmCheckbox")}
               </span>
             </label>
             {error && (
@@ -199,11 +200,11 @@ export default function CheckoutCard() {
                   : "cursor-not-allowed bg-[#d55f43] opacity-60"
               }`}
             >
-              {submitting ? "Memproses Pesanan..." : "Konfirmasi & Bayar"}
+              {submitting ? t("btnProcessing") : t("btnConfirm")}
             </button>
             {!paymentConfirmed && (
               <p className="mt-2 text-center text-[11px] font-medium text-gray-500">
-                Centang konfirmasi pembayaran untuk mengaktifkan tombol.
+                {t("confirmNotice")}
               </p>
             )}
           </div>

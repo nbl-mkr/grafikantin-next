@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { login } from "@/lib/actions";
 
 export default function LoginForm() {
+  const t = useTranslations("auth");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -30,10 +32,10 @@ export default function LoginForm() {
 
         <div className="relative z-10 w-full max-w-md">
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight">
-            Pesan Kantin Lebih Cepat & Praktis
+            {t("sideTitle")}
           </h2>
           <p className="mt-2 sm:mt-4 text-xs sm:text-sm lg:text-base text-gray-200 leading-relaxed">
-            Sistem pemesanan makanan digital resmi untuk warga SMK Negeri 4 Malang. Nikmati kemudahan memesan tanpa antri.
+            {t("sideSubtitle")}
           </p>
         </div>
 
@@ -44,17 +46,17 @@ export default function LoginForm() {
         <div className="w-full max-w-md mx-auto">
           <div className="mb-4 sm:mb-6 lg:mb-8">
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">
-              Login
+              {t("loginTitle")}
             </h1>
             <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-gray-600">
-              Masuk ke akun Grafikantin kamu
+              {t("loginSubtitle")}
             </p>
           </div>
 
           <form action={login} className="space-y-3.5 sm:space-y-5">
             <div className="space-y-1 sm:space-y-1.5">
               <label htmlFor="email" className="block text-xs sm:text-sm font-semibold text-gray-700">
-                Email
+                {t("emailLabel")}
               </label>
               <div className="relative">
                 <input
@@ -64,7 +66,7 @@ export default function LoginForm() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="nis@grafikantin.com"
+                  placeholder={t("emailPlaceholder")}
                   className="w-full rounded-xl border border-gray-200 bg-white py-2.5 sm:py-3 pl-3.5 sm:pl-4 pr-10 sm:pr-11 text-xs sm:text-sm text-gray-900 placeholder-gray-400 focus:border-[#62748e] focus:outline-none focus:ring-1 focus:ring-[#62748e] shadow-sm transition"
                 />
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 sm:pr-3.5 text-gray-600">
@@ -77,7 +79,7 @@ export default function LoginForm() {
 
             <div className="space-y-1 sm:space-y-1.5">
               <label htmlFor="password" className="block text-xs sm:text-sm font-semibold text-gray-700">
-                Password
+                {t("passwordLabel")}
               </label>
               <div className="relative">
                 <input
@@ -87,7 +89,7 @@ export default function LoginForm() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••••••"
+                  placeholder={t("passwordPlaceholder")}
                   className="w-full rounded-xl border border-gray-200 bg-white py-2.5 sm:py-3 pl-3.5 sm:pl-4 pr-10 sm:pr-11 text-xs sm:text-sm text-gray-900 placeholder-gray-400 focus:border-[#62748e] focus:outline-none focus:ring-1 focus:ring-[#62748e] shadow-sm transition"
                 />
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 sm:pr-3.5 text-gray-600">
@@ -102,7 +104,7 @@ export default function LoginForm() {
               type="submit"
               className="w-full rounded-xl bg-[#e76f51] py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-white transition hover:bg-[#d55f43] shadow-sm"
             >
-              Masuk
+              {t("submit")}
             </button>
           </form>
         </div>

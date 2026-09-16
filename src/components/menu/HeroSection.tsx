@@ -1,4 +1,7 @@
-import Link from "next/link";
+"use client";
+
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export interface StandInfo {
   nama_stand: string;
@@ -10,11 +13,12 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ stand }: HeroSectionProps) {
+  const t = useTranslations("menu");
   const defaultStand: StandInfo = {
-    nama_stand: "Kantin Utama",
-    deskripsi: "Pilihan menu makanan dan minuman lezat untuk menemani harimu.",
+    nama_stand: t("defaultStandName"),
+    deskripsi: t("defaultStandDescription"),
   };
-
+  
   const activeStand = stand || defaultStand;
 
   return (
@@ -33,7 +37,7 @@ export default function HeroSection({ stand }: HeroSectionProps) {
             <ol className="flex items-center space-x-2">
               <li>
                 <Link href="/order" className="text-[#e76f51] hover:underline font-medium">
-                  Stand
+                  {t("breadcrumbStand")}
                 </Link>
               </li>
               <li><span className="text-gray-600">/</span></li>
@@ -44,7 +48,7 @@ export default function HeroSection({ stand }: HeroSectionProps) {
           </nav>
 
           <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
-            {activeStand.nama_stand} - <span className="italic text-[#e76f51]">Pilihan Menu</span>
+            {activeStand.nama_stand} - <span className="italic text-[#e76f51]">{t("menuChoice")}</span>
           </h1>
 
           <p className="mt-3 text-sm text-gray-600 leading-relaxed max-w-xl">
@@ -56,13 +60,13 @@ export default function HeroSection({ stand }: HeroSectionProps) {
               href="#food-section"
               className="inline-flex items-center justify-center rounded-lg bg-[#e76f51] px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-[#d55f43] shadow-sm"
             >
-              Makanan
+              {t("foodAnchor")}
             </a>
             <a
               href="#snack-section"
               className="inline-flex items-center justify-center rounded-lg bg-[#e76f51] px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-[#d55f43] shadow-sm"
             >
-              Camilan
+              {t("snackAnchor")}
             </a>
           </div>
         </div>
@@ -72,7 +76,7 @@ export default function HeroSection({ stand }: HeroSectionProps) {
             href="/order"
             className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#e76f51] px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-[#d55f43] shadow-sm"
           >
-            <span>Kembali ke Utama</span>
+            <span>{t("backToMain")}</span>
           </Link>
         </div>
       </div>

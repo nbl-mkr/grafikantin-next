@@ -1,16 +1,20 @@
+import { useTranslations } from "next-intl";
+
 export default function ValueCards() {
+  const t = useTranslations("about");
+
   return (
     <section className="w-full bg-[#e76f51] py-14 md:py-20 text-white">
       <div className="mx-auto max-w-6xl px-6">
         <div className="mb-12 text-center max-w-xl mx-auto">
           <span className="text-xs font-semibold uppercase tracking-wider">
-            Prinsip Utama
+            {t("valuesBadge")}
           </span>
           <h2 className="mt-1 text-2xl font-bold text-white sm:text-3xl tracking-tight">
-            Nilai Utama Kami
+            {t("valuesTitle")}
           </h2>
           <p className="mt-2 text-sm sm:text-base">
-            Prinsip yang selalu kami pegang dalam melayani seluruh warga sekolah
+            {t("valuesSubtitle")}
           </p>
         </div>
 
@@ -29,10 +33,10 @@ export default function ValueCards() {
               </div>
 
               <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#e76f51] transition-colors">
-                Kehigienisan yang Terjaga
+                {t("val1Title")}
               </h3>
               <p className="mt-2.5 text-sm leading-relaxed text-gray-600">
-                Semua makanan dan minuman diproduksi dengan standar kebersihan tinggi serta menggunakan bahan-bahan segar pilihan setiap harinya.
+                {t("val1Desc")}
               </p>
             </div>
 
@@ -53,10 +57,10 @@ export default function ValueCards() {
               </div>
 
               <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#e76f51] transition-colors">
-                Kemudahan Pemesanan
+                {t("val2Title")}
               </h3>
               <p className="mt-2.5 text-sm leading-relaxed text-gray-600">
-                Mengintegrasikan teknologi web untuk mempermudah siswa memesan makanan favorit tanpa perlu mengantre lama saat jam istirahat sekolah.
+                {t("val2Desc")}
               </p>
             </div>
 
@@ -77,10 +81,10 @@ export default function ValueCards() {
               </div>
 
               <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#e76f51] transition-colors">
-                Nutrisi Seimbang & Terjangkau
+                {t("val3Title")}
               </h3>
               <p className="mt-2.5 text-sm leading-relaxed text-gray-600">
-                Menyajikan menu yang kaya akan nutrisi dengan porsi yang pas, serta harga yang tetap bersahabat dan pas di kantong para pelajar.
+                {t("val3Desc")}
               </p>
             </div>
 

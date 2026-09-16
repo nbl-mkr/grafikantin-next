@@ -1,5 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { getTranslations } from "next-intl/server";
 
 interface Stand {
   id: number | string;
@@ -12,16 +13,17 @@ interface StandCardsProps {
   stands: Stand[];
 }
 
-export default function StandCards({ stands }: StandCardsProps) {
+export default async function StandCards({ stands }: StandCardsProps) {
+  const t = await getTranslations("order");
   return (
     <section id="cards" className="w-full bg-white py-12 md:py-16">
       <div className="mx-auto max-w-6xl px-6">
         <div className="mb-10 text-center max-w-xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">
-            Pilih Stand favoritmu
+            {t("standsTitle")}
           </h2>
           <p className="mt-2 text-sm sm:text-base text-gray-600">
-            Berbagai pilihan stand makanan dan minuman tersedia di Grafikantin
+            {t("standsSubtitle")}
           </p>
         </div>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 justify-items-center">
@@ -68,7 +70,7 @@ export default function StandCards({ stands }: StandCardsProps) {
                       />
                     </svg>
                     <span className="font-medium text-gray-700">
-                      Area Kantin SMK Negeri 4 Malang
+                      {t("standArea")}
                     </span>
                   </div>
 
@@ -77,7 +79,7 @@ export default function StandCards({ stands }: StandCardsProps) {
                       href={`/menu?stand_id=${stand.id}`}
                       className="inline-block w-full text-center bg-[#e76f51] hover:bg-[#d95d3f] text-white font-semibold py-2.5 rounded-xl transition shadow-sm active:scale-[0.98] focus:outline-none"
                     >
-                      Kunjungi Stand
+                      {t("visitStand")}
                     </Link>
                   </div>
                 </div>
