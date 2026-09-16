@@ -1,0 +1,72 @@
+{
+  "meta": {
+    "homeTitle": "Grafikantin - Order Your Favorite Menu",
+    "homeDescription": "SMKN 4 Malang Digital Canteen"
+  },
+  "nav": {
+    "home": "Home",
+    "order": "Order",
+    "about": "About",
+    "more": "More",
+    "history": "Order History",
+    "feedback": "Feedback",
+    "login": "Login",
+    "logout": "Logout",
+    "toggleMenu": "Toggle menu",
+    "cart": "Shopping cart",
+    "profile": "Profile photo"
+  },
+  "hero": {
+    "title": "Order Your <accent>Favorite</accent> Menu. Skip the Queue.",
+    "subtitle": "Enjoy canteen meals with fast serving, guaranteed taste, and a fully practical ordering experience right from your device.",
+    "cta": "Order Now",
+    "statPrepValue": "15m",
+    "statPrep": "Est. Serving Time",
+    "statStandsValue": "10+",
+    "statStands": "Canteen Stalls",
+    "statHygieneValue": "100%",
+    "statHygiene": "Hygienic & Fresh",
+    "statRatingValue": "4.8/5",
+    "statRating": "Student Rating"
+  },
+  "promo": {
+    "titleFirst": "PICK UP",
+    "titleSecond": "AT THE CANTEEN",
+    "taglineFirst": "Order without the queue.",
+    "taglineSecond": "Ready in 15 minutes!",
+    "cta": "Order Here"
+  },
+  "popular": {
+    "title": "Popular Menus <accent>This Week</accent>",
+    "subtitle": "Enjoy the most popular student meals with fast serving and guaranteed taste.",
+    "priceFrom": "Starting from",
+    "prepLabel": "Est. Serving Time",
+    "ratingLabel": "Student Rating",
+    "prepFallback": "10-15 min",
+    "seeAll": "View All Menus",
+    "priceLabel": "Price",
+    "nameLabel": "Menu Name",
+    "estLabel": "Est.",
+    "ratingShort": "Rating",
+    "buyNow": "Buy Now",
+    "listenTitle": "We <accent>Listen to You</accent>",
+    "listenBody": "Had a pleasant dining experience, or ran into an issue while ordering? Share it through this feature so the canteen can grow better."
+  },
+  "complaint": {
+    "title": "Student Feedback",
+    "body": "Student voices matter to the school. Share your criticism and suggestions to help Grafikantin provide even better service.",
+    "cta": "Click Here"
+  },
+  "footer": {
+    "description": "The canteen of SMK Negeri 4 Malang, offering a wide selection of food and drinks with fast, clean, and comfortable service.",
+    "menuHeading": "Menu",
+    "home": "Home",
+    "order": "Order",
+    "about": "About",
+    "infoHeading": "Information",
+    "school": "SMK Negeri 4 Malang",
+    "hours": "Mon - Fri: 09.20 - 13.00 WIB",
+    "phone": "(0341) 000000",
+    "copyright": "© {year} Grafikantin | SMK Negeri 4 Malang. All rights reserved."
+  }
+}

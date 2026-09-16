@@ -1,0 +1,72 @@
+{
+  "meta": {
+    "homeTitle": "Grafikantin - Pesan Menu Favoritmu",
+    "homeDescription": "Kantin Digital SMKN 4 Malang"
+  },
+  "nav": {
+    "home": "Beranda",
+    "order": "Pesan",
+    "about": "Tentang",
+    "more": "Lainnya",
+    "history": "Riwayat Pesanan",
+    "feedback": "Kritik & Saran",
+    "login": "Login",
+    "logout": "Logout",
+    "toggleMenu": "Toggle menu",
+    "cart": "Keranjang belanja",
+    "profile": "Foto profil"
+  },
+  "hero": {
+    "title": "Pesan Menu <accent>Favoritmu</accent> Tanpa Antre.",
+    "subtitle": "Nikmati santapan kantin dengan penyajian cepat, rasa terjamin, dan pengalaman pemesanan yang serba praktis langsung dari perangkatmu.",
+    "cta": "Pesan Sekarang",
+    "statPrepValue": "15m",
+    "statPrep": "Estimasi Penyajian",
+    "statStandsValue": "10+",
+    "statStands": "Stand Kantin",
+    "statHygieneValue": "100%",
+    "statHygiene": "Higienis & Segar",
+    "statRatingValue": "4.8/5",
+    "statRating": "Rating Siswa"
+  },
+  "promo": {
+    "titleFirst": "AMBIL",
+    "titleSecond": "DI KANTIN",
+    "taglineFirst": "Pesan, Tanpa Antre.",
+    "taglineSecond": "Siap Dalam 15 Menit!",
+    "cta": "Pesan Di Sini"
+  },
+  "popular": {
+    "title": "Menu Populer <accent>Minggu Ini</accent>",
+    "subtitle": "Nikmati santapan paling diminati siswa dengan penyajian cepat dan rasa terjamin.",
+    "priceFrom": "Harga mulai dari",
+    "prepLabel": "Estimasi Penyajian",
+    "ratingLabel": "Rating Siswa",
+    "prepFallback": "10-15 Mnt",
+    "seeAll": "Lihat Semua Menu",
+    "priceLabel": "Harga",
+    "nameLabel": "Nama Menu",
+    "estLabel": "Estimasi",
+    "ratingShort": "Rating",
+    "buyNow": "Beli Sekarang",
+    "listenTitle": "Kami <accent>Mendengarmu</accent>",
+    "listenBody": "Punya pengalaman makan yang menyenangkan, atau menemukan kendala saat memesan? Sampaikan lewat fitur ini agar kantin tumbuh lebih baik."
+  },
+  "complaint": {
+    "title": "Keluhan Siswa",
+    "body": "Suara Siswa sangat berarti bagi sekolah. Sampaikan kritik dan saran Anda untuk membantu Grafikantin memberikan pelayanan yang lebih baik lagi.",
+    "cta": "Klik Di Sini"
+  },
+  "footer": {
+    "description": "Kantin SMK Negeri 4 Malang yang menyediakan berbagai pilihan makanan dan minuman dengan pelayanan cepat, bersih, dan nyaman.",
+    "menuHeading": "Menu",
+    "home": "Beranda",
+    "order": "Pesan",
+    "about": "Tentang",
+    "infoHeading": "Informasi",
+    "school": "SMK Negeri 4 Malang",
+    "hours": "Senin - Jumat: 09.20 - 13.00 WIB",
+    "phone": "(0341) 000000",
+    "copyright": "© {year} Grafikantin | SMK Negeri 4 Malang. All rights reserved."
+  }
+}
