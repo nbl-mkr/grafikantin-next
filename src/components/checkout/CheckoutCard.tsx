@@ -5,12 +5,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CartItem, useCart } from "@/context/CartContext";
+import { createOrderAction } from "@/lib/data/checkout";
 
 export default function CheckoutCard() {
   const router = useRouter();
   const { clearCart } = useCart();
   const [items, setItems] = useState<CartItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [paymentConfirmed, setPaymentConfirmed] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const savedCheckout = localStorage.getItem("checkout_items");
@@ -31,32 +35,28 @@ export default function CheckoutCard() {
 
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=QRIS_GRAFIKANTIN_SMKN4_MALANG_${subtotal}`;
 
-  const handleConfirmAndPay = () => {
-    if (items.length === 0) return;
+  const handleConfirmAndPay = async () => {
+    if (!paymentConfirmed || submitting || items.length === 0) return;
+    setSubmitting(true);
+    setError("");
 
-    const now = new Date();
-    const formattedDate = now.toLocaleDateString("id-ID", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    }) + `, ${now.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })} WIB`;
+    const res = await createOrderAction(
+      items.map((item) => ({
+        menuId: Number(item.id),
+        quantity: item.quantity,
+      }))
+    );
 
-    const randomSuffix = Math.floor(1000 + Math.random() * 9000);
-    const dateStr = now.toISOString().slice(0, 10).replace(/-/g, "");
-    const generatedOrderId = `#KG-${dateStr}${randomSuffix}`;
+    if (!res.ok) {
+      setError(res.error ?? "Gagal membuat pesanan");
+      setSubmitting(false);
+      return;
+    }
 
-    const orderPayload = {
-      orderId: generatedOrderId,
-      date: formattedDate,
-      paymentMethod: "QRIS / E-Wallet",
-      items: items,
-      total: subtotal,
-    };
-
-    localStorage.setItem("last_order", JSON.stringify(orderPayload));
     localStorage.removeItem("checkout_items");
     clearCart();
-    router.push("/invoice");
+    setSubmitting(false);
+    router.push(`/invoice?kode=${encodeURIComponent(res.kode ?? "")}`);
   };
 
   if (!isLoaded) {
@@ -172,13 +172,40 @@ export default function CheckoutCard() {
                 Rp {subtotal.toLocaleString("id-ID")}
               </span>
             </div>
+            <label className="mb-4 flex cursor-pointer select-none items-start gap-2.5 rounded-xl border border-gray-100 bg-slate-50 p-3">
+              <input
+                type="checkbox"
+                checked={paymentConfirmed}
+                onChange={(e) => setPaymentConfirmed(e.target.checked)}
+                className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-gray-300 text-[#e76f51] focus:ring-[#e76f51]"
+              />
+              <span className="text-xs font-medium text-gray-700">
+                Saya sudah memindai QRIS di atas dan menyelesaikan pembayaran
+                sesuai total tagihan.
+              </span>
+            </label>
+            {error && (
+              <p className="mb-3 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-600">
+                {error}
+              </p>
+            )}
             <button
               type="button"
               onClick={handleConfirmAndPay}
-              className="w-full rounded-xl bg-[#e76f51] py-3 text-center text-sm font-bold text-white transition hover:bg-[#d55f43] cursor-pointer"
+              disabled={!paymentConfirmed || submitting}
+              className={`w-full rounded-xl py-3 text-center text-sm font-bold text-white transition ${
+                paymentConfirmed
+                  ? "cursor-pointer bg-[#e76f51] hover:bg-[#d55f43]"
+                  : "cursor-not-allowed bg-[#d55f43] opacity-60"
+              }`}
             >
-              Konfirmasi & Bayar
+              {submitting ? "Memproses Pesanan..." : "Konfirmasi & Bayar"}
             </button>
+            {!paymentConfirmed && (
+              <p className="mt-2 text-center text-[11px] font-medium text-gray-500">
+                Centang konfirmasi pembayaran untuk mengaktifkan tombol.
+              </p>
+            )}
           </div>
         </div>
       </div>
