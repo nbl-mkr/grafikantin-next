@@ -1,8 +1,66 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 import { canAccessPath, DASHBOARD_LANDING, type Role } from '@/lib/roles'
+import { routing } from '@/i18n/routing'
+
+const LOCALE_COOKIE = 'NEXT_LOCALE'
+
+function isValidLocale(value: unknown): value is (typeof routing.locales)[number] {
+  return typeof value === 'string' && (routing.locales as readonly string[]).includes(value)
+}
+
+function localeFromPathname(pathname: string) {
+  const [, segment] = pathname.split('/')
+  if (!isValidLocale(segment)) return undefined
+  return {
+    locale: segment,
+    rest: pathname.slice(segment.length + 1) || '/',
+  } as const
+}
+
+function resolveLocale(request: NextRequest, pathLocale?: string) {
+  if (isValidLocale(pathLocale)) return pathLocale
+
+  const cookieLocale = request.cookies.get(LOCALE_COOKIE)?.value
+  if (isValidLocale(cookieLocale)) return cookieLocale
+
+  const acceptLanguage = request.headers.get('accept-language')
+  if (acceptLanguage) {
+    for (const part of acceptLanguage.split(',')) {
+      const code = part.split(';')[0].trim().slice(0, 2).toLowerCase()
+      if (isValidLocale(code)) return code
+    }
+  }
+
+  return routing.defaultLocale
+}
 
 export async function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  // --- i18n: bare "/" redirects to the locale-prefixed home ---
+  if (pathname === '/') {
+    const locale = resolveLocale(request)
+    const redirectUrl = new URL(`/${locale}`, request.nextUrl.origin)
+    const res = NextResponse.redirect(redirectUrl)
+    res.cookies.set(LOCALE_COOKIE, locale, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365,
+    })
+    return res
+  }
+
+  // --- i18n: keep the NEXT_LOCALE cookie in sync on /id & /en pages ---
+  const pathLocale = localeFromPathname(pathname)
+  if (pathLocale) {
+    const localeRes = NextResponse.next({ request })
+    localeRes.cookies.set(LOCALE_COOKIE, pathLocale.locale, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365,
+    })
+    return localeRes
+  }
+
   let supabaseResponse = NextResponse.next({
     request,
   })
@@ -67,5 +125,10 @@ export const config = {
   matcher: [
     '/dashboard/:path*',
     '/dashboard',
+    '/',
+    '/id',
+    '/id/:path*',
+    '/en',
+    '/en/:path*',
   ],
 }
