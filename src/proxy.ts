@@ -5,6 +5,20 @@ import { routing } from '@/i18n/routing'
 
 const LOCALE_COOKIE = 'NEXT_LOCALE'
 
+/** Segmen path (tanpa prefiks locale) yang merupakan halaman publik ber-lokalisasi. */
+const PUBLIC_ROUTE_SEGMENTS = [
+  'order',
+  'about',
+  'menu',
+  'product',
+  'shopping',
+  'history',
+  'checkout',
+  'invoice',
+  'auth',
+  'kritik-saran',
+]
+
 function isValidLocale(value: unknown): value is (typeof routing.locales)[number] {
   return typeof value === 'string' && (routing.locales as readonly string[]).includes(value)
 }
@@ -24,41 +38,34 @@ function resolveLocale(request: NextRequest, pathLocale?: string) {
   const cookieLocale = request.cookies.get(LOCALE_COOKIE)?.value
   if (isValidLocale(cookieLocale)) return cookieLocale
 
-  const acceptLanguage = request.headers.get('accept-language')
-  if (acceptLanguage) {
-    for (const part of acceptLanguage.split(',')) {
-      const code = part.split(';')[0].trim().slice(0, 2).toLowerCase()
-      if (isValidLocale(code)) return code
-    }
-  }
-
   return routing.defaultLocale
 }
 
+function isPublicLocalePath(pathname: string) {
+  if (pathname === '/') return true
+  const first = pathname.split('/')[1]
+  return typeof first === 'string' && PUBLIC_ROUTE_SEGMENTS.includes(first)
+}
+
+function withLocaleCookie(response: NextResponse, locale: string) {
+  response.cookies.set(LOCALE_COOKIE, locale, {
+    path: '/',
+    maxAge: 60 * 60 * 24 * 365,
+  })
+  return response
+}
+
 export async function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl
-
-  // --- i18n: bare "/" redirects to the locale-prefixed home ---
-  if (pathname === '/') {
-    const locale = resolveLocale(request)
-    const redirectUrl = new URL(`/${locale}`, request.nextUrl.origin)
-    const res = NextResponse.redirect(redirectUrl)
-    res.cookies.set(LOCALE_COOKIE, locale, {
-      path: '/',
-      maxAge: 60 * 60 * 24 * 365,
-    })
-    return res
-  }
-
-  // --- i18n: keep the NEXT_LOCALE cookie in sync on /id & /en pages ---
+  const { pathname, search } = request.nextUrl
   const pathLocale = localeFromPathname(pathname)
-  if (pathLocale) {
-    const localeRes = NextResponse.next({ request })
-    localeRes.cookies.set(LOCALE_COOKIE, pathLocale.locale, {
-      path: '/',
-      maxAge: 60 * 60 * 24 * 365,
-    })
-    return localeRes
+
+  // --- i18n: non-prefixed public paths (and bare "/") redirect to "/{locale}/..." ---
+  if (!pathLocale && isPublicLocalePath(pathname)) {
+    const locale = resolveLocale(request)
+    const target =
+      pathname === '/' ? `/${locale}` : `/${locale}${pathname === '/' ? '' : pathname}${search}`
+    const redirectUrl = new URL(target, request.nextUrl.origin)
+    return withLocaleCookie(NextResponse.redirect(redirectUrl), locale)
   }
 
   let supabaseResponse = NextResponse.next({
@@ -69,7 +76,9 @@ export async function proxy(request: NextRequest) {
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   if (!url || !key) {
-    return supabaseResponse
+    return pathLocale
+      ? withLocaleCookie(supabaseResponse, pathLocale.locale)
+      : supabaseResponse
   }
 
   const supabase = createServerClient(url, key, {
@@ -93,11 +102,14 @@ export async function proxy(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  const isDashboard = request.nextUrl.pathname.startsWith('/dashboard')
+  const activeLocale = pathLocale?.locale ?? resolveLocale(request)
+
+  const isDashboard = pathname.startsWith('/dashboard')
 
   if (isDashboard && !user) {
-    const redirectUrl = new URL('/auth/login', request.nextUrl.origin)
-    return NextResponse.redirect(redirectUrl)
+    return NextResponse.redirect(
+      new URL(`/${activeLocale}/auth/login`, request.nextUrl.origin)
+    )
   }
 
   if (isDashboard && user) {
@@ -110,12 +122,17 @@ export async function proxy(request: NextRequest) {
     const role = (profile?.role ?? null) as Role | null
 
     if (!role) {
-      return NextResponse.redirect(new URL('/', request.nextUrl.origin))
+      return NextResponse.redirect(new URL(`/${activeLocale}`, request.nextUrl.origin))
     }
 
-    if (!canAccessPath(role, request.nextUrl.pathname)) {
+    if (!canAccessPath(role, pathname)) {
       return NextResponse.redirect(new URL(DASHBOARD_LANDING[role], request.nextUrl.origin))
     }
+  }
+
+  // --- i18n: keep the NEXT_LOCALE cookie in sync on locale-prefixed pages ---
+  if (pathLocale) {
+    return withLocaleCookie(supabaseResponse, pathLocale.locale)
   }
 
   return supabaseResponse
@@ -123,12 +140,6 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/dashboard/:path*',
-    '/dashboard',
-    '/',
-    '/id',
-    '/id/:path*',
-    '/en',
-    '/en/:path*',
+    '/((?!_next/static|_next/image|favicon.ico|assets/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|txt|xml|json|webmanifest)$).*)',
   ],
 }
