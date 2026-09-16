@@ -47,3 +47,63 @@ export async function fetchMenus(standId?: number | null): Promise<MenuRow[]> {
   if (error) throw new Error(`Gagal memuat menu: ${error.message}`);
   return (data ?? []) as unknown as MenuRow[];
 }
+
+export interface InvoiceData {
+  orderId: string;
+  date: string;
+  paymentMethod: string;
+  items: { id: number; nama_menu: string; harga: number; quantity: number }[];
+  total: number;
+}
+
+export async function fetchInvoice(
+  kode: string,
+  userId: string
+): Promise<InvoiceData | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("orders")
+    .select("kode_transaksi, total_harga, metode_pembayaran, jumlah, created_at, menu:menus!orders_id_menu_fkey ( id, nama, harga )")
+    .eq("kode_transaksi", kode)
+    .eq("id_user", userId)
+    .order("id", { ascending: true });
+  if (error || !data || data.length === 0) return null;
+
+  const rows = data as unknown as {
+    kode_transaksi: string;
+    total_harga: number;
+    metode_pembayaran: string | null;
+    jumlah: number;
+    created_at: string;
+    menu: { id: number; nama: string; harga: number } | null;
+  }[];
+
+  const created = new Date(rows[0].created_at);
+  const date =
+    created.toLocaleDateString("id-ID", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      timeZone: "Asia/Jakarta",
+    }) +
+    ", " +
+    created.toLocaleTimeString("id-ID", {
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "Asia/Jakarta",
+    }) +
+    " WIB";
+
+  return {
+    orderId: rows[0].kode_transaksi,
+    date,
+    paymentMethod: rows[0].metode_pembayaran ?? "QRIS / E-Wallet",
+    items: rows.map((r) => ({
+      id: r.menu?.id ?? 0,
+      nama_menu: r.menu?.nama ?? "-",
+      harga: Number(r.menu?.harga ?? 0),
+      quantity: r.jumlah,
+    })),
+    total: rows.reduce((sum, r) => sum + Number(r.total_harga), 0),
+  };
+}
