@@ -1,52 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import type { InvoiceData } from "@/lib/data/queries";
 
-interface OrderItem {
-  id: string;
-  nama_menu: string;
-  harga: number;
-  quantity: number;
-}
-
-interface OrderData {
-  orderId: string;
-  date: string;
-  paymentMethod: string;
-  items: OrderItem[];
-  total: number;
-}
-
-export default function InvoiceCard() {
+export default function InvoiceCard({ order }: { order: InvoiceData | null }) {
   const router = useRouter();
-  const [order, setOrder] = useState<OrderData | null>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    const savedOrder = localStorage.getItem("last_order");
-    if (savedOrder) {
-      try {
-        setOrder(JSON.parse(savedOrder));
-      } catch (e) {
-        console.error(e);
-      }
-    }
-    setIsLoaded(true);
-  }, []);
 
   const handlePrint = () => {
     window.print();
   };
 
   const handleFinish = () => {
-    localStorage.removeItem("last_order");
     router.push("/shopping");
   };
-
-  if (!isLoaded) {
-    return <div className="min-h-screen bg-slate-50" />;
-  }
 
   if (!order) {
     return (
