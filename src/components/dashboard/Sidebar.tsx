@@ -129,7 +129,7 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
       >
         <div className="flex h-16.25 shrink-0 items-center gap-2 border-b border-gray-100 px-4 text-gray-900 text-lg sm:px-6 lg:px-8">
           <Image
-            src="/assets/logo.png"
+            src="/assets/logo_header1.png"
             alt="Logo Grafikantin"
             width={32}
             height={32}
@@ -150,7 +150,7 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
 
         <nav
           ref={navRef}
-          className="flex-1 overflow-y-scroll px-4 py-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [overflow-anchor:none]"
+          className="flex-1 overflow-y-scroll px-4 py-6 scrollbar-none [&::-webkit-scrollbar]:hidden [overflow-anchor:none]"
         >
           <ul className="space-y-1">
             {visibleNavItems.map((item) => {
