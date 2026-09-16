@@ -7,7 +7,9 @@ import { User } from "@supabase/supabase-js";
 import Link from "next/link";
 import Image from "next/image";
 import AdaptiveImage from "@/components/common/AdaptiveImage";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 interface NavbarUser {
   id: string;
@@ -23,6 +25,7 @@ const DEFAULT_PHOTO = "/assets/photo_profile.jpg";
 
 export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
   const pathname = usePathname();
+  const t = useTranslations("nav");
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<NavbarUser | null>(initialUser);
   const [photoProfile, setPhotoProfile] = useState(initialPhoto ?? DEFAULT_PHOTO);
@@ -56,12 +59,15 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
     };
   }, []);
 
-  const isActive = (path: string) => pathname === path;
+  const normalizedPathname =
+    pathname === "/id" || pathname === "/en" ? "/" : pathname;
+
+  const isActive = (path: string) => normalizedPathname === path;
 
   const isDropdownActive =
-    pathname === "/history" ||
-    pathname === "/kritik-saran" ||
-    pathname === "/auth/login";
+    normalizedPathname === "/history" ||
+    normalizedPathname === "/kritik-saran" ||
+    normalizedPathname === "/auth/login";
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-100 print:hidden">
@@ -89,7 +95,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                       : "font-normal text-gray-600"
                   }`}
                 >
-                  Beranda
+                  {t("home")}
                 </Link>
               </li>
 
@@ -102,7 +108,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                       : "font-normal text-gray-600"
                   }`}
                 >
-                  Pesan
+                  {t("order")}
                 </Link>
               </li>
 
@@ -115,7 +121,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                       : "font-normal text-gray-600"
                   }`}
                 >
-                  Tentang
+                  {t("about")}
                 </Link>
               </li>
 
@@ -128,7 +134,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                       : "font-normal text-gray-600"
                   }`}
                 >
-                  <span>Lainnya</span>
+                  <span>{t("more")}</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -159,7 +165,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                       }`}
                       role="menuitem"
                     >
-                      Riwayat Pesanan
+                      {t("history")}
                     </Link>
 
                     <Link
@@ -171,7 +177,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                       }`}
                       role="menuitem"
                     >
-                      Kritik & Saran
+                      {t("feedback")}
                     </Link>
                   </div>
 
@@ -183,7 +189,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                           className="block w-full px-4 py-2 text-left text-xs font-medium text-[#e76f51] transition-colors hover:bg-blue-50"
                           role="menuitem"
                         >
-                          Logout
+                          {t("logout")}
                         </button>
                       </form>
                     ) : (
@@ -196,7 +202,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                         }`}
                         role="menuitem"
                       >
-                        Login
+                        {t("login")}
                       </Link>
                     )}
                   </div>
@@ -206,13 +212,15 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
           </nav>
 
           <div className="flex items-center gap-3 md:justify-self-end">
+            <LanguageSwitcher />
+
             <Link
               href="/shopping"
               className="p-1.5 text-gray-600 hover:opacity-80 transition"
             >
               <Image
                 src="/assets/shopping-cart.png"
-                alt="Shopping Cart Icon"
+                alt={t("cart")}
                 width={16}
                 height={16}
                 className="w-4 h-4"
@@ -226,7 +234,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
               >
                 <AdaptiveImage
                   src={photoProfile}
-                  alt="Foto profil"
+                  alt={t("profile")}
                   fill
                   sizes="32px"
                   className="object-cover"
@@ -238,7 +246,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
               onClick={() => setIsOpen(!isOpen)}
               className="block p-1.5 text-gray-600 hover:opacity-80 transition md:hidden"
             >
-              <span className="sr-only">Toggle menu</span>
+              <span className="sr-only">{t("toggleMenu")}</span>
               {isOpen ? (
                 <svg
                   aria-hidden="true"
@@ -290,7 +298,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                     : "text-gray-600 hover:bg-gray-50"
                 }`}
               >
-                Beranda
+                {t("home")}
               </Link>
             </li>
             <li>
@@ -303,7 +311,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                     : "text-gray-600 hover:bg-gray-50"
                 }`}
               >
-                Pesan
+                {t("order")}
               </Link>
             </li>
             <li>
@@ -316,7 +324,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                     : "text-gray-600 hover:bg-gray-50"
                 }`}
               >
-                Tentang
+                {t("about")}
               </Link>
             </li>
             <li>
@@ -329,7 +337,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                     : "text-gray-600 hover:bg-gray-50"
                 }`}
               >
-                Riwayat Pesanan
+                {t("history")}
               </Link>
             </li>
             <li>
@@ -342,10 +350,15 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                     : "text-gray-600 hover:bg-gray-50"
                 }`}
               >
-                Kritik & Saran
+                {t("feedback")}
               </Link>
             </li>
             <li className="pt-2 border-t border-gray-100">
+              <div className="flex justify-center pb-2">
+                <LanguageSwitcher />
+              </div>
+            </li>
+            <li className="border-t border-gray-100 pt-2">
               {user ? (
                 <form action={logout}>
                   <button
@@ -353,7 +366,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                     onClick={() => setIsOpen(false)}
                     className="block w-full text-center rounded-lg bg-[#e76f51] px-4 py-2.5 font-semibold text-white shadow-sm transition hover:bg-[#2b2bad]"
                   >
-                    Logout
+                    {t("logout")}
                   </button>
                 </form>
               ) : (
@@ -362,7 +375,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                   onClick={() => setIsOpen(false)}
                   className="block w-full text-center rounded-lg bg-[#e76f51] px-4 py-2.5 font-semibold text-white shadow-sm transition hover:bg-[#2b2bad]"
                 >
-                  Login
+                  {t("login")}
                 </Link>
               )}
             </li>

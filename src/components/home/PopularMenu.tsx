@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations, useFormatter } from "next-intl";
 import AdaptiveImage from "@/components/common/AdaptiveImage";
 import ComplaintBanner from "@/components/home/ComplaintBanner";
 
@@ -21,6 +22,8 @@ interface PopularMenuProps {
 }
 
 export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
+  const t = useTranslations("popular");
+  const formatNumber = useFormatter().number;
   const featured = items[0];
 
   const handleBuyClick = () => {
@@ -34,33 +37,35 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
         <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1fr_352px] lg:gap-14">
           <div className="flex flex-col items-start">
             <h2 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl leading-[1.1]">
-              Menu Populer <span className="text-[#e76f51]">Minggu Ini</span>
+              {t.rich("title", {
+                accent: (chunks) => <span className="text-[#e76f51]">{chunks}</span>,
+              })}
             </h2>
             <p className="mt-4 text-base text-gray-600 max-w-md leading-relaxed">
-              Nikmati santapan paling diminati siswa dengan penyajian cepat dan rasa terjamin.
+              {t("subtitle")}
             </p>
 
             {featured && (
               <>
                 <div className="mt-8">
-                  <p className="text-xs font-medium text-gray-600">Harga mulai dari</p>
+                  <p className="text-xs font-medium text-gray-600">{t("priceFrom")}</p>
                   <p className="mt-1 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                    Rp {featured.harga.toLocaleString("id-ID")}
+                    {formatNumber(featured.harga, { style: "currency", currency: "IDR" })}
                   </p>
                 </div>
 
                 <div className="mt-6 grid grid-cols-2 gap-6 w-full max-w-sm">
                   <div className="border-l-2 border-[#e76f51] pl-4">
                     <p className="text-lg font-bold text-gray-900">
-                      {featured.estimasi || "10-15 Mnt"}
+                      {featured.estimasi || t("prepFallback")}
                     </p>
-                    <p className="text-xs text-gray-600">Estimasi Penyajian</p>
+                    <p className="text-xs text-gray-600">{t("prepLabel")}</p>
                   </div>
                   <div className="border-l-2 border-[#e76f51] pl-4">
                     <p className="text-lg font-bold text-gray-900">
                       {featured.rating || "4.8 / 5.0"}
                     </p>
-                    <p className="text-xs text-gray-600">Rating Siswa</p>
+                    <p className="text-xs text-gray-600">{t("ratingLabel")}</p>
                   </div>
                 </div>
               </>
@@ -70,7 +75,7 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
               href="/menu"
               className="mt-8 inline-flex items-center text-sm font-semibold text-gray-900 transition-colors hover:text-[#e76f51]"
             >
-              Lihat Semua Menu
+              {t("seeAll")}
             </Link>
           </div>
 
@@ -91,14 +96,14 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
                 <div className="mt-2">
                   <dl>
                     <div>
-                      <dt className="sr-only">Harga</dt>
+                      <dt className="sr-only">{t("priceLabel")}</dt>
                       <dd className="text-lg font-bold text-[#e76f51]">
-                        Rp {featured.harga.toLocaleString("id-ID")}
+                        {formatNumber(featured.harga, { style: "currency", currency: "IDR" })}
                       </dd>
                     </div>
 
                     <div>
-                      <dt className="sr-only">Nama Menu</dt>
+                      <dt className="sr-only">{t("nameLabel")}</dt>
                       <dd className="text-xl font-bold text-gray-900 mt-0.5">
                         {featured.nama_menu}
                       </dd>
@@ -122,9 +127,9 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
                         />
                       </svg>
                       <div className="mt-1.5 sm:mt-0">
-                        <p className="text-gray-600">Estimasi</p>
+                        <p className="text-gray-600">{t("estLabel")}</p>
                         <p className="font-medium text-gray-700">
-                          {featured.estimasi || "10-15 Mnt"}
+                          {featured.estimasi || t("prepFallback")}
                         </p>
                       </div>
                     </div>
@@ -145,7 +150,7 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
                         />
                       </svg>
                       <div className="mt-1.5 sm:mt-0">
-                        <p className="text-gray-600">Rating</p>
+                        <p className="text-gray-600">{t("ratingShort")}</p>
                         <p className="font-medium text-gray-700">
                           {featured.rating || "4.8 / 5.0"}
                         </p>
@@ -159,7 +164,7 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
                       onClick={handleBuyClick}
                       className="block w-full bg-[#e76f51] hover:bg-[#d95d3f] text-white font-semibold py-2.5 rounded-lg transition shadow-sm active:scale-[0.98] text-center"
                     >
-                      Beli Sekarang
+                      {t("buyNow")}
                     </Link>
                   </div>
                 </div>
@@ -170,10 +175,12 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
 
         <div className="mt-16 sm:mt-20">
           <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 leading-[1.1] sm:text-4xl">
-            Kami <span className="text-[#e76f51]">Mendengarmu</span>
+            {t.rich("listenTitle", {
+              accent: (chunks) => <span className="text-[#e76f51]">{chunks}</span>,
+            })}
           </h2>
           <p className="mt-4 text-base text-gray-600 max-w-2xl leading-relaxed sm:text-lg">
-            Punya pengalaman makan yang menyenangkan, atau menemukan kendala saat memesan? Sampaikan lewat fitur ini agar kantin tumbuh lebih baik.
+            {t("listenBody")}
           </p>
         </div>
       </div>

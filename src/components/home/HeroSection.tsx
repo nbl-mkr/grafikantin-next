@@ -1,11 +1,13 @@
 "use client";
 
 import { type MouseEvent, useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 
 const GLOW_SIZE = 680;
 const GLOW_LERP = 0.14;
 
 export default function HeroSection() {
+  const t = useTranslations("hero");
   const sectionRef = useRef<HTMLElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
 
@@ -105,36 +107,38 @@ export default function HeroSection() {
 
       <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center px-6 py-14 text-center md:py-20">
         <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 max-w-4xl mx-auto leading-tight sm:leading-none">
-          Pesan Menu <span className="text-[#e76f51]">Favoritmu</span> Tanpa Antre.
+          {t.rich("title", {
+            accent: (chunks) => <span className="text-[#e76f51]">{chunks}</span>,
+          })}
         </h1>
 
         <p className="mt-8 text-sm sm:text-base text-gray-600 max-w-2xl mx-auto font-normal">
-          Nikmati santapan kantin dengan penyajian cepat, rasa terjamin, dan pengalaman pemesanan yang serba praktis langsung dari perangkatmu.
+          {t("subtitle")}
         </p>
 
         <a
             href="/order"
             className="mt-8 inline-flex items-center justify-center rounded-lg bg-[#e76f51] px-7 py-3.5 text-sm font-bold text-white transition hover:bg-[#d55f43] shadow-sm"
         >
-          Pesan Sekarang
+          {t("cta")}
         </a>
 
         <div className="mt-8 pt-8 border-t border-slate-100 grid grid-cols-2 sm:grid-cols-4 gap-16 text-center">
           <div>
-            <p className="text-2xl font-black text-slate-900">15m</p>
-            <p className="text-xs font-medium text-gray-600">Estimasi Penyajian</p>
+            <p className="text-2xl font-black text-slate-900">{t("statPrepValue")}</p>
+            <p className="text-xs font-medium text-gray-600">{t("statPrep")}</p>
           </div>
           <div>
-            <p className="text-2xl font-black text-slate-900">10+</p>
-            <p className="text-xs font-medium text-gray-600">Stand Kantin</p>
+            <p className="text-2xl font-black text-slate-900">{t("statStandsValue")}</p>
+            <p className="text-xs font-medium text-gray-600">{t("statStands")}</p>
           </div>
           <div>
-            <p className="text-2xl font-black text-slate-900">100%</p>
-            <p className="text-xs font-medium text-gray-600">Higienis & Segar</p>
+            <p className="text-2xl font-black text-slate-900">{t("statHygieneValue")}</p>
+            <p className="text-xs font-medium text-gray-600">{t("statHygiene")}</p>
           </div>
           <div>
-            <p className="text-2xl font-black text-slate-900">4.8/5</p>
-            <p className="text-xs font-medium text-gray-600">Rating Siswa</p>
+            <p className="text-2xl font-black text-slate-900">{t("statRatingValue")}</p>
+            <p className="text-xs font-medium text-gray-600">{t("statRating")}</p>
           </div>
         </div>
       </div>

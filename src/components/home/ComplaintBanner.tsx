@@ -1,4 +1,9 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+
 export default function ComplaintBanner() {
+  const t = useTranslations("complaint");
   return (
     <div className="mx-auto max-w-6xl px-6">
       <div className="relative overflow-hidden rounded-3xl bg-[#e76f51] p-8 text-white shadow-lg md:p-12">
@@ -13,12 +18,10 @@ export default function ComplaintBanner() {
         <div className="relative flex flex-col items-center justify-between gap-6 md:flex-row">
           <div className="w-full text-center md:w-3/4 md:text-left">
             <h3 className="text-3xl font-extrabold tracking-tight leading-tight mb-3 md:text-4xl">
-              Keluhan Siswa
+              {t("title")}
             </h3>
             <p className="text-base leading-relaxed md:text-lg">
-              Suara Siswa sangat berarti bagi sekolah. Sampaikan kritik dan
-              saran Anda untuk membantu Grafikantin memberikan pelayanan yang
-              lebih baik lagi.
+              {t("body")}
             </p>
           </div>
 
@@ -27,7 +30,7 @@ export default function ComplaintBanner() {
               href="#"
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-7 py-3.5 text-sm font-semibold text-[#e76f51] shadow-md transition-all duration-200 hover:bg-gray-50 active:scale-[0.98]"
             >
-              <span>Klik Di Sini</span>
+              <span>{t("cta")}</span>
             </a>
           </div>
         </div>
