@@ -10,8 +10,8 @@ type SortField = "nama" | "pemilik" | "totalMenu" | "pendapatan";
 type SortOrder = "asc" | "desc";
 
 const statusStyles: Record<string, string> = {
-  Buka: "bg-emerald-50 text-emerald-600",
-  Tutup: "bg-red-50 text-red-600",
+  Buka: "text-emerald-600",
+  Tutup: "text-red-600",
 };
 
 export default function StandTable() {
@@ -166,7 +166,7 @@ export default function StandTable() {
                       <td className="px-4 py-3 whitespace-nowrap text-gray-600">{stand.pemilik}</td>
                       <td className="px-4 py-3 whitespace-nowrap text-gray-600">{stand.telepon}</td>
                       <td className="px-4 py-3 whitespace-nowrap">
-                        <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${statusStyles[stand.status] || "bg-gray-100 text-gray-600"}`}>
+                        <span className={`inline-flex text-xs font-semibold ${statusStyles[stand.status] || "text-gray-600"}`}>
                           {tEnum(stand.status as any)}
                         </span>
                       </td>
