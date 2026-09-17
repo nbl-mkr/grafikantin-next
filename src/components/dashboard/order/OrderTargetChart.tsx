@@ -1,6 +1,6 @@
 "use client";
-
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -14,6 +14,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import type { TooltipItem } from "chart.js";
 import { Chart } from "react-chartjs-2";
 import type { OrderChartData } from "@/lib/data/aggregate";
 
@@ -31,16 +32,18 @@ ChartJS.register(
 );
 
 export default function OrderTargetChart({ data }: { data: OrderChartData }) {
+  const t = useTranslations("dashboard.orders");
   const [range, setRange] = useState<"6m" | "12m">("6m");
-
   const period = data[range];
+  const highestValue = Math.max(data.target, ...period.pesanan, 0);
+  const yAxisMax = Math.max(50, Math.ceil(highestValue / 50) * 50);
 
   const chartData = {
     labels: period.labels,
     datasets: [
       {
         type: "line" as const,
-        label: "Target",
+        label: t("target"),
         data: period.labels.map(() => data.target),
         borderColor: "#f43f5e",
         backgroundColor: "#f43f5e",
@@ -57,7 +60,7 @@ export default function OrderTargetChart({ data }: { data: OrderChartData }) {
       },
       {
         type: "bar" as const,
-        label: "Pesanan",
+        label: t("ordersLabel"),
         data: period.pesanan,
         backgroundColor: "#e76f51",
         hoverBackgroundColor: "#d95f43",
@@ -71,31 +74,23 @@ export default function OrderTargetChart({ data }: { data: OrderChartData }) {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
-    interaction: {
-      mode: "index" as const,
-      intersect: false,
-    },
+    interaction: { mode: "index" as const, intersect: false },
     plugins: {
-      legend: {
-        position: "bottom" as const,
-        labels: { color: "#4b5563" },
-      },
+      legend: { position: "bottom" as const, labels: { color: "#4b5563" } },
       tooltip: {
         callbacks: {
-          label: (tooltipItem: any) =>
+          label: (tooltipItem: TooltipItem<"bar" | "line">) =>
             `${tooltipItem.dataset.label}: ${tooltipItem.formattedValue}`,
         },
       },
     },
     scales: {
-      x: {
-        grid: { display: false },
-        ticks: { color: "#4b5563" },
-      },
+      x: { grid: { display: false }, ticks: { color: "#4b5563" } },
       y: {
         beginAtZero: true,
+        max: yAxisMax,
         grid: { color: "#e5e7eb" },
-        ticks: { color: "#4b5563" },
+        ticks: { color: "#4b5563", stepSize: 50 },
       },
     },
   };
@@ -103,8 +98,7 @@ export default function OrderTargetChart({ data }: { data: OrderChartData }) {
   return (
     <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-medium text-gray-900">Pesanan vs Target Bulanan</h2>
-
+        <h2 className="text-sm font-medium text-gray-900">{t("chartTitle")}</h2>
         <div className="inline-flex rounded-md border border-gray-200 p-0.5 text-xs font-medium">
           <button
             type="button"
@@ -115,9 +109,8 @@ export default function OrderTargetChart({ data }: { data: OrderChartData }) {
                 : "text-gray-600 hover:text-gray-900"
             }`}
           >
-            6B
+            {t("range6m")}
           </button>
-
           <button
             type="button"
             onClick={() => setRange("12m")}
@@ -127,11 +120,10 @@ export default function OrderTargetChart({ data }: { data: OrderChartData }) {
                 : "text-gray-600 hover:text-gray-900"
             }`}
           >
-            12B
+            {t("range12m")}
           </button>
         </div>
       </div>
-
       <div className="mt-4 h-64">
         <Chart type="bar" data={chartData} options={options} />
       </div>

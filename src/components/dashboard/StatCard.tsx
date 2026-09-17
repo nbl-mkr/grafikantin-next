@@ -1,3 +1,6 @@
+"use client";
+import { useTranslations } from "next-intl";
+
 interface StatCardProps {
   label: string;
   value: string;
@@ -7,6 +10,8 @@ interface StatCardProps {
 }
 
 export default function StatCard({ label, value, change, positive, period }: StatCardProps) {
+  const t = useTranslations("dashboard.overview");
+
   return (
     <article className="flex flex-col gap-4 rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
       <div
@@ -37,14 +42,11 @@ export default function StatCard({ label, value, change, positive, period }: Sta
             />
           )}
         </svg>
-
-        <span className="sr-only">{positive ? "Peningkatan: " : "Penurunan: "}</span>
+        <span className="sr-only">{positive ? t("srIncrease") : t("srDecrease")}</span>
         <span>{change}</span>
       </div>
-
       <div>
         <strong className="block text-sm font-medium text-gray-600">{label}</strong>
-
         <p className="mt-1 flex items-baseline gap-2">
           <span className="text-2xl font-extrabold tracking-tight text-gray-900">{value}</span>
           <span className="text-xs text-gray-600">{period}</span>

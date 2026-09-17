@@ -1,6 +1,6 @@
 "use client";
-
 import { useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 interface ImageUploadFieldProps {
   id: string;
@@ -8,11 +8,8 @@ interface ImageUploadFieldProps {
   onSelect: (file: File | null) => void;
 }
 
-export default function ImageUploadField({
-  id,
-  preview,
-  onSelect,
-}: ImageUploadFieldProps) {
+export default function ImageUploadField({ id, preview, onSelect }: ImageUploadFieldProps) {
+  const t = useTranslations("dashboard.upload");
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
 
@@ -38,23 +35,21 @@ export default function ImageUploadField({
         className="hidden"
         onChange={(e) => pick(e.target.files?.[0])}
       />
-
       {preview ? (
         <div
           onClick={() => inputRef.current?.click()}
           className="group relative mt-1 flex h-32 w-full cursor-pointer items-center justify-center overflow-hidden rounded-md border border-gray-200 focus-within:border-[#e76f51] focus:outline-none"
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={preview} alt="Preview" className="h-full w-full object-cover" />
           <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/40">
             <span className="rounded-md bg-white/90 px-3 py-1 text-xs font-medium text-gray-700 opacity-0 transition-opacity group-hover:opacity-100">
-              Ganti gambar
+              {t("change")}
             </span>
           </div>
           <button
             type="button"
             onClick={clear}
-            aria-label="Hapus gambar"
+            aria-label={t("remove")}
             className="absolute right-2 top-2 grid size-7 place-content-center rounded-full bg-white/90 text-gray-600 shadow transition-colors hover:bg-red-50 hover:text-red-600"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="size-4">
@@ -94,10 +89,10 @@ export default function ImageUploadField({
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
             </svg>
           </span>
-          <span className="text-sm font-medium text-gray-900">Upload a File</span>
+          <span className="text-sm font-medium text-gray-900">{t("title")}</span>
           <span className="text-xs text-gray-600">
-            Drag and drop files here, or{" "}
-            <span className="font-medium text-[#e76f51]">browse</span>
+            {t("hint")}
+            <span className="font-medium text-[#e76f51]">{t("browse")}</span>
           </span>
         </div>
       )}

@@ -1,12 +1,14 @@
 import { redirect } from "next/navigation";
+import { getLocale, getTranslations } from "next-intl/server";
 import OrderTargetChart from "@/components/dashboard/order/OrderTargetChart";
+import OrderExportButton from "@/components/dashboard/order/OrderExportButton";
 import OrderTable, { type OrderView } from "@/components/dashboard/order/OrderTable";
 import { getDashboardContext } from "@/lib/data/context";
 import { fetchOrders } from "@/lib/data/queries";
 import { buildOrderCharts } from "@/lib/data/aggregate";
 
-function formatTanggal(iso: string) {
-  return new Date(iso).toLocaleDateString("id-ID", {
+function formatTanggal(iso: string, locale: string) {
+  return new Date(iso).toLocaleDateString(locale === "en" ? "en-US" : "id-ID", {
     day: "2-digit",
     month: "short",
     year: "numeric",
@@ -14,16 +16,18 @@ function formatTanggal(iso: string) {
 }
 
 export default async function DashboardOrdersPage() {
+  const locale = await getLocale();
+  const t = await getTranslations({ locale, namespace: "dashboard.orders" });
   const ctx = await getDashboardContext();
-  if (!ctx) redirect("/auth/login");
+  if (!ctx) redirect(`/${locale}/auth/login`);
 
   const orders = await fetchOrders(ctx);
-
+  const visitorLabel = locale === "en" ? "Visitor" : "Pengunjung";
   const rows: OrderView[] = orders.map((o) => ({
     id: o.kode_transaksi,
-    customer: o.user?.username ?? "Pengunjung",
+    customer: o.user?.username ?? visitorLabel,
     phone: "-",
-    date: formatTanggal(o.created_at),
+    date: formatTanggal(o.created_at, locale),
     createdAt: o.created_at,
     status: o.status,
     stand: o.stand?.nama_stand ?? "-",
@@ -36,16 +40,10 @@ export default async function DashboardOrdersPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-        <h1 className="text-xl font-bold text-gray-900">Pesanan</h1>
-        <button
-          type="button"
-          className="rounded-lg bg-[#e76f51] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#d55f43]"
-        >
-          Ekspor Pesanan
-        </button>
+        <h1 className="text-xl font-bold text-gray-900">{t("title")}</h1>
+        <OrderExportButton orders={rows} />
       </div>
-
-      <OrderTargetChart data={buildOrderCharts(orders)} />
+      <OrderTargetChart data={buildOrderCharts(orders, locale)} />
       <OrderTable orders={rows} />
     </div>
   );

@@ -1,10 +1,11 @@
 "use client";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import AdaptiveImage from "@/components/common/AdaptiveImage";
-import { dashboardNavItems, publicLinks } from "@/data/dashboardMockData";
+import { getDashboardNavItems, getPublicLinks } from "@/data/dashboardMockData";
+import { Link, usePathname } from "@/i18n/navigation";
 import { logout } from "@/lib/actions";
 import { updateProfileAction } from "@/lib/data/profile";
 import type { Role } from "@/lib/roles";
@@ -18,11 +19,17 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps) {
+  const t = useTranslations("dashboard");
   const pathname = usePathname();
   const router = useRouter();
+  
+  const dashboardNavItems = getDashboardNavItems(t);
+  const publicLinks = getPublicLinks(t);
+  
   const visibleNavItems = dashboardNavItems.filter(
     (item) => role !== null && item.roles.includes(role)
   );
+  
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isLainnyaOpen, setIsLainnyaOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
@@ -37,26 +44,22 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
 
   useEffect(() => {
     if (!isProfileModalOpen) return;
-
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setIsProfileModalOpen(false);
       }
     };
-
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isProfileModalOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
-
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         onClose();
       }
     };
-
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
@@ -67,8 +70,8 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [savingProfile, setSavingProfile] = useState(false);
   const profileFileInputRef = useRef<HTMLInputElement>(null);
-
   const [prevProfile, setPrevProfile] = useState(profile);
+
   if (prevProfile !== profile) {
     setPrevProfile(profile);
     setFullName(profile.fullName);
@@ -102,7 +105,7 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
     });
     setSavingProfile(false);
     if (!res.ok) {
-      alert(res.error ?? "Gagal menyimpan perubahan");
+      alert(res.error ?? t("errors.saveProfileFailed"));
       return;
     }
     setPhotoFile(null);
@@ -113,7 +116,6 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
 
   return (
     <>
-      {/* Overlay mobile */}
       <div
         className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 lg:hidden ${
           isOpen ? "opacity-100" : "pointer-events-none opacity-0"
@@ -121,7 +123,6 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
         onClick={onClose}
         aria-hidden="true"
       />
-
       <aside
         className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-gray-100 bg-white transition-transform duration-300 lg:translate-x-0 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
@@ -138,7 +139,7 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
           <span>Grafikantin</span>
           <button
             type="button"
-            aria-label="Tutup menu"
+            aria-label={t("nav.closeMenu")}
             onClick={onClose}
             className="ml-auto flex h-9 w-9 items-center justify-center rounded-lg text-gray-600 transition hover:bg-gray-50 hover:text-gray-700 lg:hidden"
           >
@@ -147,7 +148,6 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
             </svg>
           </button>
         </div>
-
         <nav
           ref={navRef}
           className="flex-1 overflow-y-scroll px-4 py-6 scrollbar-none [&::-webkit-scrollbar]:hidden [overflow-anchor:none]"
@@ -173,7 +173,6 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
               );
             })}
           </ul>
-
           <div className="mt-6 border-t border-gray-100 pt-4">
             <button
               type="button"
@@ -182,7 +181,7 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
               aria-controls="sidebar-lainnya"
               className="flex w-full cursor-pointer items-center justify-between rounded-xl px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-600 transition hover:text-[#e76f51]"
             >
-              Lainnya
+              {t("nav.more")}
               <svg
                 aria-hidden="true"
                 className={`size-4 shrink-0 transition-transform duration-300 ${isLainnyaOpen ? "rotate-180" : ""}`}
@@ -194,43 +193,41 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
               </svg>
             </button>
-
-              {isLainnyaOpen && (
-                <ul id="sidebar-lainnya" className="space-y-1 pt-2">
-                  {publicLinks.map((link) => {
-                    const isActive = pathname === link.href;
-                    return (
-                      <li key={link.href}>
-                        <Link
-                          href={link.href}
-                          onClick={onClose}
-                          className={`block rounded-xl px-4 py-2.5 text-sm transition ${
-                            isActive
-                              ? "bg-gray-50 font-semibold text-[#e76f51]"
-                              : "text-gray-600 hover:bg-gray-50 hover:text-[#e76f51]"
-                          }`}
-                        >
-                          {link.label}
-                        </Link>
-                      </li>
-                    );
-                  })}
-                  <li className="pt-2 border-t border-gray-100">
-                    <form action={logout}>
-                      <button
-                        type="submit"
+            {isLainnyaOpen && (
+              <ul id="sidebar-lainnya" className="space-y-1 pt-2">
+                {publicLinks.map((link) => {
+                  const isActive = pathname === link.href;
+                  return (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
                         onClick={onClose}
-                        className="block w-full rounded-xl px-4 py-2.5 text-left text-sm text-[#e76f51] transition hover:bg-gray-50"
+                        className={`block rounded-xl px-4 py-2.5 text-sm transition ${
+                          isActive
+                            ? "bg-gray-50 font-semibold text-[#e76f51]"
+                            : "text-gray-600 hover:bg-gray-50 hover:text-[#e76f51]"
+                        }`}
                       >
-                        Logout
-                      </button>
-                    </form>
-                  </li>
-                </ul>
-              )}
+                        {link.label}
+                      </Link>
+                    </li>
+                  );
+                })}
+                <li className="pt-2 border-t border-gray-100">
+                  <form action={logout}>
+                    <button
+                      type="submit"
+                      onClick={onClose}
+                      className="block w-full rounded-xl px-4 py-2.5 text-left text-sm text-[#e76f51] transition hover:bg-gray-50"
+                    >
+                      {t("nav.logout")}
+                    </button>
+                  </form>
+                </li>
+              </ul>
+            )}
           </div>
         </nav>
-
         <div className="shrink-0 border-t border-gray-100 p-4">
           <div className="rounded-2xl border border-gray-100 bg-slate-50 p-3 shadow-sm">
             <div className="flex flex-col items-center gap-3 text-center">
@@ -250,7 +247,6 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
             </div>
           </div>
         </div>
-
         {isProfileModalOpen && (
           <div
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
@@ -262,11 +258,11 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
             >
               <div className="space-y-6">
                 <div className="flex items-center justify-between rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-                  <h1 className="text-xl font-bold text-gray-900">Profil</h1>
+                  <h1 className="text-xl font-bold text-gray-900">{t("settings.profile")}</h1>
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
-                      aria-label="Tutup profil"
+                      aria-label={t("nav.closeProfile")}
                       onClick={closeProfileModal}
                       className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-600 transition hover:bg-gray-50 hover:text-gray-700"
                     >
@@ -278,25 +274,23 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
                       disabled={savingProfile}
                       className="rounded-lg bg-[#e76f51] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#d55f43] disabled:cursor-not-allowed disabled:opacity-60"
                     >
-                      {savingProfile ? "Menyimpan..." : "Simpan Perubahan"}
+                      {savingProfile ? t("common.saving") : t("common.saveChanges")}
                     </button>
                   </div>
                 </div>
-
                 <form
                   id="profile-form"
                   onSubmit={handleSubmit}
                   className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm"
                 >
-                  <h2 className="text-sm font-medium text-gray-900">Profil</h2>
-
+                  <h2 className="text-sm font-medium text-gray-900">{t("settings.profile")}</h2>
                   <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div className="sm:col-span-2 flex flex-col items-center justify-center gap-4">
                       <label htmlFor="sidebar-photo-profile-upload" className="cursor-pointer">
                         <div className="relative h-32 w-32 overflow-hidden rounded-full border border-gray-200">
                           <AdaptiveImage
                             src={photoProfile}
-                            alt="Foto Profil"
+                            alt={t("settings.photoAlt")}
                             fill
                             sizes="128px"
                             className="object-cover"
@@ -313,13 +307,12 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
                         className="hidden"
                       />
                     </div>
-
                     <div>
                       <label
                         htmlFor="sidebar-full-name"
                         className="block text-sm font-medium text-gray-700"
                       >
-                        Nama
+                        {t("settings.name")}
                       </label>
                       <input
                         type="text"
@@ -329,13 +322,12 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
                         className="mt-1 h-9 w-full rounded-md border border-gray-200 px-3 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none"
                       />
                     </div>
-
                     <div>
                       <label
                         htmlFor="sidebar-email-address"
                         className="block text-sm font-medium text-gray-700"
                       >
-                        Alamat Email
+                        {t("settings.email")}
                       </label>
                       <input
                         type="email"

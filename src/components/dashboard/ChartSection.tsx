@@ -1,6 +1,6 @@
 "use client";
-
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -34,15 +34,15 @@ interface ChartSectionProps {
 }
 
 export default function ChartSection({ revenueRanges, statusSplit }: ChartSectionProps) {
+  const t = useTranslations("dashboard.overview");
   const [range, setRange] = useState<"6m" | "12m">("6m");
-
   const currentData = revenueRanges[range];
 
   const lineChartData = {
     labels: currentData.labels,
     datasets: [
       {
-        label: "Pendapatan",
+        label: t("revenue"),
         data: currentData.values,
         borderColor: "#e76f51",
         backgroundColor: (context: any) => {
@@ -67,24 +67,20 @@ export default function ChartSection({ revenueRanges, statusSplit }: ChartSectio
   const lineChartOptions: any = {
     responsive: true,
     maintainAspectRatio: false,
-    interaction: {
-      mode: "index",
-      intersect: false,
-    },
+    interaction: { mode: "index", intersect: false },
     plugins: {
       legend: { display: false },
       tooltip: {
         callbacks: {
           label: (tooltipItem: any) =>
-            `Pendapatan: Rp ${Number(tooltipItem.raw).toLocaleString("id-ID")}`,
+            t("revenueTooltip", {
+              value: `Rp ${Number(tooltipItem.raw).toLocaleString("id-ID")}`,
+            }),
         },
       },
     },
     scales: {
-      x: {
-        grid: { display: false },
-        ticks: { color: "#4b5563" },
-      },
+      x: { grid: { display: false }, ticks: { color: "#4b5563" } },
       y: {
         min: 0,
         max: 2500000,
@@ -118,10 +114,7 @@ export default function ChartSection({ revenueRanges, statusSplit }: ChartSectio
     maintainAspectRatio: false,
     cutout: "70%",
     plugins: {
-      legend: {
-        position: "bottom",
-        labels: { color: "#4b5563" },
-      },
+      legend: { position: "bottom", labels: { color: "#4b5563" } },
       tooltip: {
         callbacks: {
           label: (tooltipItem: any) =>
@@ -135,8 +128,7 @@ export default function ChartSection({ revenueRanges, statusSplit }: ChartSectio
     <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
       <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm lg:col-span-2">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-medium text-gray-900">Tren Pendapatan</h2>
-
+          <h2 className="text-sm font-medium text-gray-900">{t("chartTitle")}</h2>
           <div className="inline-flex rounded-md border border-gray-200 p-0.5 text-xs font-medium">
             <button
               type="button"
@@ -147,9 +139,8 @@ export default function ChartSection({ revenueRanges, statusSplit }: ChartSectio
                   : "text-gray-600"
               }`}
             >
-              6B
+              {t("range6m")}
             </button>
-
             <button
               type="button"
               onClick={() => setRange("12m")}
@@ -159,19 +150,16 @@ export default function ChartSection({ revenueRanges, statusSplit }: ChartSectio
                   : "text-gray-600"
               }`}
             >
-              12B
+              {t("range12m")}
             </button>
           </div>
         </div>
-
         <div className="mt-4 h-64">
           <Line data={lineChartData} options={lineChartOptions} />
         </div>
       </div>
-
       <div className="rounded-lg border border-gray-100 shadow-sm bg-white p-6">
-        <h2 className="text-sm font-medium text-gray-900">Status Pesanan</h2>
-
+        <h2 className="text-sm font-medium text-gray-900">{t("statusTitle")}</h2>
         <div className="mt-4 h-64">
           <Doughnut data={doughnutChartData} options={doughnutChartOptions} />
         </div>

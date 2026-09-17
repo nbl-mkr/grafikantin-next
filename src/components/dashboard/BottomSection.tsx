@@ -1,6 +1,6 @@
 "use client";
-
 import { useState, useMemo } from "react";
+import { useTranslations } from "next-intl";
 
 type StatusPemesanan = "Menunggu" | "Diproses" | "Selesai" | "Dibatalkan";
 
@@ -24,14 +24,24 @@ const statusStyles: Record<string, string> = {
 };
 
 export default function BottomSection({ recentOrders = [] }: { recentOrders?: PesananTayang[] }) {
+  const t = useTranslations("dashboard.overview");
+  const tCommon = useTranslations("dashboard.common");
+  const tEnums = useTranslations("dashboard.enums.orderStatus");
+
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | StatusPemesanan>("all");
-
   const [sortField, setSortField] = useState<SortField>("tanggal");
   const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
-
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
+
+  const statusTabs: { label: string; value: "all" | StatusPemesanan }[] = [
+    { label: t("filterAll"), value: "all" },
+    { label: tEnums("Menunggu"), value: "Menunggu" },
+    { label: tEnums("Diproses"), value: "Diproses" },
+    { label: tEnums("Selesai"), value: "Selesai" },
+    { label: tEnums("Dibatalkan"), value: "Dibatalkan" },
+  ];
 
   const processedOrders = useMemo(() => {
     const result = recentOrders.filter((o) => {
@@ -41,7 +51,6 @@ export default function BottomSection({ recentOrders = [] }: { recentOrders?: Pe
       const matchStatus = statusFilter === "all" || o.status === statusFilter;
       return matchSearch && matchStatus;
     });
-
     result.sort((a, b) => {
       let valA: string | number;
       let valB: string | number;
@@ -66,13 +75,11 @@ export default function BottomSection({ recentOrders = [] }: { recentOrders?: Pe
         ? (valA as number) - (valB as number)
         : (valB as number) - (valA as number);
     });
-
     return result;
   }, [recentOrders, searchTerm, statusFilter, sortField, sortOrder]);
 
   const totalPages = Math.ceil(processedOrders.length / itemsPerPage) || 1;
   const validCurrentPage = Math.min(currentPage, totalPages);
-
   const paginatedOrders = useMemo(() => {
     const startIndex = (validCurrentPage - 1) * itemsPerPage;
     return processedOrders.slice(startIndex, startIndex + itemsPerPage);
@@ -105,13 +112,12 @@ export default function BottomSection({ recentOrders = [] }: { recentOrders?: Pe
   return (
     <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="text-sm font-medium text-gray-900">Pesanan Terbaru</h2>
-
+        <h2 className="text-sm font-medium text-gray-900">{t("recentOrders")}</h2>
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
           <div className="relative flex items-center">
             <input
               type="text"
-              placeholder="Cari ID atau pelanggan..."
+              placeholder={t("searchPlaceholder")}
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
@@ -125,40 +131,37 @@ export default function BottomSection({ recentOrders = [] }: { recentOrders?: Pe
               </svg>
             </span>
           </div>
-
           <div className="inline-flex h-9 items-center rounded-md border border-gray-200 p-1 text-xs font-medium">
-            {(["all", "Menunggu", "Diproses", "Selesai", "Dibatalkan"] as const).map((f) => (
+            {statusTabs.map((f) => (
               <button
-                key={f}
+                key={f.value}
                 type="button"
                 onClick={() => {
-                  setStatusFilter(f);
+                  setStatusFilter(f.value);
                   setCurrentPage(1);
                 }}
                 className={`h-full rounded-sm px-2.5 flex items-center justify-center transition-colors ${
-                  statusFilter === f ? "bg-gray-100 text-gray-900" : "text-gray-600 hover:text-gray-900"
+                  statusFilter === f.value ? "bg-gray-100 text-gray-900" : "text-gray-600 hover:text-gray-900"
                 }`}
               >
-                {f === "all" ? "Semua" : f}
+                {f.label}
               </button>
             ))}
           </div>
         </div>
       </div>
-
       <div className="mt-4 overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-100 text-sm">
           <thead>
             <tr className="text-left font-medium text-gray-600">
               <th className="px-4 py-3 whitespace-nowrap w-12 text-center">#</th>
-              <SortHeader field="id" label="ID Pesanan" />
-              <SortHeader field="customer" label="Pelanggan" />
-              <SortHeader field="tanggal" label="Tanggal" />
-              <SortHeader field="status" label="Status" />
-              <SortHeader field="total" label="Total" align="right" />
+              <SortHeader field="id" label={t("colId")} />
+              <SortHeader field="customer" label={t("colCustomer")} />
+              <SortHeader field="tanggal" label={t("colDate")} />
+              <SortHeader field="status" label={t("colStatus")} />
+              <SortHeader field="total" label={t("colTotal")} align="right" />
             </tr>
           </thead>
-
           <tbody className="divide-y divide-gray-100">
             {paginatedOrders.length > 0 ? (
               paginatedOrders.map((order, index) => {
@@ -166,22 +169,12 @@ export default function BottomSection({ recentOrders = [] }: { recentOrders?: Pe
                 return (
                   <tr key={order.id} className="hover:bg-gray-50/50 transition-colors">
                     <td className="px-4 py-3 whitespace-nowrap text-center text-xs font-semibold text-gray-600">{rowNumber}</td>
-                    <td className="px-4 py-3 whitespace-nowrap font-medium text-gray-900">
-                      {order.id}
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-gray-600">
-                      {order.customer}
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-gray-600">
-                      {order.time}
-                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap font-medium text-gray-900">{order.id}</td>
+                    <td className="px-4 py-3 whitespace-nowrap text-gray-600">{order.customer}</td>
+                    <td className="px-4 py-3 whitespace-nowrap text-gray-600">{order.time}</td>
                     <td className="px-4 py-3 whitespace-nowrap">
-                      <span
-                        className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-                          statusStyles[order.status] || "bg-gray-100 text-gray-600"
-                        }`}
-                      >
-                        {order.status}
+                      <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${statusStyles[order.status] || "bg-gray-100 text-gray-600"}`}>
+                        {tEnums(order.status as keyof typeof tEnums extends never ? string : any)}
                       </span>
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap text-right text-gray-600">
@@ -193,35 +186,26 @@ export default function BottomSection({ recentOrders = [] }: { recentOrders?: Pe
             ) : (
               <tr>
                 <td className="px-4 py-6 text-center text-gray-600" colSpan={6}>
-                  Tidak ada pesanan yang sesuai.
+                  {t("noOrders")}
                 </td>
               </tr>
             )}
           </tbody>
         </table>
       </div>
-
       <div className="mt-4 flex flex-col items-center justify-between gap-4 border-t border-gray-100 pt-4 sm:flex-row text-xs text-gray-600">
         <div className="flex items-center gap-2">
-          <span>Tampilkan</span>
+          <span>{tCommon("show")}</span>
           <div className="relative group">
             <button
               type="button"
               className="inline-flex items-center gap-1.5 h-8 rounded-lg border border-gray-200 bg-white px-2.5 text-xs text-gray-700 hover:border-[#62748e] focus:outline-none transition-colors"
             >
               <span>{itemsPerPage}</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="2"
-                stroke="currentColor"
-                className="size-3.5 text-gray-600 group-hover:text-[#62748e] group-hover:rotate-180 transition-transform duration-200"
-              >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="size-3.5 text-gray-600 group-hover:text-[#62748e] group-hover:rotate-180 transition-transform duration-200">
                 <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
               </svg>
             </button>
-
             <div
               role="menu"
               className="absolute bottom-full left-0 mb-1 w-16 divide-y divide-gray-100 overflow-hidden rounded-xl border border-gray-100 bg-white shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50"
@@ -245,22 +229,20 @@ export default function BottomSection({ recentOrders = [] }: { recentOrders?: Pe
               </div>
             </div>
           </div>
-          <span>dari {processedOrders.length} data</span>
+          <span>{tCommon("ofData", { count: processedOrders.length })}</span>
         </div>
-
         <div className="flex items-center gap-1">
           <button
             type="button"
             disabled={validCurrentPage === 1}
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             className="inline-flex items-center justify-center h-8 w-8 rounded-md border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:hover:bg-transparent text-gray-600 transition-colors"
-            aria-label="Halaman Sebelumnya"
+            aria-label={tCommon("prevPage")}
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="size-4">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
             </svg>
           </button>
-
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
             <button
               key={page}
@@ -275,13 +257,12 @@ export default function BottomSection({ recentOrders = [] }: { recentOrders?: Pe
               {page}
             </button>
           ))}
-
           <button
             type="button"
             disabled={validCurrentPage === totalPages}
             onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
             className="inline-flex items-center justify-center h-8 w-8 rounded-md border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:hover:bg-transparent text-gray-600 transition-colors"
-            aria-label="Halaman Selanjutnya"
+            aria-label={tCommon("nextPage")}
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="size-4">
               <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />

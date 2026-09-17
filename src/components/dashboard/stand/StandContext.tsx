@@ -1,7 +1,7 @@
 "use client";
-
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { upsertStandAction, deleteStandAction, type StandInput } from "@/lib/data/mutations";
 import type { StandView } from "@/lib/data/views";
 
@@ -22,6 +22,7 @@ export function StandProvider({
   initialStands: StandView[];
 }) {
   const router = useRouter();
+  const t = useTranslations("dashboard.errors");
   const [stands, setStands] = useState<StandView[]>(initialStands);
 
   useEffect(() => {
@@ -32,27 +33,27 @@ export function StandProvider({
     async (data: StandInput) => {
       const res = await upsertStandAction(data);
       if (res.ok) router.refresh();
-      else alert(res.error ?? "Gagal menyimpan stand");
+      else alert(res.error ?? t("saveStandFailed"));
     },
-    [router]
+    [router, t]
   );
 
   const updateStand = useCallback(
     async (id: number, data: StandInput) => {
       const res = await upsertStandAction({ ...data, id });
       if (res.ok) router.refresh();
-      else alert(res.error ?? "Gagal menyimpan stand");
+      else alert(res.error ?? t("saveStandFailed"));
     },
-    [router]
+    [router, t]
   );
 
   const deleteStand = useCallback(
     async (id: number) => {
       const res = await deleteStandAction(id);
       if (res.ok) router.refresh();
-      else alert(res.error ?? "Gagal menghapus stand");
+      else alert(res.error ?? t("deleteStandFailed"));
     },
-    [router]
+    [router, t]
   );
 
   return (

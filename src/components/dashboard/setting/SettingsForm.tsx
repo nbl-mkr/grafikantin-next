@@ -1,7 +1,7 @@
 "use client";
-
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { updateProfileAction } from "@/lib/data/profile";
 
 interface SettingsFormProps {
@@ -15,7 +15,11 @@ export default function SettingsForm({
   initialEmail,
   initialPhotoProfile,
 }: SettingsFormProps) {
+  const t = useTranslations("dashboard.settings");
+  const tCommon = useTranslations("dashboard.common");
+  const tErrors = useTranslations("dashboard.errors");
   const router = useRouter();
+
   const [fullName, setFullName] = useState(initialFullName);
   const [email, setEmail] = useState(initialEmail);
   const [photoProfile, setPhotoProfile] = useState(initialPhotoProfile);
@@ -51,19 +55,19 @@ export default function SettingsForm({
     });
     setSaving(false);
     if (!res.ok) {
-      alert(res.error ?? "Gagal menyimpan perubahan");
+      alert(res.error ?? tErrors("saveProfileFailed"));
       return;
     }
     setPhotoFile(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
-    setSavedMessage("Perubahan tersimpan");
+    setSavedMessage(tCommon("saved"));
     router.refresh();
   };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-        <h1 className="text-xl font-bold text-gray-900">Pengaturan</h1>
+        <h1 className="text-xl font-bold text-gray-900">{t("title")}</h1>
         <div className="flex items-center gap-3">
           {savedMessage && (
             <span className="text-sm font-semibold text-gray-600">{savedMessage}</span>
@@ -74,26 +78,23 @@ export default function SettingsForm({
             disabled={saving}
             className="rounded-lg bg-[#e76f51] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#d55f43] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {saving ? "Menyimpan..." : "Simpan Perubahan"}
+            {saving ? tCommon("saving") : tCommon("saveChanges")}
           </button>
         </div>
       </div>
-
       <form
         id="account-settings-form"
         onSubmit={handleSubmit}
         className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm"
       >
-        <h2 className="text-sm font-medium text-gray-900">Profil</h2>
-
+        <h2 className="text-sm font-medium text-gray-900">{t("profile")}</h2>
         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="sm:col-span-2 flex flex-col items-center justify-center gap-4">
             <label htmlFor="photo-profile-upload" className="cursor-pointer">
               <div className="relative h-32 w-32 overflow-hidden rounded-full border border-gray-200">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={photoProfile}
-                  alt="Foto Profil"
+                  alt={t("photoAlt")}
                   className="h-full w-full object-cover"
                 />
               </div>
@@ -108,13 +109,9 @@ export default function SettingsForm({
               className="hidden"
             />
           </div>
-
           <div>
-            <label
-              htmlFor="full-name"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Nama
+            <label htmlFor="full-name" className="block text-sm font-medium text-gray-700">
+              {t("name")}
             </label>
             <input
               type="text"
@@ -124,13 +121,9 @@ export default function SettingsForm({
               className="mt-1 h-9 w-full rounded-md border border-gray-200 px-3 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none"
             />
           </div>
-
           <div>
-            <label
-              htmlFor="email-address"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Alamat Email
+            <label htmlFor="email-address" className="block text-sm font-medium text-gray-700">
+              {t("email")}
             </label>
             <input
               type="email"
@@ -142,21 +135,14 @@ export default function SettingsForm({
           </div>
         </div>
       </form>
-
       <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-        <h2 className="text-sm font-medium text-gray-900">Notifikasi</h2>
-
+        <h2 className="text-sm font-medium text-gray-900">{t("notifications")}</h2>
         <ul className="mt-4 divide-y divide-gray-100">
           <li className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
             <div>
-              <p className="text-sm font-medium text-gray-900">
-                Notifikasi email
-              </p>
-              <p className="text-xs text-gray-600">
-                Dapatkan notifikasi saat pelanggan membuat pesanan.
-              </p>
+              <p className="text-sm font-medium text-gray-900">{t("emailNotifications")}</p>
+              <p className="text-xs text-gray-600">{t("emailNotificationsDesc")}</p>
             </div>
-
             <button
               type="button"
               role="switch"
@@ -166,24 +152,14 @@ export default function SettingsForm({
                 emailNotifications ? "bg-[#e76f51]" : "bg-gray-200"
               }`}
             >
-              <span
-                className={`size-4 rounded-full bg-white transition-transform ${
-                  emailNotifications ? "translate-x-6" : "translate-x-1"
-                }`}
-              />
+              <span className={`size-4 rounded-full bg-white transition-transform ${emailNotifications ? "translate-x-6" : "translate-x-1"}`} />
             </button>
           </li>
-
           <li className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
             <div>
-              <p className="text-sm font-medium text-gray-900">
-                Pembaruan produk
-              </p>
-              <p className="text-xs text-gray-600">
-                Email berkala mengenai fitur-fitur baru.
-              </p>
+              <p className="text-sm font-medium text-gray-900">{t("productUpdates")}</p>
+              <p className="text-xs text-gray-600">{t("productUpdatesDesc")}</p>
             </div>
-
             <button
               type="button"
               role="switch"
@@ -193,24 +169,14 @@ export default function SettingsForm({
                 productUpdates ? "bg-[#e76f51]" : "bg-gray-200"
               }`}
             >
-              <span
-                className={`size-4 rounded-full bg-white transition-transform ${
-                  productUpdates ? "translate-x-6" : "translate-x-1"
-                }`}
-              />
+              <span className={`size-4 rounded-full bg-white transition-transform ${productUpdates ? "translate-x-6" : "translate-x-1"}`} />
             </button>
           </li>
-
           <li className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
             <div>
-              <p className="text-sm font-medium text-gray-900">
-                Ringkasan mingguan
-              </p>
-              <p className="text-xs text-gray-600">
-                Ringkasan pendapatan dan pesanan setiap hari Senin.
-              </p>
+              <p className="text-sm font-medium text-gray-900">{t("weeklySummary")}</p>
+              <p className="text-xs text-gray-600">{t("weeklySummaryDesc")}</p>
             </div>
-
             <button
               type="button"
               role="switch"
@@ -220,29 +186,19 @@ export default function SettingsForm({
                 weeklySummary ? "bg-[#e76f51]" : "bg-gray-200"
               }`}
             >
-              <span
-                className={`size-4 rounded-full bg-white transition-transform ${
-                  weeklySummary ? "translate-x-6" : "translate-x-1"
-                }`}
-              />
+              <span className={`size-4 rounded-full bg-white transition-transform ${weeklySummary ? "translate-x-6" : "translate-x-1"}`} />
             </button>
           </li>
         </ul>
       </div>
-
       <div className="rounded-2xl border border-red-100 bg-white p-6 shadow-sm">
-        <h2 className="text-sm font-medium text-gray-900">Zona Berbahaya</h2>
-
-        <p className="mt-2 text-sm text-gray-600">
-          Menghapus akun Anda akan menghapus semua pesanan dan riwayat pembayaran.
-          Tindakan ini tidak dapat dibatalkan.
-        </p>
-
+        <h2 className="text-sm font-medium text-gray-900">{t("dangerZone")}</h2>
+        <p className="mt-2 text-sm text-gray-600">{t("dangerBody")}</p>
         <button
           type="button"
           className="mt-4 inline-block rounded-md border border-red-200 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50"
         >
-          Hapus akun
+          {t("deleteAccount")}
         </button>
       </div>
     </div>

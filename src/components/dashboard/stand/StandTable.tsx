@@ -1,7 +1,7 @@
 "use client";
-
 import Link from "next/link";
 import { useState, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import type { StandView } from "@/lib/data/views";
 import { useStands } from "@/components/dashboard/stand/StandContext";
 
@@ -14,16 +14,17 @@ const statusStyles: Record<string, string> = {
 };
 
 export default function StandTable() {
+  const t = useTranslations("dashboard.stands");
+  const tCommon = useTranslations("dashboard.common");
+  const tEnum = useTranslations("dashboard.enums.standStatus");
+
   const { stands, deleteStand } = useStands();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | "Buka" | "Tutup">("all");
-
   const [sortField, setSortField] = useState<SortField>("nama");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
-
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
-
   const [deleteTarget, setDeleteTarget] = useState<StandView | null>(null);
 
   const processedStands = useMemo(() => {
@@ -34,27 +35,22 @@ export default function StandTable() {
       const matchStatus = statusFilter === "all" || s.status === statusFilter;
       return matchSearch && matchStatus;
     });
-
     result.sort((a, b) => {
       let valA = a[sortField];
       let valB = b[sortField];
-
       if (typeof valA === "string") {
         const comp = (valA as string).localeCompare(valB as string);
         return sortOrder === "asc" ? comp : -comp;
       }
-
       return sortOrder === "asc"
         ? (valA as number) - (valB as number)
         : (valB as number) - (valA as number);
     });
-
     return result;
   }, [stands, searchTerm, statusFilter, sortField, sortOrder]);
 
   const totalPages = Math.ceil(processedStands.length / itemsPerPage) || 1;
   const validCurrentPage = Math.min(currentPage, totalPages);
-
   const paginatedStands = useMemo(() => {
     const startIndex = (validCurrentPage - 1) * itemsPerPage;
     return processedStands.slice(startIndex, startIndex + itemsPerPage);
@@ -79,13 +75,12 @@ export default function StandTable() {
     <>
       <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-sm font-medium text-gray-900">Semua Stand</h2>
-
+          <h2 className="text-sm font-medium text-gray-900">{t("allTitle")}</h2>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <div className="relative flex items-center">
               <input
                 type="text"
-                placeholder="Cari stand atau pemilik..."
+                placeholder={t("searchPlaceholder")}
                 value={searchTerm}
                 onChange={(e) => {
                   setSearchTerm(e.target.value);
@@ -99,7 +94,6 @@ export default function StandTable() {
                 </svg>
               </span>
             </div>
-
             <div className="inline-flex h-9 items-center rounded-md border border-gray-200 p-1 text-xs font-medium">
               {(["all", "Buka", "Tutup"] as const).map((f) => (
                 <button
@@ -113,20 +107,18 @@ export default function StandTable() {
                     statusFilter === f ? "bg-gray-100 text-gray-900" : "text-gray-600 hover:text-gray-900"
                   }`}
                 >
-                  {f === "all" ? "Semua" : f}
+                  {f === "all" ? t("filterAll") : tEnum(f as any)}
                 </button>
               ))}
             </div>
-
             <Link
               href="/dashboard/stand/tambah"
               className="h-9 inline-flex items-center rounded-lg bg-[#e76f51] px-4 text-sm font-medium text-white transition hover:bg-[#d55f43] whitespace-nowrap"
             >
-              + Tambah Stand
+              {t("add")}
             </Link>
           </div>
         </div>
-
         <div className="mt-4 overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-100 text-sm">
             <thead>
@@ -134,31 +126,31 @@ export default function StandTable() {
                 <th className="px-4 py-3 whitespace-nowrap w-12 text-center">#</th>
                 <th className="px-4 py-3 whitespace-nowrap">
                   <button type="button" onClick={() => handleSort("nama")} className="inline-flex items-center gap-1 hover:text-gray-900">
-                    Nama Stand
+                    {t("colName")}
                     <span className="text-xs text-gray-600">{sortField === "nama" ? (sortOrder === "asc" ? "↑" : "↓") : "↕"}</span>
                   </button>
                 </th>
                 <th className="px-4 py-3 whitespace-nowrap">
                   <button type="button" onClick={() => handleSort("pemilik")} className="inline-flex items-center gap-1 hover:text-gray-900">
-                    Pemilik
+                    {t("colOwner")}
                     <span className="text-xs text-gray-600">{sortField === "pemilik" ? (sortOrder === "asc" ? "↑" : "↓") : "↕"}</span>
                   </button>
                 </th>
-                <th className="px-4 py-3 whitespace-nowrap">Telepon</th>
-                <th className="px-4 py-3 whitespace-nowrap">Status</th>
+                <th className="px-4 py-3 whitespace-nowrap">{t("colPhone")}</th>
+                <th className="px-4 py-3 whitespace-nowrap">{t("colStatus")}</th>
                 <th className="px-4 py-3 whitespace-nowrap text-center">
                   <button type="button" onClick={() => handleSort("totalMenu")} className="inline-flex items-center gap-1 hover:text-gray-900">
-                    Total Menu
+                    {t("colTotalMenu")}
                     <span className="text-xs text-gray-600">{sortField === "totalMenu" ? (sortOrder === "asc" ? "↑" : "↓") : "↕"}</span>
                   </button>
                 </th>
                 <th className="px-4 py-3 whitespace-nowrap text-right">
                   <button type="button" onClick={() => handleSort("pendapatan")} className="inline-flex items-center gap-1 hover:text-gray-900">
-                    Pendapatan
+                    {t("colRevenue")}
                     <span className="text-xs text-gray-600">{sortField === "pendapatan" ? (sortOrder === "asc" ? "↑" : "↓") : "↕"}</span>
                   </button>
                 </th>
-                <th className="px-4 py-3 whitespace-nowrap text-right">Aksi</th>
+                <th className="px-4 py-3 whitespace-nowrap text-right">{t("colAction")}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -173,7 +165,7 @@ export default function StandTable() {
                       <td className="px-4 py-3 whitespace-nowrap text-gray-600">{stand.telepon}</td>
                       <td className="px-4 py-3 whitespace-nowrap">
                         <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${statusStyles[stand.status] || "bg-gray-100 text-gray-600"}`}>
-                          {stand.status}
+                          {tEnum(stand.status as any)}
                         </span>
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-center text-gray-600">{stand.totalMenu}</td>
@@ -186,14 +178,14 @@ export default function StandTable() {
                             href={`/dashboard/stand/${stand.id}/edit`}
                             className="rounded-md px-2.5 py-1 text-xs font-medium text-emerald-600 border border-emerald-200 hover:bg-emerald-50 transition-colors"
                           >
-                            Edit
+                            {t("edit")}
                           </Link>
                           <button
                             type="button"
                             onClick={() => setDeleteTarget(stand)}
                             className="rounded-md px-2.5 py-1 text-xs font-medium text-red-600 border border-red-200 hover:bg-red-50 transition-colors"
                           >
-                            Hapus
+                            {t("delete")}
                           </button>
                         </div>
                       </td>
@@ -203,35 +195,26 @@ export default function StandTable() {
               ) : (
                 <tr>
                   <td className="px-4 py-6 text-center text-gray-600" colSpan={8}>
-                    Tidak ada stand yang sesuai dengan pencarian.
+                    {t("empty")}
                   </td>
                 </tr>
               )}
             </tbody>
           </table>
         </div>
-
         <div className="mt-4 flex flex-col items-center justify-between gap-4 border-t border-gray-100 pt-4 sm:flex-row text-xs text-gray-600">
           <div className="flex items-center gap-2">
-            <span>Tampilkan</span>
+            <span>{tCommon("show")}</span>
             <div className="relative group">
               <button
                 type="button"
                 className="inline-flex items-center gap-1.5 h-8 rounded-lg border border-gray-200 bg-white px-2.5 text-xs text-gray-700 hover:border-[#62748e] focus:outline-none transition-colors"
               >
                 <span>{itemsPerPage}</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2"
-                  stroke="currentColor"
-                  className="size-3.5 text-gray-600 group-hover:text-[#62748e] group-hover:rotate-180 transition-transform duration-200"
-                >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="size-3.5 text-gray-600 group-hover:text-[#62748e] group-hover:rotate-180 transition-transform duration-200">
                   <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                 </svg>
               </button>
-
               <div
                 role="menu"
                 className="absolute bottom-full left-0 mb-1 w-16 divide-y divide-gray-100 overflow-hidden rounded-xl border border-gray-100 bg-white shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50"
@@ -255,22 +238,20 @@ export default function StandTable() {
                 </div>
               </div>
             </div>
-            <span>dari {processedStands.length} data</span>
+            <span>{tCommon("ofData", { count: processedStands.length })}</span>
           </div>
-
           <div className="flex items-center gap-1">
             <button
               type="button"
               disabled={validCurrentPage === 1}
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               className="inline-flex items-center justify-center h-8 w-8 rounded-md border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:hover:bg-transparent text-gray-600 transition-colors"
-              aria-label="Halaman Sebelumnya"
+              aria-label={tCommon("prevPage")}
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="size-4">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
               </svg>
             </button>
-
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <button
                 key={page}
@@ -285,13 +266,12 @@ export default function StandTable() {
                 {page}
               </button>
             ))}
-
             <button
               type="button"
               disabled={validCurrentPage === totalPages}
               onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
               className="inline-flex items-center justify-center h-8 w-8 rounded-md border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:hover:bg-transparent text-gray-600 transition-colors"
-              aria-label="Halaman Selanjutnya"
+              aria-label={tCommon("nextPage")}
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="size-4">
                 <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
@@ -300,13 +280,14 @@ export default function StandTable() {
           </div>
         </div>
       </div>
-
       {deleteTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
           <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
-            <h3 className="text-base font-semibold text-gray-900">Hapus Stand</h3>
+            <h3 className="text-base font-semibold text-gray-900">
+              {t("deleteTitle")}
+            </h3>
             <p className="mt-2 text-sm text-gray-600">
-              Apakah kamu yakin ingin menghapus <strong>{deleteTarget.nama}</strong>? Tindakan ini tidak dapat dibatalkan.
+              {tCommon("deleteBody", { name: deleteTarget.nama })}
             </p>
             <div className="mt-6 flex justify-end gap-2">
               <button
@@ -314,14 +295,14 @@ export default function StandTable() {
                 onClick={() => setDeleteTarget(null)}
                 className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
               >
-                Batal
+                {tCommon("cancel")}
               </button>
               <button
                 type="button"
                 onClick={handleDelete}
                 className="rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-600 transition-colors"
               >
-                Hapus
+                {tCommon("delete")}
               </button>
             </div>
           </div>

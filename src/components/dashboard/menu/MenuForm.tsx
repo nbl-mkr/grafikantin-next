@@ -1,5 +1,5 @@
 "use client";
-
+import { useTranslations } from "next-intl";
 import CustomSelect from "@/components/CustomSelect";
 import ImageUploadField from "@/components/dashboard/ImageUploadField";
 
@@ -36,6 +36,8 @@ interface MenuFormProps {
 }
 
 export default function MenuForm({ form, onChange, stands }: MenuFormProps) {
+  const t = useTranslations("dashboard.menus.form");
+
   const update = <K extends keyof MenuFormData>(key: K, value: MenuFormData[K]) => {
     onChange({ ...form, [key]: value });
   };
@@ -43,11 +45,8 @@ export default function MenuForm({ form, onChange, stands }: MenuFormProps) {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       <div className="sm:col-span-2">
-        <label
-          htmlFor="menu-nama"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Nama menu
+        <label htmlFor="menu-nama" className="block text-sm font-medium text-gray-700">
+          {t("name")}
         </label>
         <input
           type="text"
@@ -55,16 +54,12 @@ export default function MenuForm({ form, onChange, stands }: MenuFormProps) {
           value={form.nama}
           onChange={(e) => update("nama", e.target.value)}
           className="mt-1 h-9 w-full rounded-md border border-gray-200 px-3 text-sm text-gray-900 focus:border-[#e76f51] focus:outline-none"
-          placeholder="Nama menu"
+          placeholder={t("namePlaceholder")}
         />
       </div>
-
       <div>
-        <label
-          htmlFor="menu-stand"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Stand
+        <label htmlFor="menu-stand" className="block text-sm font-medium text-gray-700">
+          {t("stand")}
         </label>
         <CustomSelect
           id="menu-stand"
@@ -77,16 +72,12 @@ export default function MenuForm({ form, onChange, stands }: MenuFormProps) {
             const picked = stands.find((s) => s.nama === value);
             onChange({ ...form, stand: value, standId: picked?.id ?? 0 });
           }}
-          ariaLabel="Pilih stand"
+          ariaLabel={t("selectStand")}
         />
       </div>
-
       <div>
-        <label
-          htmlFor="menu-kategori"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Kategori
+        <label htmlFor="menu-kategori" className="block text-sm font-medium text-gray-700">
+          {t("category")}
         </label>
         <CustomSelect
           id="menu-kategori"
@@ -97,16 +88,12 @@ export default function MenuForm({ form, onChange, stands }: MenuFormProps) {
             { value: "Snack", label: "Snack" },
           ]}
           onChange={(value) => update("kategori", value as MenuKategori)}
-          ariaLabel="Pilih kategori"
+          ariaLabel={t("selectCategory")}
         />
       </div>
-
       <div>
-        <label
-          htmlFor="menu-harga"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Harga (Rp)
+        <label htmlFor="menu-harga" className="block text-sm font-medium text-gray-700">
+          {t("price")}
         </label>
         <input
           type="number"
@@ -117,13 +104,9 @@ export default function MenuForm({ form, onChange, stands }: MenuFormProps) {
           className="mt-1 h-9 w-full rounded-md border border-gray-200 px-3 text-sm text-gray-900 focus:border-[#e76f51] focus:outline-none"
         />
       </div>
-
       <div>
-        <label
-          htmlFor="menu-stok"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Stok
+        <label htmlFor="menu-stok" className="block text-sm font-medium text-gray-700">
+          {t("stock")}
         </label>
         <input
           type="number"
@@ -134,13 +117,9 @@ export default function MenuForm({ form, onChange, stands }: MenuFormProps) {
           className="mt-1 h-9 w-full rounded-md border border-gray-200 px-3 text-sm text-gray-900 focus:border-[#e76f51] focus:outline-none"
         />
       </div>
-
       <div className="sm:col-span-2">
-        <label
-          htmlFor="menu-gambar"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Gambar
+        <label htmlFor="menu-gambar" className="block text-sm font-medium text-gray-700">
+          {t("image")}
         </label>
         <ImageUploadField
           id="menu-gambar"
@@ -151,15 +130,14 @@ export default function MenuForm({ form, onChange, stands }: MenuFormProps) {
           }}
         />
       </div>
-
       <div className="sm:col-span-2">
-        <span className="block text-sm font-medium text-gray-700">Tersedia</span>
+        <span className="block text-sm font-medium text-gray-700">{t("available")}</span>
         <div className="mt-2">
           <button
             type="button"
             role="switch"
             aria-checked={form.tersedia}
-            aria-label="Tersedia"
+            aria-label={t("available")}
             onClick={() => update("tersedia", !form.tersedia)}
             className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors ${
               form.tersedia ? "bg-[#e76f51]" : "bg-gray-200"

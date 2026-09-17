@@ -1,7 +1,7 @@
 "use client";
-
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import {
   upsertMenuAction,
   deleteMenuAction,
@@ -31,6 +31,7 @@ export function MenuProvider({
   initialStands: { id: number; nama: string }[];
 }) {
   const router = useRouter();
+  const t = useTranslations("dashboard.errors");
   const [menus, setMenus] = useState<MenuView[]>(initialMenus);
 
   useEffect(() => {
@@ -41,44 +42,50 @@ export function MenuProvider({
     async (data: MenuInput) => {
       const res = await upsertMenuAction(data);
       if (res.ok) router.refresh();
-      else alert(res.error ?? "Gagal menyimpan menu");
+      else alert(res.error ?? t("saveMenuFailed"));
     },
-    [router]
+    [router, t]
   );
 
   const updateMenu = useCallback(
     async (id: number, data: MenuInput) => {
       const res = await upsertMenuAction({ ...data, id });
       if (res.ok) router.refresh();
-      else alert(res.error ?? "Gagal menyimpan menu");
+      else alert(res.error ?? t("saveMenuFailed"));
     },
-    [router]
+    [router, t]
   );
 
   const deleteMenu = useCallback(
     async (id: number) => {
       const res = await deleteMenuAction(id);
       if (res.ok) router.refresh();
-      else alert(res.error ?? "Gagal menghapus menu");
+      else alert(res.error ?? t("deleteMenuFailed"));
     },
-    [router]
+    [router, t]
   );
 
   const toggleTersedia = useCallback(
     async (id: number) => {
-      setMenus((prev) => prev.map((m) => (m.id === id ? { ...m, tersedia: !m.tersedia } : m)));
+      setMenus((prev) =>
+        prev.map((m) => (m.id === id ? { ...m, tersedia: !m.tersedia } : m))
+      );
       const res = await toggleMenuTersediaAction(id);
       if (!res.ok) {
-        setMenus((prev) => prev.map((m) => (m.id === id ? { ...m, tersedia: !m.tersedia } : m)));
-        alert(res.error ?? "Gagal mengubah status");
+        setMenus((prev) =>
+          prev.map((m) => (m.id === id ? { ...m, tersedia: !m.tersedia } : m))
+        );
+        alert(res.error ?? t("toggleStatusFailed"));
       }
       router.refresh();
     },
-    [router]
+    [router, t]
   );
 
   return (
-    <MenuContext.Provider value={{ menus, stands: initialStands, addMenu, updateMenu, deleteMenu, toggleTersedia }}>
+    <MenuContext.Provider
+      value={{ menus, stands: initialStands, addMenu, updateMenu, deleteMenu, toggleTersedia }}
+    >
       {children}
     </MenuContext.Provider>
   );

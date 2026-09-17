@@ -1,6 +1,6 @@
 "use client";
-
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -32,15 +32,15 @@ interface ReportSectionProps {
 }
 
 export default function ReportSection({ summary, rows, charts }: ReportSectionProps) {
+  const t = useTranslations("dashboard.report");
   const [range, setRange] = useState<RangeKey>("6m");
-
   const current = charts[range];
 
   const chartData = {
     labels: current.labels,
     datasets: [
       {
-        label: "Pendapatan (Rp)",
+        label: t("revenueLabel"),
         data: current.pendapatan,
         backgroundColor: "#e76f51",
         hoverBackgroundColor: "#d55f43",
@@ -49,7 +49,7 @@ export default function ReportSection({ summary, rows, charts }: ReportSectionPr
         yAxisID: "y",
       },
       {
-        label: "Jumlah Pesanan",
+        label: t("ordersLabel"),
         data: current.pesanan,
         backgroundColor: "#94a3b8",
         hoverBackgroundColor: "#64748b",
@@ -69,9 +69,9 @@ export default function ReportSection({ summary, rows, charts }: ReportSectionPr
       tooltip: {
         callbacks: {
           label: (item: TooltipItem<"bar">) =>
-            item.dataset.label === "Pendapatan (Rp)"
-              ? `Pendapatan: Rp ${Number(item.formattedValue.replace(/,/g, "")).toLocaleString("id-ID")}`
-              : `Pesanan: ${item.formattedValue}`,
+            item.dataset.label === t("revenueLabel")
+              ? t("revenueTooltip", { value: `Rp ${Number(item.formattedValue.replace(/,/g, "")).toLocaleString("id-ID")}` })
+              : t("ordersTooltip", { value: item.formattedValue }),
         },
       },
     },
@@ -102,10 +102,9 @@ export default function ReportSection({ summary, rows, charts }: ReportSectionPr
           <StatCard key={i} {...stat} />
         ))}
       </div>
-
       <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-medium text-gray-900">Pendapatan & Pesanan</h2>
+          <h2 className="text-sm font-medium text-gray-900">{t("chartTitle")}</h2>
           <div className="inline-flex rounded-md border border-gray-200 p-0.5 text-xs font-medium">
             {(["6m", "12m"] as const).map((r) => (
               <button
@@ -116,7 +115,7 @@ export default function ReportSection({ summary, rows, charts }: ReportSectionPr
                   range === r ? "bg-gray-100 text-gray-900 font-semibold" : "text-gray-600"
                 }`}
               >
-                {r === "6m" ? "6B" : "12B"}
+                {r === "6m" ? t("range6m") : t("range12m")}
               </button>
             ))}
           </div>
@@ -125,18 +124,17 @@ export default function ReportSection({ summary, rows, charts }: ReportSectionPr
           <Bar data={chartData} options={chartOptions} />
         </div>
       </div>
-
       <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-        <h2 className="text-sm font-medium text-gray-900">Performa per Stand</h2>
+        <h2 className="text-sm font-medium text-gray-900">{t("perStandTitle")}</h2>
         <div className="mt-4 overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-100 text-sm">
             <thead>
               <tr className="text-left font-medium text-gray-600">
-                <th className="px-4 py-3 whitespace-nowrap">Stand</th>
-                <th className="px-4 py-3 whitespace-nowrap text-center">Pesanan</th>
-                <th className="px-4 py-3 whitespace-nowrap text-right">Pendapatan</th>
-                <th className="px-4 py-3 whitespace-nowrap">Menu Terlaris</th>
-                <th className="px-4 py-3 whitespace-nowrap">Kontribusi</th>
+                <th className="px-4 py-3 whitespace-nowrap">{t("colStand")}</th>
+                <th className="px-4 py-3 whitespace-nowrap text-center">{t("colOrders")}</th>
+                <th className="px-4 py-3 whitespace-nowrap text-right">{t("colRevenue")}</th>
+                <th className="px-4 py-3 whitespace-nowrap">{t("colBestMenu")}</th>
+                <th className="px-4 py-3 whitespace-nowrap">{t("colContribution")}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">

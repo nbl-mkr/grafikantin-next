@@ -1,8 +1,8 @@
 "use client";
-
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import MenuForm, { MenuFormData } from "@/components/dashboard/menu/MenuForm";
 import { useMenus } from "@/components/dashboard/menu/MenuContext";
 
@@ -11,6 +11,8 @@ interface EditMenuProps {
 }
 
 export default function EditMenu({ menuId }: EditMenuProps) {
+  const t = useTranslations("dashboard.menus");
+  const tCommon = useTranslations("dashboard.common");
   const router = useRouter();
   const { menus, stands, updateMenu } = useMenus();
   const menu = menus.find((m) => m.id === menuId);
@@ -34,15 +36,15 @@ export default function EditMenu({ menuId }: EditMenuProps) {
   if (!menu || !form) {
     return (
       <div className="rounded-2xl border border-gray-100 bg-white p-6 text-center shadow-sm">
-        <h2 className="text-base font-semibold text-gray-900">Menu Tidak Ditemukan</h2>
+        <h2 className="text-base font-semibold text-gray-900">{tCommon("menuNotFoundTitle")}</h2>
         <p className="mt-2 text-sm text-gray-600">
-          Menu dengan ID {menuId} tidak ada di sistem.
+          {tCommon("menuNotFoundBody", { id: menuId })}
         </p>
         <Link
           href="/dashboard/menu"
           className="mt-4 inline-block rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
         >
-          Kembali ke Daftar Menu
+          {tCommon("backToMenu")}
         </Link>
       </div>
     );
@@ -67,32 +69,27 @@ export default function EditMenu({ menuId }: EditMenuProps) {
     <div className="space-y-6">
       <div className="flex items-center justify-between rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
         <div>
-          <h1 className="text-xl font-bold text-gray-900">Edit Menu</h1>
-          <p className="mt-1 text-xs text-gray-600">
-            Perbarui informasi {menu.nama}.
-          </p>
+          <h1 className="text-xl font-bold text-gray-900">{t("editTitle")}</h1>
+          <p className="mt-1 text-xs text-gray-600">{t("editSubtitle", { name: menu.nama })}</p>
         </div>
         <button
           type="submit"
           form="edit-menu-form"
           className="rounded-lg bg-[#e76f51] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#d55f43]"
         >
-          Simpan
+          {tCommon("save")}
         </button>
       </div>
-
       <form
         id="edit-menu-form"
         onSubmit={handleSubmit}
         className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm"
       >
-        <h2 className="text-sm font-medium text-gray-900">Informasi Menu</h2>
-
+        <h2 className="text-sm font-medium text-gray-900">{t("addSectionTitle")}</h2>
         <div className="mt-4">
           <MenuForm form={form} onChange={setForm} stands={stands} />
         </div>
       </form>
-
       <Link
         href="/dashboard/menu"
         className="inline-flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
@@ -100,7 +97,7 @@ export default function EditMenu({ menuId }: EditMenuProps) {
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="size-4">
           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
         </svg>
-        Kembali ke Daftar Menu
+        {tCommon("backToMenu")}
       </Link>
     </div>
   );
