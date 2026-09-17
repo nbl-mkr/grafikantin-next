@@ -103,9 +103,8 @@ export async function createOrderAction(
     if (stockErr) console.error(`Gagal update stok menu ${menuId}:`, stockErr.message);
   }
 
-  revalidatePath("/", "layout");
+  revalidatePath("/[locale]/dashboard", "layout");
   revalidatePath("/shopping");
-  revalidatePath("/dashboard", "layout");
 
   return { ok: true, kode };
 }
