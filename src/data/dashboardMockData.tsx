@@ -327,7 +327,7 @@ export interface Menu {
   id: number;
   nama: string;
   stand: string;
-  kategori: "Makanan" | "Minuman" | "Snack";
+  kategori: "Makanan" | "Snack";
   harga: number;
   stok: number;
   terjual: number;
@@ -341,8 +341,6 @@ export const menusData: Menu[] = [
   { id: 4, nama: "Roti Bakar", stand: "Stand Kenanga", kategori: "Snack", harga: 8000, stok: 60, terjual: 84, tersedia: false },
   { id: 5, nama: "Pangsit Rebus", stand: "Stand Anggrek", kategori: "Makanan", harga: 10000, stok: 35, terjual: 72, tersedia: true },
   { id: 6, nama: "Lumpia Pastel", stand: "Stand Mawar", kategori: "Snack", harga: 5000, stok: 80, terjual: 65, tersedia: true },
-  { id: 7, nama: "Es Teh Manis", stand: "Stand Dahlia", kategori: "Minuman", harga: 5000, stok: 100, terjual: 58, tersedia: false },
-  { id: 8, nama: "Jus Alpukat", stand: "Stand Melati", kategori: "Minuman", harga: 12000, stok: 25, terjual: 47, tersedia: true },
 ];
 
 export interface ReportSummary {
