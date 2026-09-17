@@ -314,7 +314,7 @@
         "outOfStockPeriod": "tingkat pembatalan pesanan"
       }
     },
-    "orders": {
+        "orders": {
       "title": "Pesanan",
       "export": "Ekspor Pesanan",
       "chartTitle": "Pesanan vs Target Bulanan",
@@ -326,7 +326,14 @@
       "filterBatal": "Batal",
       "colItem": "Item",
       "colQty": "Jumlah",
-      "noOrders": "Tidak ada pesanan."
+      "noOrders": "Tidak ada pesanan.",
+      "colId": "ID Pesanan",
+      "colCustomer": "Pelanggan",
+      "colDate": "Tanggal",
+      "colStatus": "Status",
+      "colTotal": "Total",
+      "range6m": "6B",
+      "range12m": "12B"
     },
     "report": {
       "title": "Laporan",

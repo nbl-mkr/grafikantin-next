@@ -314,7 +314,7 @@
         "outOfStockPeriod": "order cancellation rate"
       }
     },
-    "orders": {
+        "orders": {
       "title": "Orders",
       "export": "Export Orders",
       "chartTitle": "Orders vs Monthly Target",
@@ -326,7 +326,14 @@
       "filterBatal": "Cancelled",
       "colItem": "Item",
       "colQty": "Qty",
-      "noOrders": "No orders."
+      "noOrders": "No orders.",
+      "colId": "Order ID",
+      "colCustomer": "Customer",
+      "colDate": "Date",
+      "colStatus": "Status",
+      "colTotal": "Total",
+      "range6m": "6M",
+      "range12m": "12M"
     },
     "report": {
       "title": "Report",
