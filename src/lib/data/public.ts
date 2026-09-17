@@ -9,7 +9,7 @@ export interface PublicMenuItem {
   gambar: string;
   estimasi: string;
   rating: string;
-  kategori: "Makanan" | "Minuman" | "Snack";
+  kategori: "Makanan" | "Snack";
   deskripsi?: string;
   stand_id: number;
 }
