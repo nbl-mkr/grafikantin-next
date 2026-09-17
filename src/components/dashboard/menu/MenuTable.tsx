@@ -10,9 +10,8 @@ type SortField = "nama" | "harga" | "stok" | "terjual";
 type SortOrder = "asc" | "desc";
 
 const KATEGORI_STYLES: Record<string, string> = {
-  Makanan: "bg-blue-50 text-blue-600",
-  Minuman: "bg-cyan-50 text-cyan-600",
-  Snack: "bg-amber-50 text-amber-600",
+  Makanan: "text-blue-600",
+  Snack: "text-amber-600",
 };
 
 export default function MenuTable() {
@@ -24,7 +23,7 @@ export default function MenuTable() {
   const { menus, stands, deleteMenu, toggleTersedia } = useMenus();
   const [searchTerm, setSearchTerm] = useState("");
   const [standFilter, setStandFilter] = useState<string>("all");
-  const [kategoriFilter, setKategoriFilter] = useState<"all" | "Makanan" | "Minuman" | "Snack">("all");
+  const [kategoriFilter, setKategoriFilter] = useState<"all" | "Makanan" | "Snack">("all");
   const [sortField, setSortField] = useState<SortField | null>(null);
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
   const [currentPage, setCurrentPage] = useState(1);
@@ -153,7 +152,7 @@ export default function MenuTable() {
               </div>
             </div>
             <div className="inline-flex h-9 items-center rounded-md border border-gray-200 p-1 text-xs font-medium">
-              {(["all", "Makanan", "Minuman", "Snack"] as const).map((f) => (
+              {(["all", "Makanan", "Snack"] as const).map((f) => (
                 <button
                   key={f}
                   type="button"
@@ -222,7 +221,7 @@ export default function MenuTable() {
                       <td className="px-4 py-3 whitespace-nowrap font-medium text-gray-900">{menu.nama}</td>
                       <td className="px-4 py-3 whitespace-nowrap text-gray-600">{menu.stand}</td>
                       <td className="px-4 py-3 whitespace-nowrap">
-                        <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${KATEGORI_STYLES[menu.kategori] ?? "bg-gray-100 text-gray-600"}`}>
+                        <span className={`inline-flex text-xs font-semibold ${KATEGORI_STYLES[menu.kategori] ?? "text-gray-600"}`}>
                           {tCategory(menu.kategori as any)}
                         </span>
                       </td>

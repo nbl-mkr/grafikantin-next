@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import CustomSelect from "@/components/CustomSelect";
 import ImageUploadField from "@/components/dashboard/ImageUploadField";
 
-export type MenuKategori = "Makanan" | "Minuman" | "Snack";
+export type MenuKategori = "Makanan" | "Snack";
 
 export interface MenuFormData {
   nama: string;
@@ -84,7 +84,6 @@ export default function MenuForm({ form, onChange, stands }: MenuFormProps) {
           value={form.kategori}
           options={[
             { value: "Makanan", label: "Makanan" },
-            { value: "Minuman", label: "Minuman" },
             { value: "Snack", label: "Snack" },
           ]}
           onChange={(value) => update("kategori", value as MenuKategori)}
