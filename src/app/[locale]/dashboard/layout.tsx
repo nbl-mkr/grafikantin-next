@@ -2,10 +2,17 @@ import { getProfile, fotoUrl } from "@/lib/supabase/session";
 import DashboardShell from "@/components/dashboard/DashboardShell";
 import type { Metadata, Viewport } from "next";
 
-export const metadata: Metadata = {
-  title: "Dashboard - Grafikantin",
-  description: "Dashboard Grafikantin SMK Negeri 4 Malang",
-};
+import { getTranslations } from "next-intl/server";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "dashboard.meta" });
+  return { title: t("title"), description: t("description") };
+}
 
 export const viewport: Viewport = {
   width: "device-width",
