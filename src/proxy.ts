@@ -17,6 +17,7 @@ const PUBLIC_ROUTE_SEGMENTS = [
   'invoice',
   'auth',
   'kritik-saran',
+  'dashboard',
 ]
 
 function isValidLocale(value: unknown): value is (typeof routing.locales)[number] {
@@ -104,7 +105,9 @@ export async function proxy(request: NextRequest) {
 
   const activeLocale = pathLocale?.locale ?? resolveLocale(request)
 
-  const isDashboard = pathname.startsWith('/dashboard')
+  // Dashboard lives under the locale prefix: /{locale}/dashboard/...
+  const rest = pathLocale?.rest ?? pathname
+  const isDashboard = rest === '/dashboard' || rest.startsWith('/dashboard/')
 
   if (isDashboard && !user) {
     return NextResponse.redirect(
@@ -125,8 +128,10 @@ export async function proxy(request: NextRequest) {
       return NextResponse.redirect(new URL(`/${activeLocale}`, request.nextUrl.origin))
     }
 
-    if (!canAccessPath(role, pathname)) {
-      return NextResponse.redirect(new URL(DASHBOARD_LANDING[role], request.nextUrl.origin))
+    if (!canAccessPath(role, rest)) {
+      return NextResponse.redirect(
+        new URL(`/${activeLocale}${DASHBOARD_LANDING[role]}`, request.nextUrl.origin)
+      )
     }
   }
 
