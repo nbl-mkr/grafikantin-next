@@ -12,10 +12,16 @@ export interface StandInput {
   status: "Buka" | "Tutup";
 }
 
-export async function upsertStandAction(input: StandInput): Promise<{ ok: boolean; error?: string }> {
+export interface ActionResult {
+  ok: boolean;
+  error?: string;
+  errorKey?: string;
+}
+
+export async function upsertStandAction(input: StandInput): Promise<ActionResult> {
   const ctx = await getDashboardContext();
-  if (!ctx || ctx.role !== "admin") return { ok: false, error: "Tidak diizinkan" };
-  if (!input.nama.trim() || !input.pemilik.trim()) return { ok: false, error: "Nama dan pemilik wajib diisi" };
+  if (!ctx || ctx.role !== "admin") return { ok: false, errorKey: "notAllowed" };
+  if (!input.nama.trim() || !input.pemilik.trim()) return { ok: false, errorKey: "nameOwnerRequired" };
 
   const supabase = await createClient();
   const payload = {
@@ -31,25 +37,25 @@ export async function upsertStandAction(input: StandInput): Promise<{ ok: boolea
 
   if (error) return { ok: false, error: error.message };
 
-  revalidatePath("/dashboard/stand");
-  revalidatePath("/dashboard");
-  revalidatePath("/dashboard/menu");
+  revalidatePath("/[locale]/dashboard/stand", "page");
+  revalidatePath("/[locale]/dashboard", "page");
+  revalidatePath("/[locale]/dashboard/menu", "page");
   return { ok: true };
 }
 
-export async function deleteStandAction(id: number): Promise<{ ok: boolean; error?: string }> {
+export async function deleteStandAction(id: number): Promise<ActionResult> {
   const ctx = await getDashboardContext();
-  if (!ctx || ctx.role !== "admin") return { ok: false, error: "Tidak diizinkan" };
+  if (!ctx || ctx.role !== "admin") return { ok: false, errorKey: "notAllowed" };
 
   const supabase = await createClient();
   const { error } = await supabase.from("stands").delete().eq("id", id);
   if (error) {
-    if (error.code === "23503") return { ok: false, error: "Stand masih punya pesanan. Ubah status ke Tutup saja." };
+    if (error.code === "23503") return { ok: false, errorKey: "standHasOrders" };
     return { ok: false, error: error.message };
   }
 
-  revalidatePath("/dashboard/stand");
-  revalidatePath("/dashboard");
+  revalidatePath("/[locale]/dashboard/stand", "page");
+  revalidatePath("/[locale]/dashboard", "page");
   return { ok: true };
 }
 
@@ -81,12 +87,12 @@ async function uploadMenuImage(
   return supabase.storage.from("menu-images").getPublicUrl(path).data.publicUrl;
 }
 
-export async function upsertMenuAction(input: MenuInput): Promise<{ ok: boolean; error?: string }> {
+export async function upsertMenuAction(input: MenuInput): Promise<ActionResult> {
   const ctx = await getDashboardContext();
-  if (!ctx || (ctx.role !== "admin" && ctx.role !== "penjual")) return { ok: false, error: "Tidak diizinkan" };
-  if (ctx.role === "penjual" && (!ctx.standId || ctx.standId !== input.standId)) return { ok: false, error: "Bukan stand kamu" };
-  if (!input.nama.trim()) return { ok: false, error: "Nama menu wajib diisi" };
-  if (!input.standId) return { ok: false, error: "Pilih stand" };
+  if (!ctx || (ctx.role !== "admin" && ctx.role !== "penjual")) return { ok: false, errorKey: "notAllowed" };
+  if (ctx.role === "penjual" && (!ctx.standId || ctx.standId !== input.standId)) return { ok: false, errorKey: "notYourStand" };
+  if (!input.nama.trim()) return { ok: false, errorKey: "menuNameRequired" };
+  if (!input.standId) return { ok: false, errorKey: "chooseStand" };
 
   const supabase = await createClient();
   const payload: Record<string, unknown> = {
@@ -108,27 +114,27 @@ export async function upsertMenuAction(input: MenuInput): Promise<{ ok: boolean;
     : await supabase.from("menus").insert(payload);
   if (error) return { ok: false, error: error.message };
 
-  revalidatePath("/dashboard/menu");
-  revalidatePath("/dashboard");
+  revalidatePath("/[locale]/dashboard/menu", "page");
+  revalidatePath("/[locale]/dashboard", "page");
   return { ok: true };
 }
 
-export async function deleteMenuAction(id: number): Promise<{ ok: boolean; error?: string }> {
+export async function deleteMenuAction(id: number): Promise<ActionResult> {
   const ctx = await getDashboardContext();
-  if (!ctx || (ctx.role !== "admin" && ctx.role !== "penjual")) return { ok: false, error: "Tidak diizinkan" };
+  if (!ctx || (ctx.role !== "admin" && ctx.role !== "penjual")) return { ok: false, errorKey: "notAllowed" };
 
   const supabase = await createClient();
   const { error } = await supabase.from("menus").delete().eq("id", id);
   if (error) return { ok: false, error: error.message };
 
-  revalidatePath("/dashboard/menu");
-  revalidatePath("/dashboard");
+  revalidatePath("/[locale]/dashboard/menu", "page");
+  revalidatePath("/[locale]/dashboard", "page");
   return { ok: true };
 }
 
-export async function toggleMenuTersediaAction(id: number): Promise<{ ok: boolean; error?: string }> {
+export async function toggleMenuTersediaAction(id: number): Promise<ActionResult> {
   const ctx = await getDashboardContext();
-  if (!ctx || (ctx.role !== "admin" && ctx.role !== "penjual")) return { ok: false, error: "Tidak diizinkan" };
+  if (!ctx || (ctx.role !== "admin" && ctx.role !== "penjual")) return { ok: false, errorKey: "notAllowed" };
 
   const supabase = await createClient();
   const { data, error } = await supabase.from("menus").select("tersedia").eq("id", id).single();
@@ -137,6 +143,6 @@ export async function toggleMenuTersediaAction(id: number): Promise<{ ok: boolea
   const { error: err2 } = await supabase.from("menus").update({ tersedia: !(data as { tersedia: boolean }).tersedia }).eq("id", id);
   if (err2) return { ok: false, error: err2.message };
 
-  revalidatePath("/dashboard/menu");
+  revalidatePath("/[locale]/dashboard/menu", "page");
   return { ok: true };
 }
