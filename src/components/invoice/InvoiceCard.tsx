@@ -93,7 +93,7 @@ export default function InvoiceCard({ order }: { order: InvoiceData | null }) {
           <button
             type="button"
             onClick={handlePrint}
-            className="w-full rounded-xl border border-gray-200 bg-white py-3 text-center text-sm font-bold text-gray-700 transition hover:bg-gray-50 cursor-pointer"
+            className="w-full rounded-xl border border-gray-100 bg-slate-50 py-3 text-center text-sm font-bold text-gray-700 transition-colors duration-300 hover:bg-slate-100 cursor-pointer"
           >
             {t("print")}
           </button>
