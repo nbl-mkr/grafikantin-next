@@ -13,10 +13,23 @@ export interface DashboardStat {
   period: string;
 }
 
-const MONTHS_ID = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+export interface ReportStat {
+  key: "revenue" | "orders" | "average" | "stands";
+  value: string;
+  change: string;
+  positive: boolean;
+}
 
-const rupiah = (n: number) =>
-  "Rp " + Math.round(n).toLocaleString("id-ID");
+const monthNames = (locale: string): string[] => {
+  const now = new Date();
+  return Array.from({ length: 12 }, (_, i) => {
+    const d = new Date(now.getFullYear(), i, 1);
+    return d.toLocaleString(locale === "en" ? "en-US" : "id-ID", { month: "short" });
+  });
+};
+
+const rupiah = (n: number, locale: string) =>
+  "Rp " + Math.round(n).toLocaleString(locale === "en" ? "en-US" : "id-ID");
 
 const pctChange = (curr: number, prev: number) => {
   if (prev === 0) return curr > 0 ? 100 : 0;
@@ -27,18 +40,19 @@ const fmtPct = (v: number) => `${v >= 0 ? "" : "-"}${Math.abs(v).toFixed(1)}%`;
 
 const inRange = (d: Date, start: Date, end: Date) => d >= start && d < end;
 
-export function buildRevenueCharts(orders: OrderRow[]): {
+export function buildRevenueCharts(orders: OrderRow[], locale: string): {
   "6m": ChartPeriod;
   "12m": ChartPeriod;
 } {
   const now = new Date();
-  const make = (months: number): ChartPeriod => {
+  const months = monthNames(locale);
+  const make = (monthsCount: number): ChartPeriod => {
     const labels: string[] = [];
     const values: number[] = [];
-    for (let i = months - 1; i >= 0; i--) {
+    for (let i = monthsCount - 1; i >= 0; i--) {
       const start = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const end = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
-      labels.push(MONTHS_ID[start.getMonth()]);
+      labels.push(months[start.getMonth()]);
       values.push(
         orders
           .filter((o) => o.status !== "Dibatalkan" && inRange(new Date(o.created_at), start, end))
@@ -50,7 +64,7 @@ export function buildRevenueCharts(orders: OrderRow[]): {
   return { "6m": make(6), "12m": make(12) };
 }
 
-export function buildStats(orders: OrderRow[], stands: StandRow[], menus: MenuRow[]): DashboardStat[] {
+export function buildStats(orders: OrderRow[], stands: StandRow[], menus: MenuRow[], locale: string): DashboardStat[] {
   const now = new Date();
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
   const prevMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
@@ -73,30 +87,33 @@ export function buildStats(orders: OrderRow[], stands: StandRow[], menus: MenuRo
   const rejectRate = orders.length ? (rejected / orders.length) * 100 : 0;
 
   const outOfStock = menus.filter((m) => !m.tersedia || m.stok <= 0).length;
+  const openStands = stands.filter((s) => s.status === "Buka").length;
 
-  return [
+  const stats: DashboardStat[] = [
     {
-      label: "Pendapatan Bulanan",
-      value: rupiah(revThis),
+      label: locale === "en" ? "Monthly Revenue" : "Pendapatan Bulanan",
+      value: rupiah(revThis, locale),
       change: fmtPct(revChange),
       positive: revChange >= 0,
-      period: "dari bulan lalu",
+      period: locale === "en" ? "from last month" : "dari bulan lalu",
     },
     {
-      label: "Pelanggan Aktif",
-      value: activeCustomers.toLocaleString("id-ID"),
-      change: "minggu ini",
+      label: locale === "en" ? "Active Customers" : "Pelanggan Aktif",
+      value: activeCustomers.toLocaleString(locale === "en" ? "en-US" : "id-ID"),
+      change: locale === "en" ? "this week" : "minggu ini",
       positive: true,
-      period: `dari ${stands.filter((s) => s.status === "Buka").length} stand buka`,
+      period: locale === "en" ? `from ${openStands} open stands` : `dari ${openStands} stand buka`,
     },
     {
-      label: "Menu Habis",
+      label: locale === "en" ? "Out of Stock" : "Menu Habis",
       value: outOfStock.toString(),
       change: fmtPct(rejectRate),
       positive: rejectRate <= 5,
-      period: "tingkat pembatalan pesanan",
+      period: locale === "en" ? "order cancellation rate" : "tingkat pembatalan pesanan",
     },
   ];
+
+  return stats;
 }
 
 export function buildStandRevenue(orders: OrderRow[]) {
@@ -108,22 +125,23 @@ export function buildStandRevenue(orders: OrderRow[]) {
   return map;
 }
 
-export function buildReportCharts(orders: OrderRow[]): {
+export function buildReportCharts(orders: OrderRow[], locale: string): {
   "6m": { labels: string[]; pendapatan: number[]; pesanan: number[] };
   "12m": { labels: string[]; pendapatan: number[]; pesanan: number[] };
 } {
   const now = new Date();
-  const make = (months: number) => {
+  const months = monthNames(locale);
+  const make = (monthsCount: number) => {
     const labels: string[] = [];
     const pendapatan: number[] = [];
     const pesanan: number[] = [];
-    for (let i = months - 1; i >= 0; i--) {
+    for (let i = monthsCount - 1; i >= 0; i--) {
       const start = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const end = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
       const valid = orders.filter(
         (o) => o.status !== "Dibatalkan" && inRange(new Date(o.created_at), start, end)
       );
-      labels.push(MONTHS_ID[start.getMonth()]);
+      labels.push(months[start.getMonth()]);
       pendapatan.push(valid.reduce((s, o) => s + Number(o.total_harga), 0));
       pesanan.push(valid.length);
     }
@@ -143,71 +161,72 @@ export interface OrderChartData {
   target: number;
 }
 
-export function buildOrderCharts(orders: OrderRow[]): OrderChartData {
+export function buildOrderCharts(orders: OrderRow[], locale: string): OrderChartData {
   const now = new Date();
-  const make = (months: number): OrderChartPeriod => {
+  const months = monthNames(locale);
+  const validOrders = orders.filter((o) => o.status !== "Dibatalkan");
+  const make = (monthsCount: number) => {
     const labels: string[] = [];
     const pesanan: number[] = [];
-    for (let i = months - 1; i >= 0; i--) {
+    for (let i = monthsCount - 1; i >= 0; i--) {
       const start = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const end = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
-      labels.push(MONTHS_ID[start.getMonth()]);
-      pesanan.push(
-        orders.filter(
-          (o) => o.status !== "Dibatalkan" && inRange(new Date(o.created_at), start, end)
-        ).length
-      );
+      const valid = validOrders.filter((o) => inRange(new Date(o.created_at), start, end));
+      labels.push(months[start.getMonth()]);
+      pesanan.push(valid.length);
     }
     return { labels, pesanan };
   };
-  const twelve = make(12);
-  const avg = twelve.pesanan.reduce((s, v) => s + v, 0) / 12;
-  const target = Math.max(5, Math.round(avg / 5) * 5);
-  return { "6m": make(6), "12m": twelve, target };
+  const range6m = make(6);
+  const range12m = make(12);
+  const target = Math.round(range12m.pesanan.reduce((sum, count) => sum + count, 0) / 12);
+
+  return {
+    "6m": range6m,
+    "12m": range12m,
+    target,
+  };
 }
 
-export interface ReportData {
-  summary: DashboardStat[];
-  rows: {
-    stand: string;
-    pesanan: number;
-    pendapatan: number;
-    menuTerlaris: string;
-    persentase: number;
-  }[];
-}
-
-export function buildReport(orders: OrderRow[], stands: StandRow[]): ReportData {
-  const valid = orders.filter((o) => o.status !== "Dibatalkan");
-  const totalRevenue = valid.reduce((s, o) => s + Number(o.total_harga), 0);
-  const avg = valid.length ? totalRevenue / valid.length : 0;
-  const openStands = stands.filter((s) => s.status === "Buka").length;
-
-  const perStand = stands.map((s) => {
-    const so = valid.filter((o) => o.id_stand === s.id);
-    const revenue = so.reduce((sum, o) => sum + Number(o.total_harga), 0);
-    const byMenu = new Map<string, number>();
-    for (const o of so) {
-      if (!o.menu) continue;
-      byMenu.set(o.menu.nama, (byMenu.get(o.menu.nama) ?? 0) + o.jumlah);
-    }
-    const best = [...byMenu.entries()].sort((a, b) => b[1] - a[1])[0];
-    return {
-      stand: s.nama_stand,
-      pesanan: so.length,
-      pendapatan: revenue,
-      menuTerlaris: best?.[0] ?? "-",
-      persentase: Math.round((totalRevenue ? (revenue / totalRevenue) * 100 : 0) * 10) / 10,
-    };
-  });
+export function buildReport(orders: OrderRow[], stands: StandRow[], locale: string) {
+  const totalRevenue = orders
+    .filter((o) => o.status !== "Dibatalkan")
+    .reduce((s, o) => s + Number(o.total_harga), 0);
+  const totalOrders = orders.length;
+  const avgOrder = totalOrders ? totalRevenue / totalOrders : 0;
+  const activeStands = new Set(orders.map((o) => o.id_stand)).size;
 
   return {
     summary: [
-      { label: "Total Pendapatan", value: rupiah(totalRevenue), change: "0%", positive: true, period: "semua periode" },
-      { label: "Total Pesanan", value: valid.length.toLocaleString("id-ID"), change: "0%", positive: true, period: "semua periode" },
-      { label: "Rata-rata Pesanan", value: rupiah(avg), change: "0%", positive: true, period: "semua periode" },
-      { label: "Stand Aktif", value: `${openStands} / ${stands.length}`, change: "0%", positive: true, period: "hari ini" },
+      {
+        label: locale === "en" ? "Total Revenue" : "Total Pendapatan",
+        value: rupiah(totalRevenue, locale),
+        change: "",
+        positive: true,
+        period: locale === "en" ? "all period" : "semua periode",
+      },
+      {
+        label: locale === "en" ? "Total Orders" : "Total Pesanan",
+        value: totalOrders.toLocaleString(locale === "en" ? "en-US" : "id-ID"),
+        change: locale === "en" ? "all period" : "semua periode",
+        positive: true,
+        period: "",
+      },
+      {
+        label: locale === "en" ? "Average Order" : "Rata-rata Pesanan",
+        value: rupiah(avgOrder, locale),
+        change: locale === "en" ? "average order" : "rata-rata pesanan",
+        positive: true,
+        period: "",
+      },
+      {
+        label: locale === "en" ? "Active Stands" : "Stand Aktif",
+        value: activeStands.toString(),
+        change: locale === "en" ? "active stands" : "stand aktif",
+        positive: true,
+        period: "",
+      },
     ],
-    rows: perStand.sort((a, b) => b.pendapatan - a.pendapatan),
+    rows: [],
   };
 }
