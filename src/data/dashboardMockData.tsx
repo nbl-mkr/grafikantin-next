@@ -1,5 +1,10 @@
 import type { Role } from "@/lib/roles";
 
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+/** Minimal translator signature — accepts any key string from the "dashboard" namespace */
+type T = (key: string, values?: Record<string, string | number>) => string;
+
 export interface Order {
   id: string;
   customer: string;
@@ -17,82 +22,98 @@ export interface DashboardNavItem {
   roles: Role[];
 }
 
-export const dashboardNavItems: DashboardNavItem[] = [
-  {
-    label: "Dashboard",
-    href: "/dashboard",
-    roles: ["admin"],
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-      </svg>
-    ),
-  },
-  {
-    label: "Pesanan",
-    href: "/dashboard/order",
-    roles: ["admin"],
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-      </svg>
-    ),
-  },
-  {
-    label: "Daftar Stand",
-    href: "/dashboard/stand",
-    roles: ["admin"],
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m3 0h1m-1-4h.01M9 16h.01M15 16h.01M9 12h.01M15 12h.01M9 8h.01M15 8h.01" />
-      </svg>
-    ),
-  },
-  {
-    label: "Daftar Menu",
-    href: "/dashboard/menu",
-    roles: ["admin", "penjual"],
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-      </svg>
-    ),
-  },
-  {
-    label: "Laporan",
-    href: "/dashboard/report",
-    roles: ["admin", "penjual"],
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-      </svg>
-    ),
-  },
-  {
-    label: "Pengaturan",
-    href: "/dashboard/setting",
-    roles: ["admin", "penjual", "siswa"],
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-    ),
-  },
-];
+// ─── Nav Items (locale-aware) ─────────────────────────────────────────────────
+
+/**
+ * Returns sidebar nav items with translated labels.
+ * Call this inside a Client Component that already has `const t = useTranslations("dashboard")`.
+ */
+export function getDashboardNavItems(t: T): DashboardNavItem[] {
+  return [
+    {
+      label: t("nav.dashboard"),
+      href: "/dashboard",
+      roles: ["admin"],
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+        </svg>
+      ),
+    },
+    {
+      label: t("nav.order"),
+      href: "/dashboard/order",
+      roles: ["admin"],
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+        </svg>
+      ),
+    },
+    {
+      label: t("nav.stand"),
+      href: "/dashboard/stand",
+      roles: ["admin"],
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m3 0h1m-1-4h.01M9 16h.01M15 16h.01M9 12h.01M15 12h.01M9 8h.01M15 8h.01" />
+        </svg>
+      ),
+    },
+    {
+      label: t("nav.menu"),
+      href: "/dashboard/menu",
+      roles: ["admin", "penjual"],
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        </svg>
+      ),
+    },
+    {
+      label: t("nav.report"),
+      href: "/dashboard/report",
+      roles: ["admin", "penjual"],
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+      ),
+    },
+    {
+      label: t("nav.setting"),
+      href: "/dashboard/setting",
+      roles: ["admin", "penjual", "siswa"],
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      ),
+    },
+  ];
+}
 
 export interface PublicLink {
   label: string;
   href: string;
 }
 
-export const publicLinks: PublicLink[] = [
-  { label: "Beranda", href: "/" },
-  { label: "Pesan", href: "/order" },
-  { label: "Tentang", href: "/about" },
-  { label: "Riwayat Pesanan", href: "/history" },
-  { label: "Kritik & Saran", href: "/kritik-saran" },
-];
+/**
+ * Returns public navigation links with translated labels.
+ * Call this inside a Client Component that already has `const t = useTranslations("dashboard")`.
+ */
+export function getPublicLinks(t: T): PublicLink[] {
+  return [
+    { label: t("publicLinks.home"),     href: "/" },
+    { label: t("publicLinks.order"),    href: "/order" },
+    { label: t("publicLinks.about"),    href: "/about" },
+    { label: t("publicLinks.history"),  href: "/history" },
+    { label: t("publicLinks.feedback"), href: "/kritik-saran" },
+  ];
+}
+
+// ─── Static mock data (labels in these are proper nouns / numbers, no translation needed) ──
 
 export interface TopMenu {
   id: number;
@@ -113,30 +134,6 @@ export interface StandStatus {
   status: "Buka" | "Tutup";
   terjual: number;
 }
-
-export const dashboardStats = [
-  {
-    label: "Pendapatan Bulanan",
-    value: "Rp 18.000.000",
-    change: "12.5%",
-    positive: true,
-    period: "dari bulan lalu",
-  },
-  {
-    label: "Pelanggan Aktif",
-    value: "1.000",
-    change: "5%",
-    positive: true,
-    period: "dari minggu lalu",
-  },
-  {
-    label: "Tingkat Penolakan Stok",
-    value: "0.8%",
-    change: "0.5%",
-    positive: true,
-    period: "dari bulan lalu",
-  },
-];
 
 export const revenueRangesByPeriod = {
   "6m": {
@@ -183,7 +180,17 @@ export const barChartData: SalesData[] = [
   { day: "Dahlia", amount: 120000 },
 ];
 
-export const recentOrders: Order[] = [
+export interface Order2 {
+  id: string;
+  customer: string;
+  menu: string;
+  stand: string;
+  total: number;
+  status: "Selesai" | "Diproses" | "Menunggu";
+  time: string;
+}
+
+export const recentOrders: Order2[] = [
   {
     id: "GRF-001",
     customer: "Ahmadinezka Evan",
