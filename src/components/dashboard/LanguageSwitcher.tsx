@@ -1,13 +1,14 @@
 "use client";
 
 import { useLocale } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { routing, type AppLocale } from "@/i18n/routing";
 
 const LABELS: Record<AppLocale, string> = { id: "ID", en: "EN" };
 
 export default function LanguageSwitcher() {
   const locale = useLocale() as AppLocale;
+  const pathname = usePathname();
   const base =
     "rounded-full px-2.5 py-1 text-xs font-bold transition";
 
@@ -22,7 +23,7 @@ export default function LanguageSwitcher() {
         return (
           <Link
             key={code}
-            href="/dashboard"
+            href={pathname ?? "/dashboard"}
             locale={code}
             scroll={false}
             replace
