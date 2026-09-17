@@ -8,7 +8,6 @@ export interface ChartPeriod {
 export interface DashboardStat {
   label: string;
   value: string;
-  change: string;
   positive: boolean;
   period: string;
 }
@@ -35,8 +34,6 @@ const pctChange = (curr: number, prev: number) => {
   if (prev === 0) return curr > 0 ? 100 : 0;
   return ((curr - prev) / prev) * 100;
 };
-
-const fmtPct = (v: number) => `${v >= 0 ? "" : "-"}${Math.abs(v).toFixed(1)}%`;
 
 const inRange = (d: Date, start: Date, end: Date) => d >= start && d < end;
 
@@ -93,21 +90,18 @@ export function buildStats(orders: OrderRow[], stands: StandRow[], menus: MenuRo
     {
       label: locale === "en" ? "Monthly Revenue" : "Pendapatan Bulanan",
       value: rupiah(revThis, locale),
-      change: fmtPct(revChange),
       positive: revChange >= 0,
       period: locale === "en" ? "from last month" : "dari bulan lalu",
     },
     {
       label: locale === "en" ? "Active Customers" : "Pelanggan Aktif",
       value: activeCustomers.toLocaleString(locale === "en" ? "en-US" : "id-ID"),
-      change: locale === "en" ? "this week" : "minggu ini",
       positive: true,
       period: locale === "en" ? `from ${openStands} open stands` : `dari ${openStands} stand buka`,
     },
     {
       label: locale === "en" ? "Out of Stock" : "Menu Habis",
       value: outOfStock.toString(),
-      change: fmtPct(rejectRate),
       positive: rejectRate <= 5,
       period: locale === "en" ? "order cancellation rate" : "tingkat pembatalan pesanan",
     },
@@ -208,23 +202,23 @@ export function buildReport(orders: OrderRow[], stands: StandRow[], locale: stri
       {
         label: locale === "en" ? "Total Orders" : "Total Pesanan",
         value: totalOrders.toLocaleString(locale === "en" ? "en-US" : "id-ID"),
-        change: locale === "en" ? "all period" : "semua periode",
+        change: "",
         positive: true,
-        period: "",
+        period: locale === "en" ? "all period" : "semua periode",
       },
       {
         label: locale === "en" ? "Average Order" : "Rata-rata Pesanan",
         value: rupiah(avgOrder, locale),
-        change: locale === "en" ? "average order" : "rata-rata pesanan",
+        change: "",
         positive: true,
-        period: "",
+        period: locale === "en" ? "average order" : "rata-rata pesanan",
       },
       {
         label: locale === "en" ? "Active Stands" : "Stand Aktif",
         value: activeStands.toString(),
-        change: locale === "en" ? "active stands" : "stand aktif",
+        change: "",
         positive: true,
-        period: "",
+        period: locale === "en" ? "active stands" : "stand aktif",
       },
     ],
     rows: [],
