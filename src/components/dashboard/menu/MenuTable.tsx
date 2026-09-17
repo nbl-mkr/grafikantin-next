@@ -1,9 +1,10 @@
 "use client";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useState, useMemo } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import type { MenuView } from "@/lib/data/views";
 import { useMenus } from "@/components/dashboard/menu/MenuContext";
+import { formatCurrency } from "@/lib/format";
 
 type SortField = "nama" | "harga" | "stok" | "terjual";
 type SortOrder = "asc" | "desc";
@@ -18,6 +19,7 @@ export default function MenuTable() {
   const t = useTranslations("dashboard.menus");
   const tCommon = useTranslations("dashboard.common");
   const tCategory = useTranslations("dashboard.enums.category");
+  const locale = useLocale();
 
   const { menus, stands, deleteMenu, toggleTersedia } = useMenus();
   const [searchTerm, setSearchTerm] = useState("");
@@ -225,7 +227,7 @@ export default function MenuTable() {
                         </span>
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-right text-gray-600">
-                        Rp {menu.harga.toLocaleString("id-ID")}
+                        {formatCurrency(menu.harga, locale)}
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-center text-gray-600">{menu.stok}</td>
                       <td className="px-4 py-3 whitespace-nowrap text-center text-gray-600">{menu.terjual}</td>

@@ -1,9 +1,10 @@
 "use client";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useState, useMemo } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import type { StandView } from "@/lib/data/views";
 import { useStands } from "@/components/dashboard/stand/StandContext";
+import { formatCurrency } from "@/lib/format";
 
 type SortField = "nama" | "pemilik" | "totalMenu" | "pendapatan";
 type SortOrder = "asc" | "desc";
@@ -17,6 +18,7 @@ export default function StandTable() {
   const t = useTranslations("dashboard.stands");
   const tCommon = useTranslations("dashboard.common");
   const tEnum = useTranslations("dashboard.enums.standStatus");
+  const locale = useLocale();
 
   const { stands, deleteStand } = useStands();
   const [searchTerm, setSearchTerm] = useState("");
@@ -170,7 +172,7 @@ export default function StandTable() {
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-center text-gray-600">{stand.totalMenu}</td>
                       <td className="px-4 py-3 whitespace-nowrap text-right text-gray-600">
-                        Rp {stand.pendapatan.toLocaleString("id-ID")}
+                        {formatCurrency(stand.pendapatan, locale)}
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-right">
                         <div className="flex items-center justify-end gap-2">
