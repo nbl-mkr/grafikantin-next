@@ -119,7 +119,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
             type="checkbox"
             checked={isAllSelected}
             onChange={handleSelectAll}
-            className="h-4 w-4 rounded border-gray-300 text-[#e76f51] focus:ring-[#e76f51] cursor-pointer"
+            className="h-4 w-4 rounded border-gray-300 accent-[#e76f51] cursor-pointer"
           />
           <span>{t("colProduct")}</span>
         </div>
@@ -162,7 +162,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
                   type="checkbox"
                   checked={isStandAllSelected}
                   onChange={handleSelectStand}
-                  className="h-4 w-4 rounded border-gray-300 text-[#e76f51] focus:ring-[#e76f51] cursor-pointer"
+                  className="h-4 w-4 rounded border-gray-300 accent-[#e76f51] cursor-pointer"
                 />
                 <div className="flex items-center gap-2 text-gray-900 font-bold text-sm">
                   <svg
@@ -195,7 +195,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
                           type="checkbox"
                           checked={isChecked}
                           onChange={() => handleSelectItem(item.id)}
-                          className="h-4 w-4 rounded border-gray-300 text-[#e76f51] focus:ring-[#e76f51] cursor-pointer"
+                          className="h-4 w-4 rounded border-gray-300 accent-[#e76f51] cursor-pointer"
                         />
                         <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-gray-100">
                           {item.gambar && (
@@ -292,7 +292,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
                 type="checkbox"
                 checked={isAllSelected}
                 onChange={handleSelectAll}
-                className="h-4 w-4 rounded border-gray-300 text-[#e76f51] focus:ring-[#e76f51] cursor-pointer"
+                className="h-4 w-4 rounded border-gray-300 accent-[#e76f51] cursor-pointer"
               />
               <span>{t("selectAll", { count: selectedIds.length })}</span>
             </label>
@@ -328,7 +328,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
               className={`rounded-xl px-8 py-3 text-sm font-bold text-white transition ${
                 selectedIds.length > 0
                   ? "bg-[#e76f51] hover:bg-[#d55f43] cursor-pointer"
-                  : "bg-gray-300 cursor-not-allowed"
+                  : "bg-[#d55f43] opacity-60 cursor-not-allowed"
               }`}
             >
               {t("checkout")}
