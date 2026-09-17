@@ -208,7 +208,9 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
           </nav>
 
           <div className="flex items-center gap-3 md:justify-self-end">
-            <LanguageSwitcher />
+            <div className="hidden md:flex">
+              <LanguageSwitcher />
+            </div>
 
             <Link
               href="/shopping"
