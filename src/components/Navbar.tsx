@@ -362,7 +362,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                   <button
                     type="submit"
                     onClick={() => setIsOpen(false)}
-                    className="block w-full text-center rounded-lg bg-[#e76f51] px-4 py-2.5 font-semibold text-white shadow-sm transition hover:bg-[#2b2bad]"
+                    className="block w-full text-center rounded-lg bg-[#e76f51] px-4 py-2.5 font-semibold text-white shadow-sm transition hover:bg-[#d55f43]"
                   >
                     {t("logout")}
                   </button>
@@ -371,7 +371,7 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                 <Link
                   href="/auth/login"
                   onClick={() => setIsOpen(false)}
-                  className="block w-full text-center rounded-lg bg-[#e76f51] px-4 py-2.5 font-semibold text-white shadow-sm transition hover:bg-[#2b2bad]"
+                  className="block w-full text-center rounded-lg bg-[#e76f51] px-4 py-2.5 font-semibold text-white shadow-sm transition hover:bg-[#d55f43]"
                 >
                   {t("login")}
                 </Link>
