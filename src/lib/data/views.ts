@@ -18,7 +18,7 @@ export interface MenuView {
   nama: string;
   stand: string;
   standId: number;
-  kategori: "Makanan" | "Minuman" | "Snack";
+  kategori: "Makanan" | "Snack";
   harga: number;
   stok: number;
   terjual: number;
