@@ -349,6 +349,8 @@
       "colRevenue": "Pendapatan",
       "colBestMenu": "Menu Terlaris",
       "colContribution": "Kontribusi",
+      "range6m": "6B",
+      "range12m": "12B",
       "stats": {
         "revenue": "Total Pendapatan",
         "orders": "Total Pesanan",

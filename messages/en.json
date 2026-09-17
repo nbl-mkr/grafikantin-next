@@ -349,6 +349,8 @@
       "colRevenue": "Revenue",
       "colBestMenu": "Best Seller",
       "colContribution": "Contribution",
+      "range6m": "6M",
+      "range12m": "12M",
       "stats": {
         "revenue": "Total Revenue",
         "orders": "Total Orders",
