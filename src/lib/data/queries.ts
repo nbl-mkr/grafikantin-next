@@ -58,7 +58,8 @@ export interface InvoiceData {
 
 export async function fetchInvoice(
   kode: string,
-  userId: string
+  userId: string,
+  locale = "id"
 ): Promise<InvoiceData | null> {
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -80,14 +81,14 @@ export async function fetchInvoice(
 
   const created = new Date(rows[0].created_at);
   const date =
-    created.toLocaleDateString("id-ID", {
+    created.toLocaleDateString(locale === "en" ? "en-US" : "id-ID", {
       day: "2-digit",
       month: "short",
       year: "numeric",
       timeZone: "Asia/Jakarta",
     }) +
     ", " +
-    created.toLocaleTimeString("id-ID", {
+    created.toLocaleTimeString(locale === "en" ? "en-US" : "id-ID", {
       hour: "2-digit",
       minute: "2-digit",
       timeZone: "Asia/Jakarta",
