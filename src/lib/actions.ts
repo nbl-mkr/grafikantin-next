@@ -39,7 +39,7 @@ export async function login(formData: FormData) {
   revalidatePath('/', 'layout')
 
   if (userData?.role === 'penjual' || userData?.role === 'admin') {
-    redirect('/dashboard')
+    redirect(`/${locale}/dashboard`)
   } else {
     redirect(`/${locale}`)
   }
