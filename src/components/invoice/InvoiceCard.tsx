@@ -45,8 +45,8 @@ export default function InvoiceCard({ order }: { order: InvoiceData | null }) {
           <p className="text-xs font-medium text-gray-600 mt-1">
             SMK Negeri 4 Malang
           </p>
-          <div className="mt-4 inline-flex items-center rounded-full bg-emerald-50 px-3 py-1 border border-emerald-200">
-            <span className="text-xs font-bold text-emerald-600 tracking-wide uppercase">
+          <div className="mt-4 flex items-center justify-center">
+            <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-700">
               {t("paidBadge")}
             </span>
           </div>
