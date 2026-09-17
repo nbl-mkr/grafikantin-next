@@ -57,8 +57,8 @@ export async function updateProfileAction(
   const { error } = await supabase.from("users").update(payload).eq("id", user.id);
   if (error) return { ok: false, error: error.message };
 
-  revalidatePath("/dashboard", "layout");
-  revalidatePath("/dashboard/setting");
-  revalidatePath("/", "layout");
+  revalidatePath("/[locale]/dashboard", "layout");
+  revalidatePath("/[locale]/dashboard/setting", "layout");
+  revalidatePath("/[locale]", "layout");
   return { ok: true };
 }
