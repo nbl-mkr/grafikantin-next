@@ -63,7 +63,7 @@ export interface MenuInput {
   id?: number;
   nama: string;
   standId: number;
-  kategori: "Makanan" | "Minuman" | "Snack";
+  kategori: "Makanan" | "Snack";
   harga: number;
   stok: number;
   tersedia: boolean;
