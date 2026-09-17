@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -14,6 +14,7 @@ import {
 import { Bar } from "react-chartjs-2";
 import StatCard from "@/components/dashboard/StatCard";
 import type { DashboardStat } from "@/lib/data/aggregate";
+import { formatCurrency } from "@/lib/format";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -33,6 +34,7 @@ interface ReportSectionProps {
 
 export default function ReportSection({ summary, rows, charts }: ReportSectionProps) {
   const t = useTranslations("dashboard.report");
+  const locale = useLocale();
   const [range, setRange] = useState<RangeKey>("6m");
   const current = charts[range];
 
@@ -70,7 +72,7 @@ export default function ReportSection({ summary, rows, charts }: ReportSectionPr
         callbacks: {
           label: (item: TooltipItem<"bar">) =>
             item.dataset.label === t("revenueLabel")
-              ? t("revenueTooltip", { value: `Rp ${Number(item.formattedValue.replace(/,/g, "")).toLocaleString("id-ID")}` })
+              ? t("revenueTooltip", { value: formatCurrency(Number(item.raw), locale) })
               : t("ordersTooltip", { value: item.formattedValue }),
         },
       },
@@ -83,7 +85,7 @@ export default function ReportSection({ summary, rows, charts }: ReportSectionPr
         grid: { color: "#e5e7eb" },
         ticks: {
           color: "#4b5563",
-          callback: (val: number | string) => `Rp ${Number(val).toLocaleString("id-ID")}`,
+          callback: (val: number | string) => formatCurrency(Number(val), locale),
         },
       },
       y1: {
@@ -143,7 +145,7 @@ export default function ReportSection({ summary, rows, charts }: ReportSectionPr
                   <td className="px-4 py-3 whitespace-nowrap font-medium text-gray-900">{row.stand}</td>
                   <td className="px-4 py-3 whitespace-nowrap text-center text-gray-600">{row.pesanan}</td>
                   <td className="px-4 py-3 whitespace-nowrap text-right font-semibold text-gray-900">
-                    Rp {row.pendapatan.toLocaleString("id-ID")}
+                    {formatCurrency(row.pendapatan, locale)}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-gray-600">{row.menuTerlaris}</td>
                   <td className="px-4 py-3 whitespace-nowrap min-w-32">

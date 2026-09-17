@@ -1,6 +1,7 @@
 "use client";
 import { useState, useMemo } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { formatCurrency } from "@/lib/format";
 
 type StatusPemesanan = "Menunggu" | "Diproses" | "Selesai" | "Dibatalkan";
 
@@ -25,6 +26,7 @@ const statusStyles: Record<string, string> = {
 
 export default function BottomSection({ recentOrders = [] }: { recentOrders?: PesananTayang[] }) {
   const t = useTranslations("dashboard.overview");
+  const locale = useLocale();
   const tCommon = useTranslations("dashboard.common");
   const tEnums = useTranslations("dashboard.enums.orderStatus");
 
@@ -178,7 +180,7 @@ export default function BottomSection({ recentOrders = [] }: { recentOrders?: Pe
                       </span>
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap text-right text-gray-600">
-                      Rp {order.total.toLocaleString("id-ID")}
+                      {formatCurrency(order.total, locale)}
                     </td>
                   </tr>
                 );

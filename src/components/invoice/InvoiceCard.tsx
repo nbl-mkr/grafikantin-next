@@ -1,11 +1,12 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import type { InvoiceData } from "@/lib/data/queries";
 
 export default function InvoiceCard({ order }: { order: InvoiceData | null }) {
   const t = useTranslations("invoice");
+  const locale = useLocale();
   const router = useRouter();
 
   const handlePrint = () => {
@@ -74,7 +75,11 @@ export default function InvoiceCard({ order }: { order: InvoiceData | null }) {
                 {item.quantity}x {item.nama_menu}
               </span>
               <span className="font-semibold text-gray-900">
-                Rp {(item.harga * item.quantity).toLocaleString("id-ID")}
+                {new Intl.NumberFormat(locale === "en" ? "en-US" : "id-ID", {
+                  style: "currency",
+                  currency: "IDR",
+                  maximumFractionDigits: 0,
+                }).format(item.harga * item.quantity)}
               </span>
             </div>
           ))}
@@ -84,7 +89,11 @@ export default function InvoiceCard({ order }: { order: InvoiceData | null }) {
           <div className="flex justify-between items-center">
             <span className="text-sm font-bold text-gray-900">{t("totalPayment")}</span>
             <span className="text-base font-extrabold text-[#e76f51]">
-              Rp {order.total.toLocaleString("id-ID")}
+              {new Intl.NumberFormat(locale === "en" ? "en-US" : "id-ID", {
+                style: "currency",
+                currency: "IDR",
+                maximumFractionDigits: 0,
+              }).format(order.total)}
             </span>
           </div>
         </div>

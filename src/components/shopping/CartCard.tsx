@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import { useCart } from "@/context/CartContext";
+import { formatCurrency } from "@/lib/format";
 
 interface StandRef {
   id: number;
@@ -13,6 +14,7 @@ interface StandRef {
 
 export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
   const t = useTranslations("shopping");
+  const locale = useLocale();
   const router = useRouter();
   const { cart, updateQuantity, removeFromCart } = useCart();
   const [selectedIds, setSelectedIds] = useState<(string | number)[]>([]);
@@ -217,7 +219,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
 
                       <div className="grid grid-cols-4 w-3/5 items-center text-center">
                         <span className="text-gray-600 font-medium">
-                          Rp {item.harga.toLocaleString("id-ID")}
+                          {formatCurrency(item.harga, locale)}
                         </span>
 
                         <div className="flex items-center justify-center">
@@ -247,7 +249,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
                         </div>
 
                         <span className="font-bold text-[#e76f51]">
-                          Rp {(item.harga * item.quantity).toLocaleString("id-ID")}
+                          {formatCurrency(item.harga * item.quantity, locale)}
                         </span>
 
                         <div className="flex justify-center">
@@ -311,7 +313,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
                 {t("totalLabel", { count: totalProduk })}
               </span>
               <span className="text-xl font-extrabold text-[#e76f51]">
-                Rp {totalHarga.toLocaleString("id-ID")}
+                {formatCurrency(totalHarga, locale)}
               </span>
             </div>
             <button

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -15,6 +15,7 @@ import {
 } from "chart.js";
 import { Line, Doughnut } from "react-chartjs-2";
 import type { ChartPeriod } from "@/lib/data/aggregate";
+import { formatCurrency } from "@/lib/format";
 
 ChartJS.register(
   CategoryScale,
@@ -35,6 +36,7 @@ interface ChartSectionProps {
 
 export default function ChartSection({ revenueRanges, statusSplit }: ChartSectionProps) {
   const t = useTranslations("dashboard.overview");
+  const locale = useLocale();
   const [range, setRange] = useState<"6m" | "12m">("6m");
   const currentData = revenueRanges[range];
 
@@ -74,7 +76,7 @@ export default function ChartSection({ revenueRanges, statusSplit }: ChartSectio
         callbacks: {
           label: (tooltipItem: any) =>
             t("revenueTooltip", {
-              value: `Rp ${Number(tooltipItem.raw).toLocaleString("id-ID")}`,
+              value: formatCurrency(Number(tooltipItem.raw), locale),
             }),
         },
       },
@@ -88,7 +90,7 @@ export default function ChartSection({ revenueRanges, statusSplit }: ChartSectio
           stepSize: 500000,
           color: "#4b5563",
           callback: (tickValue: any) =>
-            `Rp ${Number(tickValue).toLocaleString("id-ID")}`,
+            formatCurrency(Number(tickValue), locale),
         },
         grid: { color: "#e5e7eb" },
       },

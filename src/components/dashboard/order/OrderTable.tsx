@@ -1,6 +1,6 @@
 "use client";
 import { useState, useMemo } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export interface OrderView {
   id: string;
@@ -60,6 +60,7 @@ function SortHeader({
 
 export default function OrderTable({ orders = [] }: { orders?: OrderView[] }) {
   const t = useTranslations("dashboard.orders");
+  const locale = useLocale();
   const tOverview = useTranslations("dashboard.overview");
   const tCommon = useTranslations("dashboard.common");
   const tEnum = useTranslations("dashboard.enums.orderStatus");
@@ -207,7 +208,11 @@ export default function OrderTable({ orders = [] }: { orders?: OrderView[] }) {
                     <td className="px-4 py-3 whitespace-nowrap text-gray-600" title={order.stand}>{order.menu}</td>
                     <td className="px-4 py-3 whitespace-nowrap text-gray-600">{order.jumlah}</td>
                     <td className="px-4 py-3 whitespace-nowrap text-right text-gray-600">
-                      Rp {order.total.toLocaleString("id-ID")}
+                      {new Intl.NumberFormat(locale === "en" ? "en-US" : "id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                        maximumFractionDigits: 0,
+                      }).format(order.total)}
                     </td>
                   </tr>
                 );

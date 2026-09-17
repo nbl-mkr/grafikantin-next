@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import ProductGallery from "./ProductGallery";
 import ProductActionBar from "./ProductActionBar";
 import { useCart } from "@/context/CartContext";
+import { formatCurrency } from "@/lib/format";
 
 export interface ProductData {
   id: string | number;
@@ -25,6 +26,7 @@ interface ProductDetailProps {
 
 export default function ProductDetail({ product, standName }: ProductDetailProps) {
   const t = useTranslations("product");
+  const locale = useLocale();
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
 
@@ -84,7 +86,7 @@ export default function ProductDetail({ product, standName }: ProductDetailProps
           </h1>
 
           <p className="mt-2 text-2xl font-extrabold text-[#e76f51]">
-            Rp {product.harga.toLocaleString("id-ID")}
+            {formatCurrency(product.harga, locale)}
           </p>
 
           <div className="mt-6 border-t border-gray-100 pt-5">

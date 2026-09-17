@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
 export interface MenuItem {
@@ -13,6 +13,7 @@ export interface MenuItem {
 }
 
 import AdaptiveImage from "@/components/common/AdaptiveImage";
+import { formatCurrency } from "@/lib/format";
 
 interface MenuCardProps {
   item: MenuItem;
@@ -23,6 +24,7 @@ interface MenuCardProps {
 
 export default function MenuCard({ item, preload }: MenuCardProps) {
   const t = useTranslations("menu");
+  const locale = useLocale();
   return (
     <div className="group rounded-lg bg-white p-4 shadow-sm hover:shadow-[0_0_16px_rgba(15,23,42,0.05)] hover:-translate-y-1 transition-all duration-300 border border-gray-100 flex flex-col justify-between">
       <div>
@@ -42,7 +44,7 @@ export default function MenuCard({ item, preload }: MenuCardProps) {
             <div>
               <dt className="sr-only">{t("priceLabel")}</dt>
               <dd className="text-lg font-bold text-[#e76f51]">
-                Rp {item.harga.toLocaleString("id-ID")}
+                {formatCurrency(item.harga, locale)}
               </dd>
             </div>
 

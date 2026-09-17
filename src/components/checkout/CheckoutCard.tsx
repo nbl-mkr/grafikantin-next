@@ -2,14 +2,16 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { useRouter } from "@/i18n/navigation";
 import { CartItem, useCart } from "@/context/CartContext";
 import { createOrderAction } from "@/lib/data/checkout";
+import { formatCurrency } from "@/lib/format";
 
 export default function CheckoutCard() {
   const t = useTranslations("checkout");
+  const locale = useLocale();
   const router = useRouter();
   const { clearCart } = useCart();
   const [items, setItems] = useState<CartItem[]>([]);
@@ -109,11 +111,11 @@ export default function CheckoutCard() {
                       {item.nama_menu}
                     </p>
                     <p className="text-xs text-gray-600 mt-0.5">
-                      {item.quantity}x Rp {item.harga.toLocaleString("id-ID")}
+                      {item.quantity}x {formatCurrency(item.harga, locale)}
                     </p>
                   </div>
                   <span className="font-bold text-gray-900 text-sm">
-                    Rp {(item.harga * item.quantity).toLocaleString("id-ID")}
+                    {formatCurrency(item.harga * item.quantity, locale)}
                   </span>
                 </div>
               ))}
@@ -159,7 +161,7 @@ export default function CheckoutCard() {
             <div className="flex justify-between text-sm text-gray-600 mb-3">
               <span>{t("subtotal")}</span>
               <span className="font-medium text-gray-900">
-                Rp {subtotal.toLocaleString("id-ID")}
+                {formatCurrency(subtotal, locale)}
               </span>
             </div>
             <div className="flex justify-between text-sm text-gray-600 mb-4">
@@ -171,7 +173,7 @@ export default function CheckoutCard() {
                 {t("totalPayment")}
               </span>
               <span className="text-lg font-extrabold text-[#e76f51]">
-                Rp {subtotal.toLocaleString("id-ID")}
+                {formatCurrency(subtotal, locale)}
               </span>
             </div>
             <label className="mb-4 flex cursor-pointer select-none items-start gap-2.5 rounded-xl border border-gray-100 bg-slate-50 p-3">
