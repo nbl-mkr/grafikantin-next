@@ -69,12 +69,26 @@ export default function ProductDetail({ product, standName }: ProductDetailProps
         </div>
 
         <div className="flex flex-col">
-          <div className="flex items-center gap-3 flex-wrap">
-            <span className="rounded-full bg-[#e76f51]/10 px-3 py-1 text-xs font-semibold text-[#e76f51]">
+          <div className="flex items-center gap-4 flex-wrap">
+            <span className="text-xs font-semibold text-[#e76f51]">
               {resolvedStandName}
             </span>
             <div className="flex items-center gap-1 text-xs text-gray-600">
-              <span className="text-amber-400 text-sm">★</span>
+              <svg
+                className="size-4 text-[#e76f51]"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                />
+              </svg>
               <span className="font-bold text-gray-800">
                 {product.rating || t("ratingDefault")}
               </span>

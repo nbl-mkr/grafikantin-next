@@ -7,7 +7,7 @@ interface ProductGalleryProps {
 
 export default function ProductGallery({ gambar, namaMenu }: ProductGalleryProps) {
   return (
-    <div className="relative h-full w-full overflow-hidden rounded-2xl bg-gray-50 border border-gray-100">
+    <div className="relative aspect-square h-auto w-full lg:aspect-auto lg:h-full overflow-hidden rounded-2xl bg-gray-50 border border-gray-100">
       <AdaptiveImage
         src={gambar || "/assets/fallback.jpg"}
         alt={namaMenu}
