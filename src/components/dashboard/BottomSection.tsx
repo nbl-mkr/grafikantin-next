@@ -18,10 +18,10 @@ type SortField = "id" | "customer" | "tanggal" | "status" | "total";
 type SortOrder = "asc" | "desc";
 
 const statusStyles: Record<string, string> = {
-  Selesai: "bg-emerald-50 text-emerald-600",
-  Diproses: "bg-blue-50 text-blue-600",
-  Menunggu: "bg-amber-50 text-amber-600",
-  Dibatalkan: "bg-red-50 text-red-600",
+  Selesai: "text-emerald-600",
+  Diproses: "text-blue-600",
+  Menunggu: "text-amber-600",
+  Dibatalkan: "text-red-600",
 };
 
 export default function BottomSection({ recentOrders = [] }: { recentOrders?: PesananTayang[] }) {
@@ -175,7 +175,7 @@ export default function BottomSection({ recentOrders = [] }: { recentOrders?: Pe
                     <td className="px-4 py-3 whitespace-nowrap text-gray-600">{order.customer}</td>
                     <td className="px-4 py-3 whitespace-nowrap text-gray-600">{order.time}</td>
                     <td className="px-4 py-3 whitespace-nowrap">
-                      <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${statusStyles[order.status] || "bg-gray-100 text-gray-600"}`}>
+                      <span className={`inline-flex text-xs font-semibold ${statusStyles[order.status] || "text-gray-600"}`}>
                         {tEnums(order.status as keyof typeof tEnums extends never ? string : any)}
                       </span>
                     </td>
