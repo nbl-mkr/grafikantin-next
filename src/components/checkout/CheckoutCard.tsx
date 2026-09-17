@@ -181,7 +181,7 @@ export default function CheckoutCard() {
                 type="checkbox"
                 checked={paymentConfirmed}
                 onChange={(e) => setPaymentConfirmed(e.target.checked)}
-                className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-gray-300 text-[#e76f51] focus:ring-[#e76f51]"
+                className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-gray-300 accent-[#e76f51]"
               />
               <span className="text-xs font-medium text-gray-700">
                 {t("confirmCheckbox")}
