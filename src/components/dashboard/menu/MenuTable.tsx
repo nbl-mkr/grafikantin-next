@@ -245,19 +245,19 @@ export default function MenuTable() {
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-right">
                         <div className="flex items-center justify-end gap-2">
-                          <Link
-                            href={`/dashboard/menu/${menu.id}/edit`}
-                            className="rounded-md px-2.5 py-1 text-xs font-medium text-emerald-600 border border-emerald-200 hover:bg-emerald-50 transition-colors"
-                          >
-                            {t("edit")}
-                          </Link>
-                          <button
-                            type="button"
-                            onClick={() => setDeleteTarget(menu)}
-                            className="rounded-md px-2.5 py-1 text-xs font-medium text-red-600 border border-red-200 hover:bg-red-50 transition-colors"
-                          >
-                            {t("delete")}
-                          </button>
+                           <Link
+                             href={`/dashboard/menu/${menu.id}/edit`}
+                             className="rounded-md bg-[#e76f51] px-2.5 py-1 text-xs font-semibold text-white transition hover:bg-[#d55f43]"
+                           >
+                             {t("edit")}
+                           </Link>
+                           <button
+                             type="button"
+                             onClick={() => setDeleteTarget(menu)}
+                             className="rounded-md border border-red-200 bg-white px-2.5 py-1 text-xs font-semibold text-red-600 transition hover:border-red-300 hover:bg-red-50"
+                           >
+                             {t("delete")}
+                           </button>
                         </div>
                       </td>
                     </tr>
@@ -371,7 +371,7 @@ export default function MenuTable() {
               <button
                 type="button"
                 onClick={handleDelete}
-                className="rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-600 transition-colors"
+                className="rounded-lg bg-[#e76f51] px-4 py-2 text-sm font-medium text-white hover:bg-[#d55f43] transition-colors"
               >
                 {tCommon("delete")}
               </button>

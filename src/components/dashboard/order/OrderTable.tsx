@@ -1,6 +1,8 @@
 "use client";
 import { useState, useMemo } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
+import { updateOrderStatusAction, type OrderStatus } from "@/lib/data/mutations";
 
 export interface OrderView {
   id: string;
@@ -135,11 +137,61 @@ export default function OrderTable({ orders = [] }: { orders?: OrderView[] }) {
     }
   };
 
+  const router = useRouter();
+  const tErrors = useTranslations("dashboard.errors");
+  const [busyKey, setBusyKey] = useState<string | null>(null);
+  const [cancelTarget, setCancelTarget] = useState<OrderView | null>(null);
+
+  const handleRefresh = () => {
+    router.refresh();
+  };
+
+  const handleStatusChange = async (order: OrderView, statusBaru: OrderStatus) => {
+    const key = order.id;
+    setBusyKey(key);
+    const res = await updateOrderStatusAction(order.id, order.status, statusBaru);
+    if (!res.ok) {
+      alert(res.error ?? tErrors(res.errorKey ?? "updateOrderStatusFailed"));
+    }
+    setBusyKey(null);
+    router.refresh();
+  };
+
+  const handleCancelOrder = () => {
+    if (!cancelTarget) return;
+    setCancelTarget(null);
+    handleStatusChange(cancelTarget, "Dibatalkan");
+  };
+
   return (
+    <>
     <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-sm font-medium text-gray-900">{t("listTitle")}</h2>
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+          <button
+            type="button"
+            onClick={handleRefresh}
+            title={t("refresh")}
+            aria-label={t("refresh")}
+            className="grid h-9 w-9 shrink-0 place-content-center rounded-md border border-gray-200 bg-white text-gray-600 transition-colors hover:border-[#62748e] hover:text-[#62748e] focus:outline-none focus:ring-2 focus:ring-[#62748e]/30 sm:h-9"
+          >
+            <svg
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="size-4"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
+              />
+            </svg>
+          </button>
           <div className="relative flex items-center">
             <input
               type="text"
@@ -188,6 +240,7 @@ export default function OrderTable({ orders = [] }: { orders?: OrderView[] }) {
               <SortHeader label={t("colItem")} field="menu" activeField={sortField} order={sortOrder} onSort={handleSort} />
               <SortHeader label={t("colQty")} field="jumlah" activeField={sortField} order={sortOrder} onSort={handleSort} />
               <SortHeader label={t("colTotal")} field="total" activeField={sortField} order={sortOrder} onSort={handleSort} align="right" />
+              <th className="px-4 py-3 whitespace-nowrap text-right">{t("colAksi")}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
@@ -214,12 +267,47 @@ export default function OrderTable({ orders = [] }: { orders?: OrderView[] }) {
                         maximumFractionDigits: 0,
                       }).format(order.total)}
                     </td>
+                    <td className="px-4 py-3 whitespace-nowrap text-right">
+                      {order.status === "Menunggu" || order.status === "Diproses" ? (
+                        <div className="inline-flex items-center justify-end gap-1.5">
+                          {order.status === "Menunggu" ? (
+                            <button
+                              type="button"
+                              disabled={busyKey === order.id}
+                              onClick={() => handleStatusChange(order, "Diproses")}
+                              className="rounded-md bg-[#e76f51] px-2.5 py-1 text-xs font-semibold text-white transition hover:bg-[#d55f43] disabled:cursor-not-allowed disabled:opacity-50"
+                            >
+                              {t("btnAccept")}
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              disabled={busyKey === order.id}
+                              onClick={() => handleStatusChange(order, "Selesai")}
+                              className="rounded-md bg-[#e76f51] px-2.5 py-1 text-xs font-semibold text-white transition hover:bg-[#d55f43] disabled:cursor-not-allowed disabled:opacity-50"
+                            >
+                              {t("btnComplete")}
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            disabled={busyKey === order.id}
+                            onClick={() => setCancelTarget(order)}
+                            className="rounded-md border border-red-200 bg-white px-2.5 py-1 text-xs font-semibold text-red-600 transition hover:border-red-300 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                          >
+                            {t("btnCancel")}
+                          </button>
+                        </div>
+                      ) : (
+                        <span className="text-xs text-gray-400">-</span>
+                      )}
+                    </td>
                   </tr>
                 );
               })
             ) : (
               <tr>
-                <td className="px-4 py-6 text-center text-gray-600" colSpan={8}>
+                <td className="px-4 py-6 text-center text-gray-600" colSpan={9}>
                   {t("noOrders")}
                 </td>
               </tr>
@@ -305,5 +393,34 @@ export default function OrderTable({ orders = [] }: { orders?: OrderView[] }) {
         </div>
       </div>
     </div>
+      {cancelTarget && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+          <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
+            <h3 className="text-base font-semibold text-gray-900">
+              {t("cancelOrderTitle")}
+            </h3>
+            <p className="mt-2 text-sm text-gray-600">
+              {t("cancelOrderBody", { name: cancelTarget.id })}
+            </p>
+            <div className="mt-6 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setCancelTarget(null)}
+                className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
+              >
+                {tCommon("cancel")}
+              </button>
+              <button
+                type="button"
+                onClick={handleCancelOrder}
+                className="rounded-lg bg-[#e76f51] px-4 py-2 text-sm font-medium text-white hover:bg-[#d55f43] transition-colors"
+              >
+                {t("btnCancelConfirm")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
