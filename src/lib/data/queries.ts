@@ -14,15 +14,32 @@ export async function fetchOrders(
   opts: { limit?: number; since?: Date } = {}
 ): Promise<OrderRow[]> {
   const supabase = await createClient();
-  let query = supabase.from("orders").select(ORDER_SELECT).order("created_at", { ascending: false });
+  const pageSize = 1000;
+  const orders: OrderRow[] = [];
 
-  if (opts.limit) query = query.limit(opts.limit);
-  if (opts.since) query = query.gte("created_at", opts.since.toISOString());
-  if (ctx.role === "penjual" && ctx.standId) query = query.eq("id_stand", ctx.standId);
+  for (let offset = 0; offset < (opts.limit ?? Number.POSITIVE_INFINITY); offset += pageSize) {
+    const pageEnd = opts.limit
+      ? Math.min(offset + pageSize - 1, opts.limit - 1)
+      : offset + pageSize - 1;
+    let query = supabase
+      .from("orders")
+      .select(ORDER_SELECT)
+      .order("created_at", { ascending: false })
+      .order("id", { ascending: false })
+      .range(offset, pageEnd);
 
-  const { data, error } = await query;
-  if (error) throw new Error(`Gagal memuat pesanan: ${error.message}`);
-  return (data ?? []) as unknown as OrderRow[];
+    if (opts.since) query = query.gte("created_at", opts.since.toISOString());
+    if (ctx.role === "penjual" && ctx.standId) query = query.eq("id_stand", ctx.standId);
+
+    const { data, error } = await query;
+    if (error) throw new Error(`Gagal memuat pesanan: ${error.message}`);
+
+    const page = (data ?? []) as unknown as OrderRow[];
+    orders.push(...page);
+    if (page.length < pageSize || (opts.limit && orders.length >= opts.limit)) break;
+  }
+
+  return orders;
 }
 
 export async function fetchStands(): Promise<StandRow[]> {
