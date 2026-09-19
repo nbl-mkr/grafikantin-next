@@ -12,7 +12,7 @@ export default function LanguageSwitcher() {
   const t = useTranslations("nav");
 
   const base =
-    "rounded-full px-2.5 py-1 text-xs font-bold transition";
+    "rounded-full px-2.5 py-1 text-xs font-bold leading-none transition";
 
   return (
     <div className="flex items-center gap-1 rounded-full bg-gray-50 p-1">

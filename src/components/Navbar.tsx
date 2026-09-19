@@ -351,12 +351,12 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                 {t("feedback")}
               </Link>
             </li>
-            <li className="pt-2 border-t border-gray-100">
-              <div className="flex justify-center pb-2">
+            <li className="flex min-h-12 items-center justify-center border-t border-gray-100 py-3">
+              <div className="flex items-center justify-center">
                 <LanguageSwitcher />
               </div>
             </li>
-            <li className="border-t border-gray-100 pt-2">
+            <li className="border-t border-gray-100">
               {user ? (
                 <form action={logout}>
                   <button
