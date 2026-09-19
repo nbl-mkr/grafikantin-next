@@ -331,8 +331,16 @@
       "colDate": "Tanggal",
       "colStatus": "Status",
       "colTotal": "Total",
+      "colAksi": "Aksi",
       "range6m": "6B",
-      "range12m": "12B"
+      "range12m": "12B",
+      "refresh": "Refresh",
+      "btnAccept": "Terima",
+      "btnComplete": "Selesai",
+      "btnCancel": "Batal",
+      "btnCancelConfirm": "Ya, Batalkan",
+      "cancelOrderTitle": "Batalkan Pesanan",
+      "cancelOrderBody": "Batalkan pesanan {name}? Stok menu akan dikembalikan."
     },
     "report": {
       "title": "Laporan",
@@ -467,7 +475,10 @@
       "nameRequired": "Nama wajib diisi",
       "emailInvalid": "Format email tidak valid",
       "sessionNotFound": "Sesi tidak ditemukan",
-      "photoUploadFailed": "Gagal mengunggah foto"
+      "photoUploadFailed": "Gagal mengunggah foto",
+      "orderTransitionInvalid": "Peralihan status pesanan tidak valid.",
+      "orderNotFound": "Pesanan tidak ditemukan atau statusnya sudah berubah. Silakan refresh.",
+      "updateOrderStatusFailed": "Gagal memperbarui status pesanan"
     }
   }
 }

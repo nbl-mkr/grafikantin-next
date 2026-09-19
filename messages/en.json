@@ -331,8 +331,16 @@
       "colDate": "Date",
       "colStatus": "Status",
       "colTotal": "Total",
+      "colAksi": "Action",
       "range6m": "6M",
-      "range12m": "12M"
+      "range12m": "12M",
+      "refresh": "Refresh",
+      "btnAccept": "Accept",
+      "btnComplete": "Complete",
+      "btnCancel": "Cancel",
+      "btnCancelConfirm": "Yes, Cancel",
+      "cancelOrderTitle": "Cancel Order",
+      "cancelOrderBody": "Cancel order {name}? The menu stock will be returned."
     },
     "report": {
       "title": "Report",
@@ -467,7 +475,10 @@
       "nameRequired": "Name is required",
       "emailInvalid": "Invalid email format",
       "sessionNotFound": "Session not found",
-      "photoUploadFailed": "Failed to upload photo"
+      "photoUploadFailed": "Failed to upload photo",
+      "orderTransitionInvalid": "This order status change is not valid.",
+      "orderNotFound": "Order not found or its status has already changed. Please refresh.",
+      "updateOrderStatusFailed": "Failed to update order status"
     }
   }
 }
