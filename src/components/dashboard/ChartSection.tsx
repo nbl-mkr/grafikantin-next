@@ -103,8 +103,8 @@ export default function ChartSection({ revenueRanges, statusSplit }: ChartSectio
     datasets: [
       {
         data: statusSplit.map((x) => Math.round((x.value / totalStatus) * 100)),
-        backgroundColor: ["#10b981", "#e76f51", "#f43f5e", "#f59e0b"],
-        hoverBackgroundColor: ["#059669", "#d95f43", "#e11d48", "#d97706"],
+        backgroundColor: ["#059669", "#2563eb", "#d97706", "#dc2626"],
+        hoverBackgroundColor: ["#047857", "#1d4ed8", "#b45309", "#b91c1c"],
         borderColor: "#ffffff",
         borderWidth: 2,
       },

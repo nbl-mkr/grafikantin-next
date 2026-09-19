@@ -82,6 +82,11 @@ export default function BottomSection({ recentOrders = [] }: { recentOrders?: Pe
 
   const totalPages = Math.ceil(processedOrders.length / itemsPerPage) || 1;
   const validCurrentPage = Math.min(currentPage, totalPages);
+  const pageWindowStart = Math.max(1, Math.min(validCurrentPage - 4, totalPages - 9));
+  const visiblePages = Array.from(
+    { length: Math.min(10, totalPages) },
+    (_, index) => pageWindowStart + index
+  );
   const paginatedOrders = useMemo(() => {
     const startIndex = (validCurrentPage - 1) * itemsPerPage;
     return processedOrders.slice(startIndex, startIndex + itemsPerPage);
@@ -233,7 +238,7 @@ export default function BottomSection({ recentOrders = [] }: { recentOrders?: Pe
           </div>
           <span>{tCommon("ofData", { count: processedOrders.length })}</span>
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex w-full flex-wrap items-center justify-center gap-1 sm:w-auto">
           <button
             type="button"
             disabled={validCurrentPage === 1}
@@ -245,20 +250,22 @@ export default function BottomSection({ recentOrders = [] }: { recentOrders?: Pe
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
             </svg>
           </button>
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-            <button
-              key={page}
-              type="button"
-              onClick={() => setCurrentPage(page)}
-              className={`h-8 w-8 rounded-md border text-xs font-medium transition-colors ${
-                validCurrentPage === page
-                  ? "border-[#e76f51] bg-[#e76f51] text-white"
-                  : "border-gray-200 hover:bg-gray-50 text-gray-700"
-              }`}
-            >
-              {page}
-            </button>
-          ))}
+          <div className="flex max-w-full flex-wrap justify-center gap-1">
+            {visiblePages.map((page) => (
+              <button
+                key={page}
+                type="button"
+                onClick={() => setCurrentPage(page)}
+                className={`h-8 w-8 rounded-md border text-xs font-medium transition-colors ${
+                  validCurrentPage === page
+                    ? "border-[#e76f51] bg-[#e76f51] text-white"
+                    : "border-gray-200 hover:bg-gray-50 text-gray-700"
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+          </div>
           <button
             type="button"
             disabled={validCurrentPage === totalPages}

@@ -22,8 +22,15 @@ export default async function DashboardDashboard() {
   const ctx = await getDashboardContext();
   if (!ctx) redirect(`/${locale}/auth/login`);
 
-  const [orders, stands, menus] = await Promise.all([
-    fetchOrders(ctx, { limit: 500 }),
+  const since = new Date();
+  since.setDate(1);
+  since.setMonth(since.getMonth() - 11);
+  const recentSince = new Date();
+  recentSince.setDate(recentSince.getDate() - 30);
+
+  const [orders, recentOrdersData, stands, menus] = await Promise.all([
+    fetchOrders(ctx, { since }),
+    fetchOrders(ctx, { since: recentSince }),
     fetchStands(),
     fetchMenus(ctx.role === "penjual" ? ctx.standId : null),
   ]);
@@ -37,10 +44,10 @@ export default async function DashboardDashboard() {
     { label: tEnum("Diproses"), value: statusCount("Diproses") },
     { label: tEnum("Menunggu"), value: statusCount("Menunggu") },
     { label: tEnum("Dibatalkan"), value: statusCount("Dibatalkan") },
-  ].filter((x) => x.value > 0);
+  ];
 
   const visitorLabel = locale === "en" ? "Visitor" : "Pengunjung";
-  const recentOrders = orders.map((o) => ({
+  const recentOrders = recentOrdersData.map((o) => ({
     id: o.kode_transaksi,
     customer: o.user?.username ?? visitorLabel,
     time: formatTanggal(o.created_at, locale),

@@ -21,9 +21,14 @@ export default async function DashboardOrdersPage() {
   const ctx = await getDashboardContext();
   if (!ctx) redirect(`/${locale}/auth/login`);
 
-  const orders = await fetchOrders(ctx);
+  const since30Days = new Date();
+  since30Days.setDate(since30Days.getDate() - 30);
+  const [orders, tableOrders] = await Promise.all([
+    fetchOrders(ctx),
+    fetchOrders(ctx, { since: since30Days }),
+  ]);
   const visitorLabel = locale === "en" ? "Visitor" : "Pengunjung";
-  const rows: OrderView[] = orders.map((o) => ({
+  const rows: OrderView[] = tableOrders.map((o) => ({
     id: o.kode_transaksi,
     customer: o.user?.username ?? visitorLabel,
     phone: "-",

@@ -37,6 +37,7 @@ interface MenuFormProps {
 
 export default function MenuForm({ form, onChange, stands }: MenuFormProps) {
   const t = useTranslations("dashboard.menus.form");
+  const tCategory = useTranslations("dashboard.enums.category");
 
   const update = <K extends keyof MenuFormData>(key: K, value: MenuFormData[K]) => {
     onChange({ ...form, [key]: value });
@@ -83,8 +84,8 @@ export default function MenuForm({ form, onChange, stands }: MenuFormProps) {
           id="menu-kategori"
           value={form.kategori}
           options={[
-            { value: "Makanan", label: "Makanan" },
-            { value: "Snack", label: "Snack" },
+            { value: "Makanan", label: tCategory("Makanan") },
+            { value: "Snack", label: tCategory("Snack") },
           ]}
           onChange={(value) => update("kategori", value as MenuKategori)}
           ariaLabel={t("selectCategory")}
