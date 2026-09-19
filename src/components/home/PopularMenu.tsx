@@ -80,7 +80,7 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
           </div>
 
           {featured && (
-            <div className="group rounded-lg bg-white p-4 shadow-sm hover:shadow-[0_0_16px_rgba(15,23,42,0.05)] hover:-translate-y-1 transition-all duration-300 border border-gray-100 flex flex-col justify-between w-full max-w-[352px] mx-auto lg:justify-self-end lg:mx-0">
+            <div className="group rounded-lg bg-white p-4 shadow-sm hover:shadow-[0_0_16px_rgba(15,23,42,0.05)] hover:-translate-y-1 transition-all duration-300 border border-gray-100 flex flex-col justify-between w-full max-w-88 mx-auto lg:justify-self-end lg:mx-0">
               <div>
                 <div className="relative h-52 overflow-hidden rounded-lg">
                   <AdaptiveImage
