@@ -15,7 +15,7 @@ export interface RouteRule {
 
 export const DASHBOARD_ROUTE_RULES: RouteRule[] = [
   { pattern: /^\/dashboard$/, roles: ['admin'] },
-  { pattern: /^\/dashboard\/order(\/|$)/, roles: ['admin'] },
+  { pattern: /^\/dashboard\/order(\/|$)/, roles: ['admin', 'penjual'] },
   { pattern: /^\/dashboard\/stand(\/|$)/, roles: ['admin'] },
   { pattern: /^\/dashboard\/menu(\/|$)/, roles: ['admin', 'penjual'] },
   { pattern: /^\/dashboard\/report(\/|$)/, roles: ['admin', 'penjual'] },
