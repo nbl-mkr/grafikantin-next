@@ -146,3 +146,94 @@ export async function toggleMenuTersediaAction(id: number): Promise<ActionResult
   revalidatePath("/[locale]/dashboard/menu", "page");
   return { ok: true };
 }
+
+export type OrderStatus = "Menunggu" | "Diproses" | "Selesai" | "Dibatalkan";
+
+const ALLOWED_ORDER_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
+  Menunggu: ["Diproses", "Dibatalkan"],
+  Diproses: ["Selesai", "Dibatalkan"],
+  Selesai: [],
+  Dibatalkan: [],
+};
+
+export async function updateOrderStatusAction(
+  kodeTransaksi: string,
+  statusLama: OrderStatus,
+  statusBaru: OrderStatus
+): Promise<ActionResult> {
+  if (!ALLOWED_ORDER_TRANSITIONS[statusLama]?.includes(statusBaru)) {
+    return { ok: false, errorKey: "orderTransitionInvalid" };
+  }
+
+  const ctx = await getDashboardContext();
+  if (!ctx) return { ok: false, errorKey: "notAllowed" };
+  if (ctx.role !== "admin" && ctx.role !== "penjual") return { ok: false, errorKey: "notAllowed" };
+
+  const supabase = await createClient();
+
+  let orderQuery = supabase
+    .from("orders")
+    .select("id, id_menu, jumlah")
+    .eq("kode_transaksi", kodeTransaksi)
+    .eq("status", statusLama);
+
+  if (ctx.role === "penjual" && ctx.standId) {
+    orderQuery = orderQuery.eq("id_stand", ctx.standId);
+  }
+
+  const { data: orderRows, error: orderErr } = await orderQuery;
+  if (orderErr) return { ok: false, error: orderErr.message };
+
+  if (!orderRows || orderRows.length === 0) {
+    return { ok: false, errorKey: "orderNotFound" };
+  }
+
+  const { error: updateErr } = await supabase
+    .from("orders")
+    .update({ status: statusBaru })
+    .in("id", orderRows.map((o) => o.id))
+    .eq("status", statusLama);
+
+  if (updateErr) return { ok: false, error: updateErr.message };
+
+  if (statusBaru === "Dibatalkan") {
+    const returnQtyByMenu = new Map<number, number>();
+    for (const row of orderRows) {
+      const menuId = Number(row.id_menu);
+      if (!Number.isFinite(menuId) || menuId <= 0) continue;
+      returnQtyByMenu.set(
+        menuId,
+        (returnQtyByMenu.get(menuId) ?? 0) + Number(row.jumlah)
+      );
+    }
+
+    const menuIds = [...returnQtyByMenu.keys()];
+    if (menuIds.length > 0) {
+      const { data: menuRows, error: menuErr } = await supabase
+        .from("menus")
+        .select("id, stok")
+        .in("id", menuIds);
+
+      if (menuErr || !menuRows) {
+        console.error("Gagal memuat menu untuk pengembalian stok:", menuErr?.message);
+      } else {
+        for (const menu of menuRows) {
+          const qty = returnQtyByMenu.get(Number(menu.id));
+          if (!qty) continue;
+          const { error: stokErr } = await supabase
+            .from("menus")
+            .update({ stok: Number(menu.stok) + qty })
+            .eq("id", menu.id);
+
+          if (stokErr) {
+            console.error("Gagal mengembalikan stok setelah pembatalan:", stokErr.message);
+          }
+        }
+      }
+    }
+  }
+
+  revalidatePath("/[locale]/dashboard/order", "page");
+  revalidatePath("/[locale]/dashboard", "page");
+  return { ok: true };
+}
