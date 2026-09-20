@@ -42,5 +42,6 @@ next-env.d.ts
 
 # project
 .agents
+.hermesignore
 skills-lock.json
 public/assets/originals
