@@ -1,7 +1,8 @@
 import "server-only";
 import { getDashboardContext } from "@/lib/data/context";
-import { fetchOrders, fetchStands, fetchMenus } from "@/lib/data/queries";
+import { fetchStands, fetchMenus } from "@/lib/data/queries";
 import { buildStandRevenue } from "@/lib/data/aggregate";
+import { createClient } from "@/lib/supabase/server";
 
 export interface StandView {
   id: number;
@@ -27,7 +28,10 @@ export interface MenuView {
 }
 
 export async function getStandsView(): Promise<StandView[]> {
-  const [stands, orders] = await Promise.all([fetchStands(), fetchOrdersSafe()]);
+  const [stands, orders] = await Promise.all([
+    fetchStands(),
+    fetchOrdersForRevenue(),
+  ]);
   const revenue = buildStandRevenue(orders);
   return stands.map((s) => ({
     id: s.id,
@@ -44,17 +48,11 @@ export async function getMenusView(): Promise<{ menus: MenuView[]; stands: { id:
   const ctx = await getDashboardContext();
   if (!ctx) return { menus: [], stands: [] };
 
-  const [menus, orders, stands] = await Promise.all([
+  const [menus, soldByMenu, stands] = await Promise.all([
     fetchMenus(ctx.role === "penjual" ? ctx.standId : null),
-    fetchOrdersSafe(),
+    fetchSoldMenuCounts(),
     fetchStands(),
   ]);
-
-  const soldByMenu = new Map<number, number>();
-  for (const o of orders) {
-    if (o.status === "Dibatalkan" || !o.menu) continue;
-    soldByMenu.set(o.menu.id, (soldByMenu.get(o.menu.id) ?? 0) + o.jumlah);
-  }
 
   return {
     menus: menus.map((m) => ({
@@ -73,12 +71,47 @@ export async function getMenusView(): Promise<{ menus: MenuView[]; stands: { id:
   };
 }
 
-async function fetchOrdersSafe() {
-  const ctx = await getDashboardContext();
-  if (!ctx) return [];
-  try {
-    return await fetchOrders(ctx);
-  } catch {
+async function fetchOrdersForRevenue(): Promise<{ id_stand: number; total_harga: number }[]> {
+  const supabase = await createClient();
+  const twelveMonthsAgo = new Date();
+  twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
+
+  const { data, error } = await supabase
+    .from("orders")
+    .select("id_stand, total_harga")
+    .eq("status", "!=\"Dibatalkan\"")
+    .gte("created_at", twelveMonthsAgo.toISOString());
+
+  if (error) {
+    console.error("Gagal memuat data pendapatan:", error.message);
     return [];
   }
+
+  return (data ?? []) as unknown as { id_stand: number; total_harga: number }[];
+}
+
+async function fetchSoldMenuCounts(): Promise<Map<number, number>> {
+  const supabase = await createClient();
+  const twelveMonthsAgo = new Date();
+  twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
+
+  const { data, error } = await supabase
+    .from("orders")
+    .select("id_menu, jumlah")
+    .eq("status", "!=\"Dibatalkan\"")
+    .gte("created_at", twelveMonthsAgo.toISOString());
+
+  if (error) {
+    console.error("Gagal memuat data terjual:", error.message);
+    return new Map();
+  }
+
+  const map = new Map<number, number>();
+  for (const row of data ?? []) {
+    if (!row.id_menu) continue;
+    const menuId = Number(row.id_menu);
+    map.set(menuId, (map.get(menuId) ?? 0) + Number(row.jumlah));
+  }
+
+  return map;
 }
