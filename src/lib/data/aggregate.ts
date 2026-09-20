@@ -110,10 +110,9 @@ export function buildStats(orders: OrderRow[], stands: StandRow[], menus: MenuRo
   return stats;
 }
 
-export function buildStandRevenue(orders: OrderRow[]) {
+export function buildStandRevenue(orders: { id_stand: number; total_harga: number }[]) {
   const map = new Map<number, number>();
   for (const o of orders) {
-    if (o.status === "Dibatalkan") continue;
     map.set(o.id_stand, (map.get(o.id_stand) ?? 0) + Number(o.total_harga));
   }
   return map;
