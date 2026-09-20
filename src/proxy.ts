@@ -1,11 +1,9 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
-import { canAccessPath, DASHBOARD_LANDING, type Role } from '@/lib/roles'
 import { routing } from '@/i18n/routing'
 
 const LOCALE_COOKIE = 'NEXT_LOCALE'
 
-/** Segmen path (tanpa prefiks locale) yang merupakan halaman publik ber-lokalisasi. */
 const PUBLIC_ROUTE_SEGMENTS = [
   'order',
   'about',
@@ -42,12 +40,6 @@ function resolveLocale(request: NextRequest, pathLocale?: string) {
   return routing.defaultLocale
 }
 
-function isPublicLocalePath(pathname: string) {
-  if (pathname === '/') return true
-  const first = pathname.split('/')[1]
-  return typeof first === 'string' && PUBLIC_ROUTE_SEGMENTS.includes(first)
-}
-
 function withLocaleCookie(response: NextResponse, locale: string) {
   response.cookies.set(LOCALE_COOKIE, locale, {
     path: '/',
@@ -56,11 +48,16 @@ function withLocaleCookie(response: NextResponse, locale: string) {
   return response
 }
 
+function isPublicLocalePath(pathname: string) {
+  if (pathname === '/') return true
+  const first = pathname.split('/')[1]
+  return typeof first === 'string' && PUBLIC_ROUTE_SEGMENTS.includes(first)
+}
+
 export async function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl
   const pathLocale = localeFromPathname(pathname)
 
-  // --- i18n: non-prefixed public paths (and bare "/") redirect to "/{locale}/..." ---
   if (!pathLocale && isPublicLocalePath(pathname)) {
     const locale = resolveLocale(request)
     const target =
@@ -105,7 +102,6 @@ export async function proxy(request: NextRequest) {
 
   const activeLocale = pathLocale?.locale ?? resolveLocale(request)
 
-  // Dashboard lives under the locale prefix: /{locale}/dashboard/...
   const rest = pathLocale?.rest ?? pathname
   const isDashboard = rest === '/dashboard' || rest.startsWith('/dashboard/')
 
@@ -115,27 +111,6 @@ export async function proxy(request: NextRequest) {
     )
   }
 
-  if (isDashboard && user) {
-    const { data: profile } = await supabase
-      .from('users')
-      .select('role')
-      .eq('id', user.id)
-      .single()
-
-    const role = (profile?.role ?? null) as Role | null
-
-    if (!role) {
-      return NextResponse.redirect(new URL(`/${activeLocale}`, request.nextUrl.origin))
-    }
-
-    if (!canAccessPath(role, rest)) {
-      return NextResponse.redirect(
-        new URL(`/${activeLocale}${DASHBOARD_LANDING[role]}`, request.nextUrl.origin)
-      )
-    }
-  }
-
-  // --- i18n: keep the NEXT_LOCALE cookie in sync on locale-prefixed pages ---
   if (pathLocale) {
     return withLocaleCookie(supabaseResponse, pathLocale.locale)
   }
