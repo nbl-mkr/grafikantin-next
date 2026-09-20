@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { cache } from 'react'
 import type { Role } from '@/lib/roles'
 
 export type { Role }
@@ -18,7 +19,7 @@ export function fotoUrl(foto: string | null | undefined): string {
   return foto && foto.length > 0 ? foto : DEFAULT_FOTO
 }
 
-export async function getProfile(): Promise<Profile | null> {
+export const getProfile = cache(async function getProfile(): Promise<Profile | null> {
   const supabase = await createClient()
 
   const {
@@ -36,4 +37,4 @@ export async function getProfile(): Promise<Profile | null> {
   if (error || !data) return null
 
   return data as Profile
-}
+})
