@@ -130,7 +130,7 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
       >
         <div className="flex h-16.25 shrink-0 items-center gap-2 border-b border-gray-100 px-4 text-gray-900 text-lg sm:px-6 lg:px-8">
           <Image
-            src="/assets/logo_header1.png"
+            src="/assets/logo_header.png"
             alt="Logo Grafikantin"
             width={32}
             height={32}
