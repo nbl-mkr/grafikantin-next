@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import ReportSection from "@/components/dashboard/report/ReportSection";
 import { getDashboardContext } from "@/lib/data/context";
-import { fetchOrders, fetchStands } from "@/lib/data/queries";
+import { fetchChartOrders, fetchStands } from "@/lib/data/queries";
 import { buildReport, buildReportCharts } from "@/lib/data/aggregate";
 
 export default async function DashboardReportPage() {
@@ -11,7 +11,7 @@ export default async function DashboardReportPage() {
   const ctx = await getDashboardContext();
   if (!ctx) redirect(`/${locale}/auth/login`);
 
-  const [orders, stands] = await Promise.all([fetchOrders(ctx), fetchStands()]);
+  const [orders, stands] = await Promise.all([fetchChartOrders(ctx), fetchStands()]);
   const report = buildReport(orders, stands, locale);
   const charts = buildReportCharts(orders, locale);
 

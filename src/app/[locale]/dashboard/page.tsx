@@ -4,7 +4,7 @@ import StatCard from "@/components/dashboard/StatCard";
 import ChartSection from "@/components/dashboard/ChartSection";
 import BottomSection from "@/components/dashboard/BottomSection";
 import { getDashboardContext } from "@/lib/data/context";
-import { fetchOrders, fetchStands, fetchMenus } from "@/lib/data/queries";
+import { fetchChartOrders, fetchOrders, fetchStands, fetchMenus } from "@/lib/data/queries";
 import { buildStats, buildRevenueCharts } from "@/lib/data/aggregate";
 
 function formatTanggal(iso: string, locale: string) {
@@ -22,15 +22,12 @@ export default async function DashboardDashboard() {
   const ctx = await getDashboardContext();
   if (!ctx) redirect(`/${locale}/auth/login`);
 
-  const since = new Date();
-  since.setDate(1);
-  since.setMonth(since.getMonth() - 11);
   const recentSince = new Date();
   recentSince.setDate(recentSince.getDate() - 30);
 
   const [orders, recentOrdersData, stands, menus] = await Promise.all([
-    fetchOrders(ctx, { since }),
-    fetchOrders(ctx, { since: recentSince }),
+    fetchChartOrders(ctx),
+    fetchOrders(ctx, { since: recentSince, limit: 50 }),
     fetchStands(),
     fetchMenus(ctx.role === "penjual" ? ctx.standId : null),
   ]);

@@ -4,7 +4,7 @@ import OrderTargetChart from "@/components/dashboard/order/OrderTargetChart";
 import OrderExportButton from "@/components/dashboard/order/OrderExportButton";
 import OrderTable, { type OrderView } from "@/components/dashboard/order/OrderTable";
 import { getDashboardContext } from "@/lib/data/context";
-import { fetchOrders } from "@/lib/data/queries";
+import { fetchChartOrders, fetchOrders } from "@/lib/data/queries";
 import { buildOrderCharts } from "@/lib/data/aggregate";
 
 function formatTanggal(iso: string, locale: string) {
@@ -24,8 +24,8 @@ export default async function DashboardOrdersPage() {
   const since30Days = new Date();
   since30Days.setDate(since30Days.getDate() - 30);
   const [orders, tableOrders] = await Promise.all([
-    fetchOrders(ctx),
-    fetchOrders(ctx, { since: since30Days }),
+    fetchChartOrders(ctx),
+    fetchOrders(ctx, { since: since30Days, limit: 50 }),
   ]);
   const visitorLabel = locale === "en" ? "Visitor" : "Pengunjung";
   const rows: OrderView[] = tableOrders.map((o) => ({
