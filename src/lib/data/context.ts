@@ -1,8 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
+import { cache } from "react";
 import { getProfile } from "@/lib/supabase/session";
 import type { DashboardContext } from "@/lib/data/types";
 
-export async function getDashboardContext(): Promise<DashboardContext | null> {
+export const getDashboardContext = cache(async function getDashboardContext(): Promise<DashboardContext | null> {
   const profile = await getProfile();
   if (!profile) return null;
 
@@ -19,4 +20,4 @@ export async function getDashboardContext(): Promise<DashboardContext | null> {
   }
 
   return { role: profile.role, userId: profile.id, standId };
-}
+});
