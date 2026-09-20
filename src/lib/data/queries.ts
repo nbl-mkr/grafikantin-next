@@ -2,6 +2,9 @@ import { createClient } from "@/lib/supabase/server";
 import type { DashboardContext } from "@/lib/data/types";
 import type { OrderRow, StandRow, MenuRow } from "@/lib/data/types";
 
+const MAX_LOOKBACK_MONTHS = 12;
+const PAGE_SIZE = 1000;
+
 const ORDER_SELECT = `
   id, kode_transaksi, total_harga, metode_pembayaran, status, jumlah, created_at,
   user:users!orders_id_user_fkey ( username ),
@@ -9,26 +12,40 @@ const ORDER_SELECT = `
   menu:menus!orders_id_menu_fkey ( id, nama, kategori, harga, gambar, stand:stands!menus_stand_id_fkey ( id, nama_stand ) )
 `;
 
+function getMaxLookbackDate(): Date {
+  const date = new Date();
+  date.setMonth(date.getMonth() - MAX_LOOKBACK_MONTHS);
+  return date;
+}
+
 export async function fetchOrders(
   ctx: DashboardContext,
   opts: { limit?: number; since?: Date } = {}
 ): Promise<OrderRow[]> {
   const supabase = await createClient();
-  const pageSize = 1000;
   const orders: OrderRow[] = [];
+
+  const twelveMonthsAgo = getMaxLookbackDate();
+  const effectiveSince = opts.since && opts.since > twelveMonthsAgo
+    ? opts.since
+    : twelveMonthsAgo;
+
+  const pageSize = opts.limit ? Math.min(opts.limit, PAGE_SIZE) : PAGE_SIZE;
 
   for (let offset = 0; offset < (opts.limit ?? Number.POSITIVE_INFINITY); offset += pageSize) {
     const pageEnd = opts.limit
       ? Math.min(offset + pageSize - 1, opts.limit - 1)
       : offset + pageSize - 1;
+
+    if (opts.limit && offset >= opts.limit) break;
+
     let query = supabase
       .from("orders")
       .select(ORDER_SELECT)
       .order("created_at", { ascending: false })
-      .order("id", { ascending: false })
+      .gte("created_at", effectiveSince.toISOString())
       .range(offset, pageEnd);
 
-    if (opts.since) query = query.gte("created_at", opts.since.toISOString());
     if (ctx.role === "penjual" && ctx.standId) query = query.eq("id_stand", ctx.standId);
 
     const { data, error } = await query;
@@ -36,7 +53,38 @@ export async function fetchOrders(
 
     const page = (data ?? []) as unknown as OrderRow[];
     orders.push(...page);
-    if (page.length < pageSize || (opts.limit && orders.length >= opts.limit)) break;
+    if (page.length < pageSize) break;
+  }
+
+  return orders;
+}
+
+export async function fetchChartOrders(ctx: DashboardContext): Promise<OrderRow[]> {
+  const supabase = await createClient();
+  const orders: OrderRow[] = [];
+  const twelveMonthsAgo = getMaxLookbackDate();
+  let offset = 0;
+
+  while (true) {
+    let query = supabase
+      .from("orders")
+      .select(ORDER_SELECT)
+      .order("created_at", { ascending: false })
+      .gte("created_at", twelveMonthsAgo.toISOString())
+      .range(offset, offset + PAGE_SIZE - 1);
+
+    if (ctx.role === "penjual" && ctx.standId) {
+      query = query.eq("id_stand", ctx.standId);
+    }
+
+    const { data, error } = await query;
+    if (error) throw new Error(`Gagal memuat data chart: ${error.message}`);
+
+    const page = (data ?? []) as unknown as OrderRow[];
+    orders.push(...page);
+
+    if (page.length < PAGE_SIZE) break;
+    offset += PAGE_SIZE;
   }
 
   return orders;
