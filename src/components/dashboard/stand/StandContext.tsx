@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { upsertStandAction, deleteStandAction, type StandInput } from "@/lib/data/mutations";
@@ -24,10 +24,12 @@ export function StandProvider({
   const router = useRouter();
   const t = useTranslations("dashboard.errors");
   const [stands, setStands] = useState<StandView[]>(initialStands);
+  const [syncedInitialStands, setSyncedInitialStands] = useState(initialStands);
 
-  useEffect(() => {
+  if (syncedInitialStands !== initialStands) {
+    setSyncedInitialStands(initialStands);
     setStands(initialStands);
-  }, [initialStands]);
+  }
 
   const addStand = useCallback(
     async (data: StandInput) => {

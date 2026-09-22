@@ -31,7 +31,7 @@ export default function MenuTable() {
   const [deleteTarget, setDeleteTarget] = useState<MenuView | null>(null);
 
   const processedMenus = useMemo(() => {
-    let result = menus.filter((m) => {
+    const result = menus.filter((m) => {
       const matchSearch =
         m.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
         m.stand.toLowerCase().includes(searchTerm.toLowerCase());
@@ -41,8 +41,8 @@ export default function MenuTable() {
     });
     if (sortField) {
       result.sort((a, b) => {
-        let valA = a[sortField];
-        let valB = b[sortField];
+        const valA = a[sortField];
+        const valB = b[sortField];
         if (typeof valA === "string") {
           const comp = (valA as string).localeCompare(valB as string);
           return sortOrder === "asc" ? comp : -comp;
@@ -164,7 +164,7 @@ export default function MenuTable() {
                     kategoriFilter === f ? "bg-gray-100 text-gray-900" : "text-gray-600 hover:text-gray-900"
                   }`}
                 >
-                  {f === "all" ? t("filterAll") : tCategory(f as any)}
+                  {f === "all" ? t("filterAll") : tCategory(f)}
                 </button>
               ))}
             </div>
@@ -222,7 +222,7 @@ export default function MenuTable() {
                       <td className="px-4 py-3 whitespace-nowrap text-gray-600">{menu.stand}</td>
                       <td className="px-4 py-3 whitespace-nowrap">
                         <span className={`inline-flex text-xs font-semibold ${KATEGORI_STYLES[menu.kategori] ?? "text-gray-600"}`}>
-                          {tCategory(menu.kategori as any)}
+                          {tCategory(menu.kategori)}
                         </span>
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-right text-gray-600">

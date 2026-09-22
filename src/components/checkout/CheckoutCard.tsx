@@ -24,6 +24,8 @@ export default function CheckoutCard() {
     const savedCheckout = localStorage.getItem("checkout_items");
     if (savedCheckout) {
       try {
+        // Baca data checkout dari localStorage saat mount (tidak bisa dilakukan saat render).
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setItems(JSON.parse(savedCheckout));
       } catch (e) {
         console.error(e);

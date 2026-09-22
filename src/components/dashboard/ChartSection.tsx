@@ -12,6 +12,9 @@ import {
   Tooltip,
   Legend,
   Filler,
+  type ChartOptions,
+  type TooltipItem,
+  type ScriptableContext,
 } from "chart.js";
 import { Line, Doughnut } from "react-chartjs-2";
 import type { ChartPeriod } from "@/lib/data/aggregate";
@@ -47,7 +50,7 @@ export default function ChartSection({ revenueRanges, statusSplit }: ChartSectio
         label: t("revenue"),
         data: currentData.values,
         borderColor: "#e76f51",
-        backgroundColor: (context: any) => {
+        backgroundColor: (context: ScriptableContext<"line">) => {
           const ctx = context.chart.ctx;
           const gradient = ctx.createLinearGradient(0, 0, 0, 256);
           gradient.addColorStop(0, "rgba(231, 111, 81, 0.25)");
@@ -66,7 +69,7 @@ export default function ChartSection({ revenueRanges, statusSplit }: ChartSectio
     ],
   };
 
-  const lineChartOptions: any = {
+  const lineChartOptions: ChartOptions<"line"> = {
     responsive: true,
     maintainAspectRatio: false,
     interaction: { mode: "index", intersect: false },
@@ -74,7 +77,7 @@ export default function ChartSection({ revenueRanges, statusSplit }: ChartSectio
       legend: { display: false },
       tooltip: {
         callbacks: {
-          label: (tooltipItem: any) =>
+          label: (tooltipItem: TooltipItem<"line">) =>
             t("revenueTooltip", {
               value: formatCurrency(Number(tooltipItem.raw), locale),
             }),
@@ -89,7 +92,7 @@ export default function ChartSection({ revenueRanges, statusSplit }: ChartSectio
         ticks: {
           stepSize: 500000,
           color: "#4b5563",
-          callback: (tickValue: any) =>
+          callback: (tickValue: string | number) =>
             formatCurrency(Number(tickValue), locale),
         },
         grid: { color: "#e5e7eb" },
@@ -111,7 +114,7 @@ export default function ChartSection({ revenueRanges, statusSplit }: ChartSectio
     ],
   };
 
-  const doughnutChartOptions: any = {
+  const doughnutChartOptions: ChartOptions<"doughnut"> = {
     responsive: true,
     maintainAspectRatio: false,
     cutout: "70%",
@@ -119,7 +122,7 @@ export default function ChartSection({ revenueRanges, statusSplit }: ChartSectio
       legend: { position: "bottom", labels: { color: "#4b5563" } },
       tooltip: {
         callbacks: {
-          label: (tooltipItem: any) =>
+          label: (tooltipItem: TooltipItem<"doughnut">) =>
             `${tooltipItem.label}: ${tooltipItem.formattedValue}%`,
         },
       },

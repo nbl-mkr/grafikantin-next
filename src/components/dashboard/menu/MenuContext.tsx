@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import {
@@ -33,10 +33,12 @@ export function MenuProvider({
   const router = useRouter();
   const t = useTranslations("dashboard.errors");
   const [menus, setMenus] = useState<MenuView[]>(initialMenus);
+  const [syncedInitialMenus, setSyncedInitialMenus] = useState(initialMenus);
 
-  useEffect(() => {
+  if (syncedInitialMenus !== initialMenus) {
+    setSyncedInitialMenus(initialMenus);
     setMenus(initialMenus);
-  }, [initialMenus]);
+  }
 
   const addMenu = useCallback(
     async (data: MenuInput) => {

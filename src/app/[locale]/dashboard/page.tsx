@@ -17,7 +17,6 @@ function formatTanggal(iso: string, locale: string) {
 
 export default async function DashboardDashboard() {
   const locale = await getLocale();
-  const tOverview = await getTranslations({ locale, namespace: "dashboard.overview" });
   const tEnum = await getTranslations({ locale, namespace: "dashboard.enums.orderStatus" });
   const ctx = await getDashboardContext();
   if (!ctx) redirect(`/${locale}/auth/login`);

@@ -30,7 +30,7 @@ export default function StandTable() {
   const [deleteTarget, setDeleteTarget] = useState<StandView | null>(null);
 
   const processedStands = useMemo(() => {
-    let result = stands.filter((s) => {
+    const result = stands.filter((s) => {
       const matchSearch =
         s.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
         s.pemilik.toLowerCase().includes(searchTerm.toLowerCase());
@@ -38,8 +38,8 @@ export default function StandTable() {
       return matchSearch && matchStatus;
     });
     result.sort((a, b) => {
-      let valA = a[sortField];
-      let valB = b[sortField];
+      const valA = a[sortField];
+      const valB = b[sortField];
       if (typeof valA === "string") {
         const comp = (valA as string).localeCompare(valB as string);
         return sortOrder === "asc" ? comp : -comp;
@@ -109,7 +109,7 @@ export default function StandTable() {
                     statusFilter === f ? "bg-gray-100 text-gray-900" : "text-gray-600 hover:text-gray-900"
                   }`}
                 >
-                  {f === "all" ? t("filterAll") : tEnum(f as any)}
+                  {f === "all" ? t("filterAll") : tEnum(f)}
                 </button>
               ))}
             </div>
@@ -167,7 +167,7 @@ export default function StandTable() {
                       <td className="px-4 py-3 whitespace-nowrap text-gray-600">{stand.telepon}</td>
                       <td className="px-4 py-3 whitespace-nowrap">
                         <span className={`inline-flex text-xs font-semibold ${statusStyles[stand.status] || "text-gray-600"}`}>
-                          {tEnum(stand.status as any)}
+                          {tEnum(stand.status)}
                         </span>
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-center text-gray-600">{stand.totalMenu}</td>

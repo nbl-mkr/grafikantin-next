@@ -24,6 +24,37 @@ const statusStyles: Record<string, string> = {
   Dibatalkan: "text-red-600",
 };
 
+function SortHeader({
+  label,
+  field,
+  activeField,
+  order,
+  onSort,
+  align = "left",
+}: {
+  label: string;
+  field: SortField;
+  activeField: SortField;
+  order: SortOrder;
+  onSort: (f: SortField) => void;
+  align?: "left" | "right";
+}) {
+  return (
+    <th className={`px-4 py-3 whitespace-nowrap ${align === "right" ? "text-right" : ""}`}>
+      <button
+        type="button"
+        onClick={() => onSort(field)}
+        className="inline-flex items-center gap-1 hover:text-gray-900"
+      >
+        {label}
+        <span className="text-xs text-gray-600">
+          {activeField === field ? (order === "asc" ? "↑" : "↓") : "↕"}
+        </span>
+      </button>
+    </th>
+  );
+}
+
 export default function BottomSection({ recentOrders = [] }: { recentOrders?: PesananTayang[] }) {
   const t = useTranslations("dashboard.overview");
   const locale = useLocale();
@@ -101,21 +132,6 @@ export default function BottomSection({ recentOrders = [] }: { recentOrders?: Pe
     }
   };
 
-  const SortHeader = ({ field, label, align = "left" }: { field: SortField; label: string; align?: "left" | "right" }) => (
-    <th className={`px-4 py-3 whitespace-nowrap ${align === "right" ? "text-right" : ""}`}>
-      <button
-        type="button"
-        onClick={() => handleSort(field)}
-        className="inline-flex items-center gap-1 hover:text-gray-900"
-      >
-        {label}
-        <span className="text-xs text-gray-600">
-          {sortField === field ? (sortOrder === "asc" ? "↑" : "↓") : "↕"}
-        </span>
-      </button>
-    </th>
-  );
-
   return (
     <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -162,11 +178,11 @@ export default function BottomSection({ recentOrders = [] }: { recentOrders?: Pe
           <thead>
             <tr className="text-left font-medium text-gray-600">
               <th className="px-4 py-3 whitespace-nowrap w-12 text-center">#</th>
-              <SortHeader field="id" label={t("colId")} />
-              <SortHeader field="customer" label={t("colCustomer")} />
-              <SortHeader field="tanggal" label={t("colDate")} />
-              <SortHeader field="status" label={t("colStatus")} />
-              <SortHeader field="total" label={t("colTotal")} align="right" />
+              <SortHeader field="id" label={t("colId")} activeField={sortField} order={sortOrder} onSort={handleSort} />
+              <SortHeader field="customer" label={t("colCustomer")} activeField={sortField} order={sortOrder} onSort={handleSort} />
+              <SortHeader field="tanggal" label={t("colDate")} activeField={sortField} order={sortOrder} onSort={handleSort} />
+              <SortHeader field="status" label={t("colStatus")} activeField={sortField} order={sortOrder} onSort={handleSort} />
+              <SortHeader field="total" label={t("colTotal")} align="right" activeField={sortField} order={sortOrder} onSort={handleSort} />
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
@@ -181,7 +197,7 @@ export default function BottomSection({ recentOrders = [] }: { recentOrders?: Pe
                     <td className="px-4 py-3 whitespace-nowrap text-gray-600">{order.time}</td>
                     <td className="px-4 py-3 whitespace-nowrap">
                       <span className={`inline-flex text-xs font-semibold ${statusStyles[order.status] || "text-gray-600"}`}>
-                        {tEnums(order.status as keyof typeof tEnums extends never ? string : any)}
+                        {tEnums(order.status)}
                       </span>
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap text-right text-gray-600">

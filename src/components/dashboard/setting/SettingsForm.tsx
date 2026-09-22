@@ -92,6 +92,7 @@ export default function SettingsForm({
           <div className="sm:col-span-2 flex flex-col items-center justify-center gap-4">
             <label htmlFor="photo-profile-upload" className="cursor-pointer">
               <div className="relative h-32 w-32 overflow-hidden rounded-full border border-gray-200">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={photoProfile}
                   alt={t("photoAlt")}

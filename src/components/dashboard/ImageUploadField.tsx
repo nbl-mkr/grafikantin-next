@@ -40,6 +40,7 @@ export default function ImageUploadField({ id, preview, onSelect }: ImageUploadF
           onClick={() => inputRef.current?.click()}
           className="group relative mt-1 flex h-32 w-full cursor-pointer items-center justify-center overflow-hidden rounded-md border border-gray-200 focus-within:border-[#e76f51] focus:outline-none"
         >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={preview} alt="Preview" className="h-full w-full object-cover" />
           <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/40">
             <span className="rounded-md bg-white/90 px-3 py-1 text-xs font-medium text-gray-700 opacity-0 transition-opacity group-hover:opacity-100">
