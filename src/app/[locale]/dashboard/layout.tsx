@@ -1,8 +1,8 @@
 import { getProfile, fotoUrl } from "@/lib/supabase/session";
 import DashboardShell from "@/components/dashboard/DashboardShell";
 import type { Metadata, Viewport } from "next";
-
-import { getTranslations } from "next-intl/server";
+import { redirect } from "next/navigation";
+import { getLocale, getTranslations } from "next-intl/server";
 
 export async function generateMetadata({
   params,
@@ -26,10 +26,14 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const profile = await getProfile();
+  if (!profile) {
+    const locale = await getLocale();
+    redirect(`/${locale}/auth/login`);
+  }
 
   return (
     <DashboardShell
-      role={profile?.role ?? null}
+      role={profile.role}
       profile={{
         fullName: profile?.username ?? "",
         email: profile?.email ?? "",
