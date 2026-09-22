@@ -121,8 +121,10 @@
     "estimateDefault": "10-15 min",
     "stockTitle": "Stock status",
     "stockAvailable": "Available",
+    "stockUnavailable": "Out of stock",
     "quantityLabel": "Qty",
-    "addToCart": "Add to cart"
+    "addToCart": "Add to cart",
+    "outOfStock": "Out of stock"
   },
   "shopping": {
     "title": "My Shopping Cart",

@@ -121,8 +121,10 @@
     "estimateDefault": "10-15 Mnt",
     "stockTitle": "Status Stok",
     "stockAvailable": "Tersedia",
+    "stockUnavailable": "Habis",
     "quantityLabel": "Jumlah",
-    "addToCart": "Masukkan Keranjang"
+    "addToCart": "Masukkan Keranjang",
+    "outOfStock": "Stok Habis"
   },
   "shopping": {
     "title": "Keranjang Belanja Saya",
