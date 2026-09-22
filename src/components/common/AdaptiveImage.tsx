@@ -41,7 +41,6 @@ export default function AdaptiveImage({
   preload,
 }: AdaptiveImageProps) {
   if (!isOptimizableSrc(src)) {
-    // blob:, data: atau host di luar allowlist tidak bisa lewat optimizer
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img src={src} alt={alt} className={className} />
