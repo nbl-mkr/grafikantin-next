@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 import { routing } from '@/i18n/routing'
+import { canAccessPath, DASHBOARD_LANDING, type Role } from '@/lib/roles'
 
 const LOCALE_COOKIE = 'NEXT_LOCALE'
 
@@ -105,10 +106,33 @@ export async function proxy(request: NextRequest) {
   const rest = pathLocale?.rest ?? pathname
   const isDashboard = rest === '/dashboard' || rest.startsWith('/dashboard/')
 
-  if (isDashboard && !user) {
-    return NextResponse.redirect(
-      new URL(`/${activeLocale}/auth/login`, request.nextUrl.origin)
-    )
+  if (isDashboard) {
+    if (!user) {
+      return NextResponse.redirect(
+        new URL(`/${activeLocale}/auth/login`, request.nextUrl.origin)
+      )
+    }
+
+    const { data: profile } = await supabase
+      .from('users')
+      .select('role')
+      .eq('id', user.id)
+      .maybeSingle()
+
+    const role = profile?.role as Role | undefined
+    const landing = role ? DASHBOARD_LANDING[role] : undefined
+
+    if (!role || !landing) {
+      return NextResponse.redirect(
+        new URL(`/${activeLocale}/auth/login`, request.nextUrl.origin)
+      )
+    }
+
+    if (!canAccessPath(role, rest)) {
+      return NextResponse.redirect(
+        new URL(`/${activeLocale}${landing}`, request.nextUrl.origin)
+      )
+    }
   }
 
   if (pathLocale) {
