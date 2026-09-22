@@ -79,7 +79,7 @@ async function fetchOrdersForRevenue(): Promise<{ id_stand: number; total_harga:
   const { data, error } = await supabase
     .from("orders")
     .select("id_stand, total_harga")
-    .eq("status", "!=\"Dibatalkan\"")
+    .neq("status", "Dibatalkan")
     .gte("created_at", twelveMonthsAgo.toISOString());
 
   if (error) {
@@ -98,7 +98,7 @@ async function fetchSoldMenuCounts(): Promise<Map<number, number>> {
   const { data, error } = await supabase
     .from("orders")
     .select("id_menu, jumlah")
-    .eq("status", "!=\"Dibatalkan\"")
+    .neq("status", "Dibatalkan")
     .gte("created_at", twelveMonthsAgo.toISOString());
 
   if (error) {
