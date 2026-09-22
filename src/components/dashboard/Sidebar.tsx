@@ -132,19 +132,28 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
               <ul id="sidebar-lainnya" className="space-y-1 pt-2">
                 {publicLinks.map((link) => {
                   const isActive = pathname === link.href;
+                  const linkClass = `block rounded-xl px-4 py-2.5 text-sm transition ${
+                    isActive
+                      ? "bg-gray-50 font-semibold text-[#e76f51]"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-[#e76f51]"
+                  }`;
                   return (
                     <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        onClick={onClose}
-                        className={`block rounded-xl px-4 py-2.5 text-sm transition ${
-                          isActive
-                            ? "bg-gray-50 font-semibold text-[#e76f51]"
-                            : "text-gray-600 hover:bg-gray-50 hover:text-[#e76f51]"
-                        }`}
-                      >
-                        {link.label}
-                      </Link>
+                      {link.external ? (
+                        <a
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={onClose}
+                          className={linkClass}
+                        >
+                          {link.label}
+                        </a>
+                      ) : (
+                        <Link href={link.href} onClick={onClose} className={linkClass}>
+                          {link.label}
+                        </Link>
+                      )}
                     </li>
                   );
                 })}
