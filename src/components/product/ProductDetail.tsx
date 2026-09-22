@@ -17,6 +17,7 @@ export interface ProductData {
   estimasi?: string;
   rating?: string;
   stand_id?: string | number;
+  tersedia?: boolean;
 }
 
 interface ProductDetailProps {
@@ -122,7 +123,13 @@ export default function ProductDetail({ product, standName }: ProductDetailProps
             <div className="h-8 w-px bg-gray-200" />
             <div>
               <p className="text-gray-600 text-xs">{t("stockTitle")}</p>
-              <p className="font-bold text-emerald-600 mt-0.5">{t("stockAvailable")}</p>
+              <p
+                className={`font-bold mt-0.5 ${
+                  product.tersedia === false ? "text-red-600" : "text-emerald-600"
+                }`}
+              >
+                {product.tersedia === false ? t("stockUnavailable") : t("stockAvailable")}
+              </p>
             </div>
           </div>
 
@@ -132,6 +139,7 @@ export default function ProductDetail({ product, standName }: ProductDetailProps
               onDecrease={handleDecrease}
               onIncrease={handleIncrease}
               onAddToCart={handleAddToCart}
+              disabled={product.tersedia === false}
             />
           </div>
         </div>

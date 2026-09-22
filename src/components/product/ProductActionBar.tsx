@@ -9,6 +9,7 @@ interface ProductActionBarProps {
   onDecrease: () => void;
   onIncrease: () => void;
   onAddToCart: () => void;
+  disabled?: boolean;
 }
 
 export default function ProductActionBar({
@@ -16,11 +17,13 @@ export default function ProductActionBar({
   onDecrease,
   onIncrease,
   onAddToCart,
+  disabled = false,
 }: ProductActionBarProps) {
   const t = useTranslations("product");
   const router = useRouter();
 
   const handleAddToCartAndRedirect = () => {
+    if (disabled) return;
     onAddToCart();
     router.push("/shopping");
   };
@@ -35,7 +38,7 @@ export default function ProductActionBar({
           <button
             type="button"
             onClick={onDecrease}
-            disabled={quantity <= 1}
+            disabled={quantity <= 1 || disabled}
             className="flex h-11 w-9 sm:w-10 items-center justify-center text-gray-600 transition hover:bg-gray-50 rounded-l-xl disabled:opacity-40 disabled:cursor-not-allowed"
           >
             -
@@ -46,7 +49,8 @@ export default function ProductActionBar({
           <button
             type="button"
             onClick={onIncrease}
-            className="flex h-11 w-9 sm:w-10 items-center justify-center text-gray-600 transition hover:bg-gray-50 rounded-r-xl"
+            disabled={disabled}
+            className="flex h-11 w-9 sm:w-10 items-center justify-center text-gray-600 transition hover:bg-gray-50 rounded-r-xl disabled:opacity-40 disabled:cursor-not-allowed"
           >
             +
           </button>
@@ -57,7 +61,8 @@ export default function ProductActionBar({
         <button
           type="button"
           onClick={handleAddToCartAndRedirect}
-          className="flex h-11 items-center justify-center gap-2 w-full sm:w-auto flex-1 max-w-xs truncate rounded-xl bg-[#e76f51] px-4 sm:px-6 text-center text-sm font-bold text-white transition hover:bg-[#d55f43] active:scale-95"
+          disabled={disabled}
+          className="flex h-11 items-center justify-center gap-2 w-full sm:w-auto flex-1 max-w-xs truncate rounded-xl bg-[#e76f51] px-4 sm:px-6 text-center text-sm font-bold text-white transition hover:bg-[#d55f43] active:scale-95 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:hover:bg-gray-300"
         >
           <Image
             src="/assets/shopping-cart.png"
@@ -66,7 +71,7 @@ export default function ProductActionBar({
             height={16}
             className="h-4 w-4 object-contain brightness-0 invert"
           />
-          {t("addToCart")}
+          {disabled ? t("outOfStock") : t("addToCart")}
         </button>
       </div>
     </div>
