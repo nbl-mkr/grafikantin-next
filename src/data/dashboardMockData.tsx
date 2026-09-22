@@ -1,8 +1,5 @@
 import type { Role } from "@/lib/roles";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-/** Minimal translator signature — accepts any key string from the "dashboard" namespace */
 type T = (key: string, values?: Record<string, string | number>) => string;
 
 export interface Order {
@@ -22,12 +19,6 @@ export interface DashboardNavItem {
   roles: Role[];
 }
 
-// ─── Nav Items (locale-aware) ─────────────────────────────────────────────────
-
-/**
- * Returns sidebar nav items with translated labels.
- * Call this inside a Client Component that already has `const t = useTranslations("dashboard")`.
- */
 export function getDashboardNavItems(t: T): DashboardNavItem[] {
   return [
     {
@@ -99,10 +90,6 @@ export interface PublicLink {
   href: string;
 }
 
-/**
- * Returns public navigation links with translated labels.
- * Call this inside a Client Component that already has `const t = useTranslations("dashboard")`.
- */
 export function getPublicLinks(t: T): PublicLink[] {
   return [
     { label: t("publicLinks.home"),     href: "/" },
@@ -112,8 +99,6 @@ export function getPublicLinks(t: T): PublicLink[] {
     { label: t("publicLinks.feedback"), href: "/kritik-saran" },
   ];
 }
-
-// ─── Static mock data (labels in these are proper nouns / numbers, no translation needed) ──
 
 export interface TopMenu {
   id: number;
