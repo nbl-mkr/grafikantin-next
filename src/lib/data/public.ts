@@ -12,6 +12,7 @@ export interface PublicMenuItem {
   kategori: "Makanan" | "Snack";
   deskripsi?: string;
   stand_id: number;
+  tersedia: boolean;
 }
 
 export interface PublicStand {
@@ -42,6 +43,7 @@ function toPublicItem(m: MenuRow): PublicMenuItem {
     kategori: m.kategori,
     deskripsi: m.deskripsi ?? undefined,
     stand_id: m.stand_id,
+    tersedia: m.tersedia,
   };
 }
 
