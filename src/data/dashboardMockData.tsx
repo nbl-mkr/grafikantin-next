@@ -1,4 +1,5 @@
 import type { Role } from "@/lib/roles";
+import { FEEDBACK_FORM_URL } from "@/lib/constants";
 
 type T = (key: string, values?: Record<string, string | number>) => string;
 
@@ -88,6 +89,7 @@ export function getDashboardNavItems(t: T): DashboardNavItem[] {
 export interface PublicLink {
   label: string;
   href: string;
+  external?: boolean;
 }
 
 export function getPublicLinks(t: T): PublicLink[] {
@@ -96,7 +98,7 @@ export function getPublicLinks(t: T): PublicLink[] {
     { label: t("publicLinks.order"),    href: "/order" },
     { label: t("publicLinks.about"),    href: "/about" },
     { label: t("publicLinks.history"),  href: "/history" },
-    { label: t("publicLinks.feedback"), href: "/kritik-saran" },
+    { label: t("publicLinks.feedback"), href: FEEDBACK_FORM_URL, external: true },
   ];
 }
 
