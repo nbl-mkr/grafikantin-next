@@ -1,6 +1,6 @@
 "use client";
 
-import { type MouseEvent, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
@@ -82,11 +82,6 @@ export default function HeroSection() {
       section.removeEventListener("pointerleave", handleLeave);
     };
   }, []);
-
-  const handleScrollToMenu = (event: MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    document.getElementById("menu-populer")?.scrollIntoView({ behavior: "smooth" });
-  };
 
   return (
     <section
