@@ -30,6 +30,8 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
   const [photoProfile, setPhotoProfile] = useState(initialPhoto ?? DEFAULT_PHOTO);
 
   useEffect(() => {
+    // Sinkronkan state dengan props saat data profil dari server berubah.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setUser(initialUser);
     setPhotoProfile(initialPhoto ?? DEFAULT_PHOTO);
   }, [initialUser, initialPhoto]);
