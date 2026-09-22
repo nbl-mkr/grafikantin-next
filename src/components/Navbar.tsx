@@ -9,6 +9,7 @@ import Image from "next/image";
 import AdaptiveImage from "@/components/common/AdaptiveImage";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useTranslations } from "next-intl";
+import { FEEDBACK_FORM_URL } from "@/lib/constants";
 
 interface NavbarUser {
   id: string;
@@ -64,7 +65,6 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
 
   const isDropdownActive =
     pathname === "/history" ||
-    pathname === "/kritik-saran" ||
     pathname === "/auth/login";
 
   return (
@@ -166,17 +166,15 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                       {t("history")}
                     </Link>
 
-                    <Link
-                      href="/kritik-saran"
-                      className={`block px-4 py-2 text-xs transition-colors hover:bg-gray-50 hover:text-[#e76f51] ${
-                        isActive("/kritik-saran")
-                          ? "font-semibold text-[#e76f51] bg-blue-50/50"
-                          : "font-normal text-gray-600"
-                      }`}
+                    <a
+                      href={FEEDBACK_FORM_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block px-4 py-2 text-xs font-normal text-gray-600 transition-colors hover:bg-gray-50 hover:text-[#e76f51]"
                       role="menuitem"
                     >
                       {t("feedback")}
-                    </Link>
+                    </a>
                   </div>
 
                   <div className="py-1">
@@ -341,17 +339,15 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
               </Link>
             </li>
             <li>
-              <Link
-                href="/kritik-saran"
+              <a
+                href={FEEDBACK_FORM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
-                className={`block rounded-lg px-3 py-2 transition-colors ${
-                  isActive("/kritik-saran")
-                    ? "bg-blue-50 font-semibold text-[#e76f51]"
-                    : "text-gray-600 hover:bg-gray-50"
-                }`}
+                className="block rounded-lg px-3 py-2 text-gray-600 transition-colors hover:bg-gray-50"
               >
                 {t("feedback")}
-              </Link>
+              </a>
             </li>
             <li className="flex min-h-12 items-center justify-center border-t border-gray-100 py-3">
               <div className="flex items-center justify-center">
