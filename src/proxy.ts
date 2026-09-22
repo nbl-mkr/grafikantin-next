@@ -15,7 +15,6 @@ const PUBLIC_ROUTE_SEGMENTS = [
   'checkout',
   'invoice',
   'auth',
-  'kritik-saran',
   'dashboard',
 ]
 
