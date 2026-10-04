@@ -27,7 +27,7 @@ export default function ComplaintBanner() {
 
           <div className="w-full text-center md:w-auto md:text-right shrink-0">
             <a
-              href="#"
+              href="https://docs.google.com/forms/d/e/1FAIpQLSddrrgrrw4e2er5nuvUakMjpadWcOvWH-1IKZwzgWnIc6Rq5A/viewform?usp=header"
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-7 py-3.5 text-sm font-semibold text-[#e76f51] shadow-md transition-all duration-200 hover:bg-gray-50 active:scale-[0.98]"
             >
               <span>{t("cta")}</span>
