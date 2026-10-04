@@ -211,9 +211,6 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
                           <span className="font-bold text-gray-900">
                             {item.nama_menu}
                           </span>
-                          <span className="w-fit rounded-md bg-slate-100 px-2 py-0.5 text-xs font-medium text-gray-600">
-                            {t("categoryFood")}
-                          </span>
                         </div>
                       </div>
 
