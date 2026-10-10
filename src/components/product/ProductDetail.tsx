@@ -44,7 +44,7 @@ export default function ProductDetail({ product, standName }: ProductDetailProps
       id: product.id,
       nama_menu: product.nama_menu,
       harga: product.harga,
-      gambar: product.gambar || "/placeholder.png",
+      gambar: product.gambar || "/assets/food.jpg",
       quantity: quantity,
       stand_id: product.stand_id || 1,
     });
