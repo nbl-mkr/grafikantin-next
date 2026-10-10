@@ -1,5 +1,5 @@
 import InvoiceCard from "@/components/invoice/InvoiceCard";
-import { fetchInvoice } from "@/lib/data/queries";
+import { fetchInvoiceStatus } from "@/lib/data/queries";
 import { getProfile } from "@/lib/supabase/session";
 import { getLocale } from "next-intl/server";
 
@@ -11,14 +11,14 @@ export default async function InvoicePage({
   const { kode } = await searchParams;
   const locale = await getLocale();
   const profile = await getProfile();
-  const order =
+  const status =
     typeof kode === "string" && kode && profile
-      ? await fetchInvoice(kode, profile.id, locale)
+      ? await fetchInvoiceStatus(kode, profile.id, locale)
       : null;
 
   return (
     <div className="w-full bg-slate-50 py-8">
-      <InvoiceCard order={order} />
+      <InvoiceCard status={status} />
     </div>
   );
 }

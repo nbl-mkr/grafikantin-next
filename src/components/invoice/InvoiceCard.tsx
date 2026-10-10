@@ -2,9 +2,17 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
-import type { InvoiceData } from "@/lib/data/queries";
+import type { InvoiceStatus } from "@/lib/data/queries";
 
-export default function InvoiceCard({ order }: { order: InvoiceData | null }) {
+function formatRupiah(value: number, locale: string) {
+  return new Intl.NumberFormat(locale === "en" ? "en-US" : "id-ID", {
+    style: "currency",
+    currency: "IDR",
+    maximumFractionDigits: 0,
+  }).format(value);
+}
+
+export default function InvoiceCard({ status }: { status: InvoiceStatus }) {
   const t = useTranslations("invoice");
   const locale = useLocale();
   const router = useRouter();
@@ -17,7 +25,68 @@ export default function InvoiceCard({ order }: { order: InvoiceData | null }) {
     router.push("/shopping");
   };
 
-  if (!order) {
+  // --- Pembayaran belum terkonfirmasi (webhook Midtrans belum masuk) ---
+  if (status?.state === "pending") {
+    return (
+      <div className="mx-auto max-w-md px-4 py-12 text-center sm:px-0">
+        <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm">
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-amber-50">
+            <svg
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.8"
+              stroke="currentColor"
+              className="size-7 text-amber-500"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+          </div>
+          <h1 className="text-base font-bold text-gray-900">{t("pendingTitle")}</h1>
+          <p className="mt-2 text-sm text-gray-600">{t("pendingBody")}</p>
+
+          <div className="mt-6 space-y-2 border-t border-gray-100 pt-5 text-xs text-gray-600">
+            <div className="flex justify-between">
+              <span>{t("orderCode")}</span>
+              <span className="font-semibold text-gray-900">{status.orderId}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>{t("totalPayment")}</span>
+              <span className="font-semibold text-gray-900">
+                {formatRupiah(status.total, locale)}
+              </span>
+            </div>
+          </div>
+
+          <div className="mt-6 flex flex-col gap-3">
+            <button
+              type="button"
+              onClick={() => router.refresh()}
+              className="w-full rounded-xl bg-[#e76f51] py-3 text-sm font-bold text-white transition hover:bg-[#d55f43]"
+            >
+              {t("checkAgain")}
+            </button>
+            <button
+              type="button"
+              onClick={handleFinish}
+              className="w-full rounded-xl border border-gray-100 bg-slate-50 py-3 text-sm font-bold text-gray-700 transition-colors hover:bg-slate-100"
+            >
+              {t("finish")}
+            </button>
+          </div>
+          <p className="mt-3 text-[11px] font-medium text-gray-500">{t("pendingHint")}</p>
+        </div>
+      </div>
+    );
+  }
+
+  // --- Kode tidak ditemukan / pembayaran gagal ---
+  if (!status || status.state !== "paid") {
     return (
       <div className="mx-auto max-w-md px-4 py-12 text-center">
         <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm">
@@ -35,6 +104,9 @@ export default function InvoiceCard({ order }: { order: InvoiceData | null }) {
       </div>
     );
   }
+
+  // --- Pembayaran lunas: tampilkan struk ---
+  const order = status.order;
 
   return (
     <div className="mx-auto max-w-md px-4 sm:px-0">
@@ -75,11 +147,7 @@ export default function InvoiceCard({ order }: { order: InvoiceData | null }) {
                 {item.quantity}x {item.nama_menu}
               </span>
               <span className="font-semibold text-gray-900">
-                {new Intl.NumberFormat(locale === "en" ? "en-US" : "id-ID", {
-                  style: "currency",
-                  currency: "IDR",
-                  maximumFractionDigits: 0,
-                }).format(item.harga * item.quantity)}
+                {formatRupiah(item.harga * item.quantity, locale)}
               </span>
             </div>
           ))}
@@ -89,11 +157,7 @@ export default function InvoiceCard({ order }: { order: InvoiceData | null }) {
           <div className="flex justify-between items-center">
             <span className="text-sm font-bold text-gray-900">{t("totalPayment")}</span>
             <span className="text-base font-extrabold text-[#e76f51]">
-              {new Intl.NumberFormat(locale === "en" ? "en-US" : "id-ID", {
-                style: "currency",
-                currency: "IDR",
-                maximumFractionDigits: 0,
-              }).format(order.total)}
+              {formatRupiah(order.total, locale)}
             </span>
           </div>
         </div>

@@ -143,6 +143,8 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|assets/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|txt|xml|json|webmanifest)$).*)',
+    // Kecualikan /api/* agar webhook Midtrans tidak melewati logika locale &
+    // pemeriksaan auth (webhook dipanggil server Midtrans tanpa sesi user).
+    '/((?!api|_next/static|_next/image|favicon.ico|assets/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|txt|xml|json|webmanifest)$).*)',
   ],
 }

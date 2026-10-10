@@ -121,6 +121,59 @@ export interface InvoiceData {
   total: number;
 }
 
+/**
+ * Status invoice. Ada 3 kemungkinan:
+ * - "paid"    : order sudah dibuat (webhook sudah masuk) -> tampilkan struk
+ * - "pending" : sesi pembayaran ada tapi belum lunas -> tampilkan "menunggu"
+ * - null      : kode tidak ditemukan sama sekali
+ */
+export type InvoiceStatus =
+  | { state: "paid"; order: InvoiceData }
+  | { state: "pending"; orderId: string; total: number }
+  | null;
+
+/**
+ * Mengambil data invoice berdasarkan kode transaksi.
+ *
+ * Kenapa mengecek dua tabel: setelah pembayaran sukses, Snap mengarahkan
+ * pengguna ke halaman invoice SEGERA, sementara webhook Midtrans bisa tiba
+ * beberapa detik kemudian. Kalau hanya membaca tabel `orders`, halaman akan
+ * menampilkan "tidak ditemukan" padahal pembayaran berhasil. Karena itu
+ * tabel `payments` dipakai sebagai sumber status "menunggu".
+ */
+export async function fetchInvoiceStatus(
+  kode: string,
+  userId: string,
+  locale = "id"
+): Promise<InvoiceStatus> {
+  const paid = await fetchInvoice(kode, userId, locale);
+  if (paid) return { state: "paid", order: paid };
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("payments")
+    .select("order_id, kode_transaksi, gross_amount, status, items")
+    .eq("kode_transaksi", kode)
+    .eq("id_user", userId)
+    .maybeSingle();
+
+  if (error || !data) return null;
+
+  const status = String(data.status ?? "");
+  // Pembayaran gagal/kedaluwarsa -> perlakukan seperti tidak ditemukan
+  // supaya pengguna tidak melihat halaman "menunggu" selamanya.
+  if (["expire", "cancel", "deny", "failure"].includes(status)) return null;
+
+  const items = (data.items ?? []) as { harga: number; quantity: number }[];
+  const total = items.reduce((sum, item) => sum + Number(item.harga) * Number(item.quantity), 0);
+
+  return {
+    state: "pending",
+    orderId: String(data.kode_transaksi ?? kode),
+    total: total || Number(data.gross_amount ?? 0),
+  };
+}
+
 export async function fetchInvoice(
   kode: string,
   userId: string,

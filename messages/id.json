@@ -152,19 +152,21 @@
     "backToCart": "Kembali ke Keranjang",
     "orderDetails": "Rincian Pesanan",
     "paymentMethod": "Metode Pembayaran (Cashless)",
-    "qrisInstructions": "Silakan scan QRIS di bawah ini menggunakan DANA, GoPay, OVO, ShopeePay, atau Mobile Banking lainnya.",
-    "qrisTitle": "QRIS GRAFIKANTIN",
-    "qrisMerchant": "NMAS: Kantin SMKN 4 Malang",
     "summaryTitle": "Total Ringkasan",
     "subtotal": "Subtotal",
     "serviceFee": "Biaya Layanan",
     "free": "Gratis",
     "totalPayment": "Total Bayar",
-    "confirmCheckbox": "Saya sudah memindai QRIS di atas dan menyelesaikan pembayaran sesuai total tagihan.",
-    "confirmNotice": "Centang konfirmasi pembayaran untuk mengaktifkan tombol.",
     "btnProcessing": "Memproses Pesanan...",
-    "btnConfirm": "Konfirmasi & Bayar",
-    "errorDefault": "Gagal membuat pesanan"
+    "errorDefault": "Gagal membuat pesanan",
+    "paymentInstructions": "Pilih metode pembayaran digital favoritmu di halaman pembayaran Midtrans.",
+    "paymentViaMidtrans": "PEMBAYARAN AMAN VIA MIDTRANS",
+    "paymentSecureNote": "Transaksi diproses oleh Midtrans. Grafikantin tidak menyimpan data pembayaranmu.",
+    "btnPayNow": "Bayar Sekarang",
+    "paymentRedirectNote": "Kamu akan diarahkan ke halaman pembayaran Midtrans.",
+    "errorSnapLoad": "Gagal memuat layanan pembayaran. Muat ulang halaman ini.",
+    "errorPaymentFailed": "Pembayaran gagal diproses. Silakan coba lagi.",
+    "errorPaymentClosed": "Pembayaran dibatalkan. Pesanan belum dibuat."
   },
   "invoice": {
     "notFound": "Riwayat bukti pembayaran tidak ditemukan.",
@@ -175,7 +177,11 @@
     "method": "Metode",
     "totalPayment": "Total Bayar",
     "print": "Cetak Bukti Pembayaran",
-    "finish": "Selesai"
+    "finish": "Selesai",
+    "pendingTitle": "Menunggu Konfirmasi Pembayaran",
+    "pendingBody": "Pembayaranmu sedang diproses. Halaman ini akan berubah menjadi struk setelah pembayaran terkonfirmasi.",
+    "pendingHint": "Sudah membayar? Tunggu beberapa detik lalu tekan tombol di atas.",
+    "checkAgain": "Cek Status Pembayaran"
   },
   "history": {
     "title": "Riwayat Pesanan Saya",
@@ -315,7 +321,7 @@
         "outOfStockPeriod": "tingkat pembatalan pesanan"
       }
     },
-        "orders": {
+    "orders": {
       "title": "Pesanan",
       "export": "Ekspor Pesanan",
       "chartTitle": "Pesanan vs Target Bulanan",

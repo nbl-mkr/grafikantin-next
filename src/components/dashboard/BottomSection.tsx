@@ -190,7 +190,7 @@ export default function BottomSection({ recentOrders = [] }: { recentOrders?: Pe
               paginatedOrders.map((order, index) => {
                 const rowNumber = (validCurrentPage - 1) * itemsPerPage + index + 1;
                 return (
-                  <tr key={order.id} className="hover:bg-gray-50/50 transition-colors">
+                  <tr key={`${order.id}-${index}`} className="hover:bg-gray-50/50 transition-colors">
                     <td className="px-4 py-3 whitespace-nowrap text-center text-xs font-semibold text-gray-600">{rowNumber}</td>
                     <td className="px-4 py-3 whitespace-nowrap font-medium text-gray-900">{order.id}</td>
                     <td className="px-4 py-3 whitespace-nowrap text-gray-600">{order.customer}</td>

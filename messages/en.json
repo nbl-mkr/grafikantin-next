@@ -152,19 +152,21 @@
     "backToCart": "Back to Cart",
     "orderDetails": "Order Details",
     "paymentMethod": "Payment Method (Cashless)",
-    "qrisInstructions": "Please scan the QRIS below using DANA, GoPay, OVO, ShopeePay, or other Mobile Banking.",
-    "qrisTitle": "QRIS GRAFIKANTIN",
-    "qrisMerchant": "NMAS: SMKN 4 Malang Canteen",
     "summaryTitle": "Summary",
     "subtotal": "Subtotal",
     "serviceFee": "Service Fee",
     "free": "Free",
     "totalPayment": "Total Payment",
-    "confirmCheckbox": "I have scanned the QRIS above and completed payment according to the bill.",
-    "confirmNotice": "Check payment confirmation to activate the button.",
     "btnProcessing": "Processing Order...",
-    "btnConfirm": "Confirm & Pay",
-    "errorDefault": "Failed to create order"
+    "errorDefault": "Failed to create order",
+    "paymentInstructions": "Choose your preferred digital payment method on the Midtrans payment page.",
+    "paymentViaMidtrans": "SECURE PAYMENT VIA MIDTRANS",
+    "paymentSecureNote": "Transactions are processed by Midtrans. Grafikantin does not store your payment data.",
+    "btnPayNow": "Pay Now",
+    "paymentRedirectNote": "You will be redirected to the Midtrans payment page.",
+    "errorSnapLoad": "Failed to load the payment service. Please reload this page.",
+    "errorPaymentFailed": "Payment failed to process. Please try again.",
+    "errorPaymentClosed": "Payment cancelled. No order was created."
   },
   "invoice": {
     "notFound": "Payment receipt not found.",
@@ -175,7 +177,11 @@
     "method": "Method",
     "totalPayment": "Total Payment",
     "print": "Print Payment Receipt",
-    "finish": "Done"
+    "finish": "Done",
+    "pendingTitle": "Waiting for Payment Confirmation",
+    "pendingBody": "Your payment is being processed. This page will turn into a receipt once the payment is confirmed.",
+    "pendingHint": "Already paid? Wait a few seconds then press the button above.",
+    "checkAgain": "Check Payment Status"
   },
   "history": {
     "title": "My Order History",
@@ -315,7 +321,7 @@
         "outOfStockPeriod": "order cancellation rate"
       }
     },
-        "orders": {
+    "orders": {
       "title": "Orders",
       "export": "Export Orders",
       "chartTitle": "Orders vs Monthly Target",
