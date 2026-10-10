@@ -7,14 +7,13 @@ export default function OrderExportButton({ orders }: { orders: OrderView[] }) {
   const t = useTranslations("dashboard.orders");
 
   const exportCSV = () => {
-    const header = "ID;Tanggal;Nama;Kontak;Stand;Item;Jumlah;Metode;Total;Status";
+    const header = "ID;Tanggal;Nama;Stand;Item;Jumlah;Metode;Total;Status";
     const escapeCell = (value: string | number) => `"${String(value).replaceAll('"', '""')}"`;
     const rows = orders.map((order) =>
       [
         order.id,
         order.date,
         order.customer,
-        order.phone,
         order.stand,
         order.menu,
         order.jumlah,

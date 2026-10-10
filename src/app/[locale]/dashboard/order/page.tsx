@@ -31,7 +31,6 @@ export default async function DashboardOrdersPage() {
   const rows: OrderView[] = tableOrders.map((o) => ({
     id: o.kode_transaksi,
     customer: o.user?.username ?? visitorLabel,
-    phone: "-",
     date: formatTanggal(o.created_at, locale),
     createdAt: o.created_at,
     status: o.status,

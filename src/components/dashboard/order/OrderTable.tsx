@@ -7,7 +7,6 @@ import { updateOrderStatusAction, type OrderStatus } from "@/lib/data/mutations"
 export interface OrderView {
   id: string;
   customer: string;
-  phone: string;
   date: string;
   createdAt: string;
   status: "Menunggu" | "Diproses" | "Selesai" | "Dibatalkan";
