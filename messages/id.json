@@ -370,7 +370,7 @@
         "orders": "Total Pesanan",
         "average": "Rata-rata Pesanan",
         "stands": "Stand Aktif",
-        "allPeriod": "semua periode",
+        "allPeriod": "12 bulan terakhir",
         "today": "hari ini"
       }
     },

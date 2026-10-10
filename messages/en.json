@@ -370,7 +370,7 @@
         "orders": "Total Orders",
         "average": "Average Order",
         "stands": "Active Stands",
-        "allPeriod": "all period",
+        "allPeriod": "last 12 months",
         "today": "today"
       }
     },
