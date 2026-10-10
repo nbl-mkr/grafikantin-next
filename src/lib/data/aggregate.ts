@@ -65,7 +65,6 @@ export function buildStats(orders: OrderRow[], stands: StandRow[], menus: MenuRo
   const now = new Date();
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
   const prevMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-  const weekStart = new Date(now.getTime() - 7 * 864e5);
 
   const revenue = (start: Date, end: Date) =>
     orders
@@ -75,10 +74,6 @@ export function buildStats(orders: OrderRow[], stands: StandRow[], menus: MenuRo
   const revThis = revenue(monthStart, now);
   const revPrev = revenue(prevMonthStart, monthStart);
   const revChange = pctChange(revThis, revPrev);
-
-  const activeCustomers = new Set(
-    orders.filter((o) => inRange(new Date(o.created_at), weekStart, now) && o.id_user).map((o) => o.id_user)
-  ).size;
 
   const rejected = orders.filter((o) => o.status === "Dibatalkan").length;
   const rejectRate = orders.length ? (rejected / orders.length) * 100 : 0;
@@ -94,10 +89,10 @@ export function buildStats(orders: OrderRow[], stands: StandRow[], menus: MenuRo
       period: locale === "en" ? "from last month" : "dari bulan lalu",
     },
     {
-      label: locale === "en" ? "Active Customers" : "Pelanggan Aktif",
-      value: activeCustomers.toLocaleString(locale === "en" ? "en-US" : "id-ID"),
+      label: locale === "en" ? "Active Stands" : "Stand Aktif",
+      value: openStands.toLocaleString(locale === "en" ? "en-US" : "id-ID"),
       positive: true,
-      period: locale === "en" ? `from ${openStands} open stands` : `dari ${openStands} stand buka`,
+      period: locale === "en" ? `of ${stands.length} stands` : `dari ${stands.length} stand`,
     },
     {
       label: locale === "en" ? "Out of Stock" : "Menu Habis",
