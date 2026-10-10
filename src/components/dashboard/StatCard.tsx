@@ -2,25 +2,15 @@
 
 import { useTranslations } from "next-intl";
 
-enum MetricType { DEFAULT, STAND, CUSTOMER }
-
 interface StatCardProps {
   label: string;
   value: string;
   positive: boolean;
   period: string;
-  metricType?: "stand" | "customer";
 }
 
-export default function StatCard({
-  label,
-  value,
-  positive,
-  period,
-  metricType,
-}: StatCardProps) {
+export default function StatCard({ label, value, positive, period }: StatCardProps) {
   const t = useTranslations("dashboard.overview");
-  const { stands } = useStands();
 
   return (
     <article className="flex flex-col gap-4 rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
@@ -53,25 +43,11 @@ export default function StatCard({
         <span className="sr-only">{positive ? t("srIncrease") : t("srDecrease")}</span>
       </div>
       <div>
-        {metricType === "stand" ? (
-          <p className="mt-1 flex items-baseline gap-2">
-            <span>
-              <strong className="block text-sm font-medium text-gray-600">Stand Aktif</strong>
-              <span className="text-2xl font-extrabold tracking-tight text-gray-900">
-                {stands.filter((s) => s.status === "Buka").length}
-              </span>
-              <span className="text-xs text-gray-600">{period}</span>
-            </span>
-          </p>
-        ) : (
-          <p className="mt-1 flex items-baseline gap-2">
-            <span>
-              <strong className="block text-sm font-medium text-gray-600">{label}</strong>
-              <span className="text-2xl font-extrabold tracking-tight text-gray-900">{value}</span>
-              <span className="text-xs text-gray-600">{period}</span>
-            </span>
-          </p>
-        )}
+        <strong className="block text-sm font-medium text-gray-600">{label}</strong>
+        <p className="mt-1 flex items-baseline gap-2">
+          <span className="text-2xl font-extrabold tracking-tight text-gray-900">{value}</span>
+          <span className="text-xs text-gray-600">{period}</span>
+        </p>
       </div>
     </article>
   );
