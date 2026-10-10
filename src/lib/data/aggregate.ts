@@ -191,14 +191,14 @@ export function buildReport(orders: OrderRow[], stands: StandRow[], locale: stri
         value: rupiah(totalRevenue, locale),
         change: "",
         positive: true,
-        period: locale === "en" ? "all period" : "semua periode",
+        period: locale === "en" ? "last 12 months" : "12 bulan terakhir",
       },
       {
         label: locale === "en" ? "Total Orders" : "Total Pesanan",
         value: totalOrders.toLocaleString(locale === "en" ? "en-US" : "id-ID"),
         change: "",
         positive: true,
-        period: locale === "en" ? "all period" : "semua periode",
+        period: locale === "en" ? "last 12 months" : "12 bulan terakhir",
       },
       {
         label: locale === "en" ? "Average Order" : "Rata-rata Pesanan",
