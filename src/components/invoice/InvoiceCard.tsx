@@ -62,7 +62,7 @@ export default function InvoiceCard({ status }: { status: InvoiceStatus }) {
     return (
       <div className="mx-auto max-w-md px-4 py-12 text-center sm:px-0">
         <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm">
-          <div className="mb-4 rounded-full bg-slate-50 p-6">
+          <div className="mx-auto mb-4 flex size-20 items-center justify-center rounded-full bg-slate-50">
             <svg
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
