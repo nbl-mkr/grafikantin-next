@@ -22,6 +22,16 @@ export async function fetchOrders(
   ctx: DashboardContext,
   opts: { limit?: number; since?: Date } = {}
 ): Promise<OrderRow[]> {
+  // Scoping akses data.
+  // Hanya admin yang boleh melihat seluruh data semua stand. Role lain
+  // (penjual) WAJIB terhubung ke satu stand; kalau belum punya stand,
+  // kembalikan kosong — jangan tampilkan semua data. Tanpa penjagaan ini,
+  // penjual yang id_penjual-nya masih kosong justru melihat data seluruh
+  // stand, karena filter di bawah tidak pernah aktif.
+  const isAdmin = ctx.role === "admin";
+  const scopedStandId = isAdmin ? null : ctx.standId;
+  if (!isAdmin && scopedStandId === null) return [];
+
   const supabase = await createClient();
   const orders: OrderRow[] = [];
 
@@ -46,7 +56,7 @@ export async function fetchOrders(
       .gte("created_at", effectiveSince.toISOString())
       .range(offset, pageEnd);
 
-    if (ctx.role === "penjual" && ctx.standId) query = query.eq("id_stand", ctx.standId);
+    if (scopedStandId !== null) query = query.eq("id_stand", scopedStandId);
 
     const { data, error } = await query;
     if (error) throw new Error(`Gagal memuat pesanan: ${error.message}`);
@@ -60,6 +70,11 @@ export async function fetchOrders(
 }
 
 export async function fetchChartOrders(ctx: DashboardContext): Promise<OrderRow[]> {
+  // Scoping akses data — lihat penjelasan di fetchOrders().
+  const isAdmin = ctx.role === "admin";
+  const scopedStandId = isAdmin ? null : ctx.standId;
+  if (!isAdmin && scopedStandId === null) return [];
+
   const supabase = await createClient();
   const orders: OrderRow[] = [];
   const twelveMonthsAgo = getMaxLookbackDate();
@@ -73,8 +88,8 @@ export async function fetchChartOrders(ctx: DashboardContext): Promise<OrderRow[
       .gte("created_at", twelveMonthsAgo.toISOString())
       .range(offset, offset + PAGE_SIZE - 1);
 
-    if (ctx.role === "penjual" && ctx.standId) {
-      query = query.eq("id_stand", ctx.standId);
+    if (scopedStandId !== null) {
+      query = query.eq("id_stand", scopedStandId);
     }
 
     const { data, error } = await query;
