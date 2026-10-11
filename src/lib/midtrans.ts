@@ -1,4 +1,4 @@
-import midtransClient from "midtrans-client";
+import midtransClient, { type TransactionStatusResponse } from "midtrans-client";
 import crypto from "node:crypto";
 
 /**
@@ -83,6 +83,31 @@ export async function createSnapTransaction(
     token: response.token,
     redirectUrl: response.redirect_url,
   };
+}
+
+/**
+ * Menanyakan status transaksi LANGSUNG ke Midtrans (bukan dari database kita).
+ *
+ * Dipakai oleh tombol "Cek Status Pembayaran" di halaman invoice sebagai
+ * jaring pengaman: kalau notifikasi webhook telat atau gagal terkirim,
+ * pembeli tetap bisa menyelamatkan pesanannya tanpa harus bayar ulang.
+ *
+ * Melempar error kalau transaksi belum ada di Midtrans (mis. order_id salah).
+ */
+export async function getTransactionStatus(
+  orderId: string
+): Promise<TransactionStatusResponse> {
+  const serverKey = process.env.MIDTRANS_SERVER_KEY;
+  const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
+
+  if (!serverKey || !clientKey) {
+    throw new Error(
+      "MIDTRANS_SERVER_KEY / NEXT_PUBLIC_MIDTRANS_CLIENT_KEY belum diisi di .env.local"
+    );
+  }
+
+  const core = new midtransClient.CoreApi({ isProduction, serverKey, clientKey });
+  return core.transaction.status(orderId);
 }
 
 /**

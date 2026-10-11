@@ -10,6 +10,24 @@ declare module "midtrans-client" {
     redirect_url: string;
   }
 
+  export interface TransactionStatusResponse {
+    transaction_id?: string;
+    order_id?: string;
+    gross_amount?: string;
+    payment_type?: string;
+    transaction_time?: string;
+    transaction_status?: string;
+    fraud_status?: string;
+    status_code?: string;
+    status_message?: string;
+    settlement_time?: string;
+    acquirer?: string;
+  }
+
+  export class Transaction {
+    status(transactionId?: string): Promise<TransactionStatusResponse>;
+  }
+
   export class Snap {
     constructor(config: SnapConfig);
     createTransaction(parameter: Record<string, unknown>): Promise<SnapTransactionResponse>;
@@ -17,6 +35,11 @@ declare module "midtrans-client" {
     createTransactionRedirectUrl(parameter: Record<string, unknown>): Promise<string>;
   }
 
-  const Midtrans: { Snap: typeof Snap };
+  export class CoreApi {
+    constructor(config: SnapConfig);
+    transaction: Transaction;
+  }
+
+  const Midtrans: { Snap: typeof Snap; CoreApi: typeof CoreApi };
   export default Midtrans;
 }
