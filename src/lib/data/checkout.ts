@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { createSnapTransaction } from "@/lib/midtrans";
+import { createSnapTransaction, getTransactionStatus } from "@/lib/midtrans";
 
 export interface CheckoutItemInput {
   menuId: number;
@@ -142,6 +142,89 @@ export async function createPaymentAction(
   if (insertErr) return { ok: false, error: insertErr.message };
 
   return { ok: true, token, kode };
+}
+
+/**
+ * Jaring pengaman: cek status pembayaran LANGSUNG ke Midtrans, lalu buat order
+ * kalau ternyata sudah lunas.
+ *
+ * Kenapa perlu: notifikasi webhook bisa telat, gagal terkirim, atau terlewat
+ * (mis. Notification URL belum di-set saat pembayaran terjadi). Tanpa fungsi
+ * ini, pembeli yang sudah membayar tetap tidak mendapat pesanannya dan harus
+ * bayar ulang. Dipanggil oleh tombol "Cek Status Pembayaran" di halaman invoice.
+ *
+ * Aman dipanggil berkali-kali: finalizePaidOrder() sudah idempoten.
+ */
+export async function syncPaymentStatusAction(
+  kodeTransaksi: string
+): Promise<{ ok: boolean; status?: string; error?: string }> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { ok: false, error: "Silakan login terlebih dahulu." };
+
+  // Ambil sesi pembayaran milik user ini (jangan biarkan melihat milik orang lain).
+  const { data: payment, error: payErr } = await supabase
+    .from("payments")
+    .select("order_id, kode_transaksi, id_user, status")
+    .eq("kode_transaksi", kodeTransaksi)
+    .eq("id_user", user.id)
+    .maybeSingle();
+
+  if (payErr) return { ok: false, error: payErr.message };
+  if (!payment) return { ok: false, error: "Sesi pembayaran tidak ditemukan." };
+
+  // Sudah lunas? Tidak perlu tanya Midtrans lagi.
+  if (payment.status === "settlement") return { ok: true, status: "settlement" };
+
+  // Tanya langsung ke Midtrans.
+  let tx: Awaited<ReturnType<typeof getTransactionStatus>>;
+  try {
+    tx = await getTransactionStatus(payment.order_id);
+  } catch {
+    // Transaksi tidak ditemukan di Midtrans (mis. order_id tidak dikenal).
+    return { ok: false, status: payment.status, error: "Transaksi tidak ditemukan di Midtrans." };
+  }
+
+  const txStatus = String(tx.transaction_status ?? "");
+  const fraud = String(tx.fraud_status ?? "");
+  const isPaid = txStatus === "settlement" || (txStatus === "capture" && fraud === "accept");
+
+  if (!isPaid) {
+    // Simpan status terbaru (pending/expire/cancel/deny) supaya halaman invoice
+    // bisa menampilkan kondisi yang benar tanpa menunggu webhook.
+    if (["expire", "cancel", "deny", "failure"].includes(txStatus)) {
+      await supabase
+        .from("payments")
+        .update({ status: txStatus, updated_at: new Date().toISOString() })
+        .eq("order_id", payment.order_id);
+    }
+    return { ok: true, status: txStatus || payment.status };
+  }
+
+  // Midtrans bilang LUNAS -> buat order (idempoten).
+  const result = await finalizePaidOrder({
+    kodeTransaksi: payment.kode_transaksi,
+    idUser: user.id,
+    metodePembayaran: tx.payment_type ? tx.payment_type.toUpperCase() : "QRIS / E-Wallet",
+  });
+
+  if (!result.ok) return { ok: false, error: result.error };
+
+  await supabase
+    .from("payments")
+    .update({
+      status: "settlement",
+      payment_type: tx.payment_type ?? null,
+      midtrans_transaction_id: tx.transaction_id ?? null,
+      paid_at: tx.settlement_time ? new Date(tx.settlement_time).toISOString() : new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    })
+    .eq("order_id", payment.order_id);
+
+  revalidatePath("/[locale]/dashboard", "layout");
+  return { ok: true, status: "settlement" };
 }
 
 /**
