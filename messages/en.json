@@ -180,7 +180,11 @@
     "pendingTitle": "Waiting for Payment Confirmation",
     "pendingBody": "Your payment is being processed. This page will turn into a receipt once the payment is confirmed.",
     "pendingHint": "Already paid? Wait a few seconds then press the button above.",
-    "checkAgain": "Check Payment Status"
+    "checkAgain": "Check Payment Status",
+    "checking": "Checking...",
+    "checkStillPending": "Midtrans has not received the payment yet. Complete the payment first, then check again.",
+    "checkNotPaid": "The payment failed or has expired. Please place a new order.",
+    "checkFailed": "Failed to check payment status. Please try again shortly."
   },
   "history": {
     "title": "My Order History",

@@ -180,7 +180,11 @@
     "pendingTitle": "Menunggu Konfirmasi Pembayaran",
     "pendingBody": "Pembayaranmu sedang diproses. Halaman ini akan berubah menjadi struk setelah pembayaran terkonfirmasi.",
     "pendingHint": "Sudah membayar? Tunggu beberapa detik lalu tekan tombol di atas.",
-    "checkAgain": "Cek Status Pembayaran"
+    "checkAgain": "Cek Status Pembayaran",
+    "checking": "Memeriksa...",
+    "checkStillPending": "Pembayaran belum diterima Midtrans. Selesaikan pembayaran dulu, lalu cek lagi.",
+    "checkNotPaid": "Pembayaran tidak berhasil atau sudah kedaluwarsa. Silakan pesan ulang.",
+    "checkFailed": "Gagal memeriksa status pembayaran. Coba lagi sebentar."
   },
   "history": {
     "title": "Riwayat Pesanan Saya",
