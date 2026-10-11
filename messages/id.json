@@ -309,16 +309,7 @@
       "colTotal": "Total",
       "noOrders": "Tidak ada pesanan yang sesuai.",
       "srIncrease": "Peningkatan:",
-      "srDecrease": "Penurunan:",
-      "stats": {
-        "revenue": "Pendapatan Bulanan",
-        "revenuePeriod": "dari bulan lalu",
-        "customers": "Pelanggan Aktif",
-        "customersChange": "minggu ini",
-        "customersPeriod": "dari {count} stand buka",
-        "outOfStock": "Menu Habis",
-        "outOfStockPeriod": "tingkat pembatalan pesanan"
-      }
+      "srDecrease": "Penurunan:"
     },
     "orders": {
       "title": "Pesanan",
@@ -364,15 +355,7 @@
       "colBestMenu": "Menu Terlaris",
       "colContribution": "Kontribusi",
       "range6m": "6B",
-      "range12m": "12B",
-      "stats": {
-        "revenue": "Total Pendapatan",
-        "orders": "Total Pesanan",
-        "average": "Rata-rata Pesanan",
-        "stands": "Stand Aktif",
-        "allPeriod": "12 bulan terakhir",
-        "today": "hari ini"
-      }
+      "range12m": "12B"
     },
     "stands": {
       "allTitle": "Semua Stand",
