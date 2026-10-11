@@ -191,14 +191,22 @@ export async function syncPaymentStatusAction(
   const fraud = String(tx.fraud_status ?? "");
   const isPaid = txStatus === "settlement" || (txStatus === "capture" && fraud === "accept");
 
+  // Update status pembayaran WAJIB pakai admin client.
+  // RLS tabel `payments` hanya punya policy SELECT + INSERT (tanpa UPDATE),
+  // sehingga update lewat anon client akan "berhasil" (HTTP 200) tapi
+  // mempengaruhi 0 baris — gagal secara diam-diam. Server Action ini sudah
+  // memverifikasi user login & kepemilikan data di atas, jadi aman.
+  const admin = createAdminClient();
+
   if (!isPaid) {
     // Simpan status terbaru (pending/expire/cancel/deny) supaya halaman invoice
     // bisa menampilkan kondisi yang benar tanpa menunggu webhook.
     if (["expire", "cancel", "deny", "failure"].includes(txStatus)) {
-      await supabase
+      const { error: updErr } = await admin
         .from("payments")
         .update({ status: txStatus, updated_at: new Date().toISOString() })
         .eq("order_id", payment.order_id);
+      if (updErr) console.error("[invoice] gagal simpan status gagal:", updErr.message);
     }
     return { ok: true, status: txStatus || payment.status };
   }
@@ -212,7 +220,7 @@ export async function syncPaymentStatusAction(
 
   if (!result.ok) return { ok: false, error: result.error };
 
-  await supabase
+  const { error: markErr } = await admin
     .from("payments")
     .update({
       status: "settlement",
@@ -222,6 +230,8 @@ export async function syncPaymentStatusAction(
       updated_at: new Date().toISOString(),
     })
     .eq("order_id", payment.order_id);
+
+  if (markErr) console.error("[invoice] gagal tandai lunas:", markErr.message);
 
   revalidatePath("/[locale]/dashboard", "layout");
   return { ok: true, status: "settlement" };
