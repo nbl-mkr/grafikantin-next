@@ -30,15 +30,15 @@ export default function InvoiceCard({ status }: { status: InvoiceStatus }) {
     return (
       <div className="mx-auto max-w-md px-4 py-12 text-center sm:px-0">
         <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-amber-50">
+          <div className="mb-4 rounded-full bg-slate-50 p-6">
             <svg
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth="1.8"
+              strokeWidth="1.5"
               stroke="currentColor"
-              className="size-7 text-amber-500"
+              className="size-8 text-gray-600"
             >
               <path
                 strokeLinecap="round"
