@@ -177,7 +177,11 @@ export async function updateOrderStatusAction(
     .eq("kode_transaksi", kodeTransaksi)
     .eq("status", statusLama);
 
-  if (ctx.role === "penjual" && ctx.standId) {
+  if (ctx.role !== "admin") {
+    // Penjual hanya boleh mengubah pesanan milik standnya sendiri.
+    // Kalau belum terhubung ke stand mana pun, tolak — jangan biarkan
+    // tanpa filter (yang berarti bisa mengubah pesanan stand lain).
+    if (!ctx.standId) return { ok: false, errorKey: "notAllowed" };
     orderQuery = orderQuery.eq("id_stand", ctx.standId);
   }
 
