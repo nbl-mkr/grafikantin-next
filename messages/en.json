@@ -438,9 +438,10 @@
       "productUpdatesDesc": "Periodic emails about new features.",
       "weeklySummary": "Weekly summary",
       "weeklySummaryDesc": "Revenue and order summary every Monday.",
-      "dangerZone": "Danger Zone",
-      "dangerBody": "Deleting your account will remove all orders and payment history. This action cannot be undone.",
-      "deleteAccount": "Delete account"
+      "comingSoon": "Coming Soon",
+      "notificationsNotice": "Notification features are not active yet. These settings will be available in a future update.",
+      "accountDeletion": "Account Deletion",
+      "accountDeletionBody": "Accounts cannot be deleted by yourself. Please contact the canteen administrator to delete your account."
     },
     "upload": {
       "change": "Change image",

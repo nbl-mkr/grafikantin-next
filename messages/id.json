@@ -438,9 +438,10 @@
       "productUpdatesDesc": "Email berkala mengenai fitur-fitur baru.",
       "weeklySummary": "Ringkasan mingguan",
       "weeklySummaryDesc": "Ringkasan pendapatan dan pesanan setiap hari Senin.",
-      "dangerZone": "Zona Berbahaya",
-      "dangerBody": "Menghapus akun Anda akan menghapus semua pesanan dan riwayat pembayaran. Tindakan ini tidak dapat dibatalkan.",
-      "deleteAccount": "Hapus akun"
+      "comingSoon": "Segera Hadir",
+      "notificationsNotice": "Fitur notifikasi belum aktif. Pengaturan ini akan tersedia pada pembaruan mendatang.",
+      "accountDeletion": "Penghapusan Akun",
+      "accountDeletionBody": "Akun tidak dapat dihapus sendiri. Silakan hubungi pengurus kantin untuk menghapus akunmu."
     },
     "upload": {
       "change": "Ganti gambar",
