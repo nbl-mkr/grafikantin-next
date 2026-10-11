@@ -26,9 +26,6 @@ export default function SettingsForm({
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);
   const [savedMessage, setSavedMessage] = useState("");
-  const [emailNotifications, setEmailNotifications] = useState(true);
-  const [productUpdates, setProductUpdates] = useState(false);
-  const [weeklySummary, setWeeklySummary] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -137,7 +134,13 @@ export default function SettingsForm({
         </div>
       </form>
       <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-        <h2 className="text-sm font-medium text-gray-900">{t("notifications")}</h2>
+        <div className="flex items-center gap-3">
+          <h2 className="text-sm font-medium text-gray-900">{t("notifications")}</h2>
+          <span className="text-[11px] font-semibold text-amber-700">
+            {t("comingSoon")}
+          </span>
+        </div>
+        <p className="mt-2 text-xs text-gray-600">{t("notificationsNotice")}</p>
         <ul className="mt-4 divide-y divide-gray-100">
           <li className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
             <div>
@@ -147,13 +150,13 @@ export default function SettingsForm({
             <button
               type="button"
               role="switch"
-              aria-checked={emailNotifications}
-              onClick={() => setEmailNotifications(!emailNotifications)}
-              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors ${
-                emailNotifications ? "bg-[#e76f51]" : "bg-gray-200"
-              }`}
+              aria-checked={false}
+              aria-disabled="true"
+              disabled
+              title={t("comingSoon")}
+              className="relative inline-flex h-6 w-11 shrink-0 cursor-not-allowed items-center rounded-full bg-gray-200 opacity-60"
             >
-              <span className={`size-4 rounded-full bg-white transition-transform ${emailNotifications ? "translate-x-6" : "translate-x-1"}`} />
+              <span className="size-4 rounded-full bg-white transition-transform translate-x-1" />
             </button>
           </li>
           <li className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
@@ -164,13 +167,13 @@ export default function SettingsForm({
             <button
               type="button"
               role="switch"
-              aria-checked={productUpdates}
-              onClick={() => setProductUpdates(!productUpdates)}
-              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors ${
-                productUpdates ? "bg-[#e76f51]" : "bg-gray-200"
-              }`}
+              aria-checked={false}
+              aria-disabled="true"
+              disabled
+              title={t("comingSoon")}
+              className="relative inline-flex h-6 w-11 shrink-0 cursor-not-allowed items-center rounded-full bg-gray-200 opacity-60"
             >
-              <span className={`size-4 rounded-full bg-white transition-transform ${productUpdates ? "translate-x-6" : "translate-x-1"}`} />
+              <span className="size-4 rounded-full bg-white transition-transform translate-x-1" />
             </button>
           </li>
           <li className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
@@ -181,26 +184,20 @@ export default function SettingsForm({
             <button
               type="button"
               role="switch"
-              aria-checked={weeklySummary}
-              onClick={() => setWeeklySummary(!weeklySummary)}
-              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors ${
-                weeklySummary ? "bg-[#e76f51]" : "bg-gray-200"
-              }`}
+              aria-checked={false}
+              aria-disabled="true"
+              disabled
+              title={t("comingSoon")}
+              className="relative inline-flex h-6 w-11 shrink-0 cursor-not-allowed items-center rounded-full bg-gray-200 opacity-60"
             >
-              <span className={`size-4 rounded-full bg-white transition-transform ${weeklySummary ? "translate-x-6" : "translate-x-1"}`} />
+              <span className="size-4 rounded-full bg-white transition-transform translate-x-1" />
             </button>
           </li>
         </ul>
       </div>
-      <div className="rounded-2xl border border-red-100 bg-white p-6 shadow-sm">
-        <h2 className="text-sm font-medium text-gray-900">{t("dangerZone")}</h2>
-        <p className="mt-2 text-sm text-gray-600">{t("dangerBody")}</p>
-        <button
-          type="button"
-          className="mt-4 inline-block rounded-md border border-red-200 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50"
-        >
-          {t("deleteAccount")}
-        </button>
+      <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+        <h2 className="text-sm font-medium text-gray-900">{t("accountDeletion")}</h2>
+        <p className="mt-2 text-sm text-gray-600">{t("accountDeletionBody")}</p>
       </div>
     </div>
   );
