@@ -24,11 +24,19 @@ export default async function DashboardDashboard() {
   const recentSince = new Date();
   recentSince.setDate(recentSince.getDate() - 30);
 
+  const isAdmin = ctx.role === "admin";
+  const scopedStandId = isAdmin ? null : ctx.standId;
+  // Penjual tanpa stand tidak boleh melihat menu mana pun.
+  const menusPromise =
+    !isAdmin && scopedStandId === null
+      ? Promise.resolve([])
+      : fetchMenus(scopedStandId);
+
   const [orders, recentOrdersData, stands, menus] = await Promise.all([
     fetchChartOrders(ctx),
     fetchOrders(ctx, { since: recentSince, limit: 50 }),
     fetchStands(),
-    fetchMenus(ctx.role === "penjual" ? ctx.standId : null),
+    menusPromise,
   ]);
 
   const stats = buildStats(orders, stands, menus, locale);
