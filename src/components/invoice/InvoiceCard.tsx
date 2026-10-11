@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import type { InvoiceStatus } from "@/lib/data/queries";
+import { syncPaymentStatusAction } from "@/lib/data/checkout";
 
 function formatRupiah(value: number, locale: string) {
   return new Intl.NumberFormat(locale === "en" ? "en-US" : "id-ID", {
@@ -16,6 +18,8 @@ export default function InvoiceCard({ status }: { status: InvoiceStatus }) {
   const t = useTranslations("invoice");
   const locale = useLocale();
   const router = useRouter();
+  const [checking, setChecking] = useState(false);
+  const [checkMessage, setCheckMessage] = useState("");
 
   const handlePrint = () => {
     window.print();
@@ -23,6 +27,34 @@ export default function InvoiceCard({ status }: { status: InvoiceStatus }) {
 
   const handleFinish = () => {
     router.push("/shopping");
+  };
+
+  /**
+   * Tanya status pembayaran langsung ke Midtrans (bukan sekadar memuat ulang
+   * database). Ini jaring pengaman kalau notifikasi webhook telat/gagal:
+   * begitu Midtrans bilang lunas, order langsung dibuat di sini.
+   */
+  const handleCheckStatus = async (kode: string) => {
+    if (checking) return;
+    setChecking(true);
+    setCheckMessage("");
+
+    const res = await syncPaymentStatusAction(kode);
+
+    if (res.ok && res.status === "settlement") {
+      router.refresh();
+      setChecking(false);
+      return;
+    }
+
+    if (!res.ok) {
+      setCheckMessage(res.error ?? t("checkFailed"));
+    } else if (res.status === "pending") {
+      setCheckMessage(t("checkStillPending"));
+    } else if (res.status) {
+      setCheckMessage(t("checkNotPaid"));
+    }
+    setChecking(false);
   };
 
   // --- Pembayaran belum terkonfirmasi (webhook Midtrans belum masuk) ---
@@ -66,10 +98,15 @@ export default function InvoiceCard({ status }: { status: InvoiceStatus }) {
           <div className="mt-6 flex flex-col gap-3">
             <button
               type="button"
-              onClick={() => router.refresh()}
-              className="w-full rounded-xl bg-[#e76f51] py-3 text-sm font-bold text-white transition hover:bg-[#d55f43]"
+              onClick={() => handleCheckStatus(status.orderId)}
+              disabled={checking}
+              className={`w-full rounded-xl py-3 text-sm font-bold text-white transition ${
+                checking
+                  ? "cursor-not-allowed bg-[#d55f43] opacity-60"
+                  : "bg-[#e76f51] hover:bg-[#d55f43]"
+              }`}
             >
-              {t("checkAgain")}
+              {checking ? t("checking") : t("checkAgain")}
             </button>
             <button
               type="button"
@@ -79,6 +116,11 @@ export default function InvoiceCard({ status }: { status: InvoiceStatus }) {
               {t("finish")}
             </button>
           </div>
+          {checkMessage && (
+            <p className="mt-3 rounded-lg border border-gray-100 bg-slate-50 px-3 py-2 text-xs font-medium text-gray-600">
+              {checkMessage}
+            </p>
+          )}
           <p className="mt-3 text-[11px] font-medium text-gray-500">{t("pendingHint")}</p>
         </div>
       </div>
