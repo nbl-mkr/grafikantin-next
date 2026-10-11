@@ -48,11 +48,22 @@ export async function getMenusView(): Promise<{ menus: MenuView[]; stands: { id:
   const ctx = await getDashboardContext();
   if (!ctx) return { menus: [], stands: [] };
 
+  // Scoping akses data — sama seperti fetchOrders/fetchChartOrders.
+  // Admin melihat semua; penjual hanya standnya sendiri. Penjual yang belum
+  // terhubung ke stand tidak boleh melihat menu/stand mana pun, karena
+  // fetchMenus(null) berarti "tanpa filter" (yaitu semua stand).
+  const isAdmin = ctx.role === "admin";
+  const scopedStandId = isAdmin ? null : ctx.standId;
+  if (!isAdmin && scopedStandId === null) return { menus: [], stands: [] };
+
   const [menus, soldByMenu, stands] = await Promise.all([
-    fetchMenus(ctx.role === "penjual" ? ctx.standId : null),
+    fetchMenus(scopedStandId),
     fetchSoldMenuCounts(),
     fetchStands(),
   ]);
+
+  const visibleStands =
+    scopedStandId === null ? stands : stands.filter((s) => s.id === scopedStandId);
 
   return {
     menus: menus.map((m) => ({
@@ -67,7 +78,7 @@ export async function getMenusView(): Promise<{ menus: MenuView[]; stands: { id:
       tersedia: m.tersedia,
       gambar: m.gambar,
     })),
-    stands: stands.map((s) => ({ id: s.id, nama: s.nama_stand })),
+    stands: visibleStands.map((s) => ({ id: s.id, nama: s.nama_stand })),
   };
 }
 
