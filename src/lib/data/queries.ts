@@ -241,3 +241,55 @@ export async function fetchInvoice(
     total: rows.reduce((sum, r) => sum + Number(r.total_harga), 0),
   };
 }
+
+
+export interface UserOrderItem {
+  id: number;
+  kode_transaksi: string;
+  total_harga: number;
+  metode_pembayaran: string | null;
+  status: "Menunggu" | "Diproses" | "Selesai" | "Dibatalkan";
+  jumlah: number;
+  created_at: string;
+  menu: {
+    id: number;
+    nama: string;
+    kategori: string;
+    harga: number;
+    gambar: string | null;
+  } | null;
+  stand: {
+    id: number;
+    nama_stand: string;
+  } | null;
+}
+
+/**
+ * Mengambil seluruh riwayat pesanan milik user tertentu yang sedang login.
+ * Menampilkan item makanan/minuman yang dipesan beserta stand, harga, dan status pesanan.
+ */
+export async function fetchUserOrders(userId: string): Promise<UserOrderItem[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("orders")
+    .select(`
+      id,
+      kode_transaksi,
+      total_harga,
+      metode_pembayaran,
+      status,
+      jumlah,
+      created_at,
+      stand:stands!orders_id_stand_fkey ( id, nama_stand ),
+      menu:menus!orders_id_menu_fkey ( id, nama, kategori, harga, gambar )
+    `)
+    .eq("id_user", userId)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Gagal memuat riwayat pesanan user:", error.message);
+    throw new Error(`Gagal memuat riwayat pesanan: ${error.message}`);
+  }
+
+  return (data ?? []) as unknown as UserOrderItem[];
+}
