@@ -5,7 +5,7 @@ import { Link } from "@/i18n/navigation";
 import type { UserOrderItem } from "@/lib/data/queries";
 import { useLocale, useTranslations } from "next-intl";
 
-type HistoryGroupKey = "today" | "yesterday" | "thisWeek" | "thisMonth" | "earlier";
+type HistoryGroupKey = "today" | "yesterday" | "thisWeek" | "thisMonth";
 type OrderStatus = UserOrderItem["status"];
 
 interface Transaction {
@@ -31,7 +31,7 @@ function getJakartaDateKey(date: Date): string {
   return `${values.year}-${values.month}-${values.day}`;
 }
 
-function getDateGroup(date: Date, todayKey: string): HistoryGroupKey {
+function getDateGroup(date: Date, todayKey: string): HistoryGroupKey | `weeksAgo:${number}` {
   const dateKey = getJakartaDateKey(date);
   const ageInDays =
     (Date.parse(`${todayKey}T00:00:00Z`) - Date.parse(`${dateKey}T00:00:00Z`)) /
@@ -41,7 +41,7 @@ function getDateGroup(date: Date, todayKey: string): HistoryGroupKey {
   if (ageInDays === 1) return "yesterday";
   if (ageInDays > 1 && ageInDays < 7) return "thisWeek";
   if (dateKey.slice(0, 7) === todayKey.slice(0, 7)) return "thisMonth";
-  return "earlier";
+  return `weeksAgo:${Math.floor(ageInDays / 7)}`;
 }
 
 function groupTransactions(orders: UserOrderItem[]): Transaction[] {
@@ -69,7 +69,7 @@ export default function HistoryOrder({
   const locale = useLocale();
   const todayKey = getJakartaDateKey(new Date(currentTime));
   const transactions = groupTransactions(orders);
-  const groupedTransactions = new Map<HistoryGroupKey, Transaction[]>();
+  const groupedTransactions = new Map<string, Transaction[]>();
 
   for (const transaction of transactions) {
     const date = new Date(transaction.items[0].created_at);
@@ -84,7 +84,28 @@ export default function HistoryOrder({
     "yesterday",
     "thisWeek",
     "thisMonth",
-    "earlier",
+  ];
+  const historyGroups = [
+    ...groupOrder.flatMap((groupKey) => {
+      const group = groupedTransactions.get(groupKey);
+      return group?.length
+        ? [{ key: groupKey, label: t(groupKey), transactions: group }]
+        : [];
+    }),
+    ...Array.from(groupedTransactions.entries())
+      .filter(([groupKey]) => groupKey.startsWith("weeksAgo:"))
+      .sort(
+        ([left], [right]) =>
+          Number(left.slice("weeksAgo:".length)) -
+          Number(right.slice("weeksAgo:".length))
+      )
+      .map(([groupKey, group]) => ({
+        key: groupKey,
+        label: t("weeksAgo", {
+          count: Number(groupKey.slice("weeksAgo:".length)),
+        }),
+        transactions: group,
+      })),
   ];
   const dateFormatter = new Intl.DateTimeFormat(locale === "id" ? "id-ID" : "en-US", {
     dateStyle: "medium",
@@ -180,15 +201,16 @@ export default function HistoryOrder({
             </Link>
           </section>
         ) : (
-          <div className="w-full divide-y divide-slate-200">
-            {groupOrder.map((groupKey) => {
-              const group = groupedTransactions.get(groupKey);
-              if (!group?.length) return null;
-
+          <div className="w-full">
+            {historyGroups.map(({ key, label, transactions: group }, index) => {
               return (
-                <section key={groupKey} className="p-4 sm:p-6">
-                  <h2 className="pb-3 text-left text-lg font-semibold text-gray-900">
-                    {t(groupKey)}
+                <section key={key} className="p-4 sm:p-6">
+                  <h2
+                    className={`pb-3 text-left text-lg font-semibold text-gray-900 ${
+                      index > 0 ? "border-t border-slate-200 pt-4" : ""
+                    }`}
+                  >
+                    {label}
                   </h2>
 
                   <ul>
