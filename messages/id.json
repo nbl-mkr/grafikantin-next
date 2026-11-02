@@ -205,7 +205,7 @@
     "yesterday": "Kemarin",
     "thisWeek": "Minggu Ini",
     "thisMonth": "Bulan Ini",
-    "earlier": "Lebih Lama",
+    "weeksAgo": "{count} minggu lalu",
     "statusWaiting": "Menunggu",
     "statusProcessing": "Diproses",
     "statusCompleted": "Selesai",

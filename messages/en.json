@@ -205,7 +205,7 @@
     "yesterday": "Yesterday",
     "thisWeek": "This Week",
     "thisMonth": "This Month",
-    "earlier": "Earlier",
+    "weeksAgo": "{count} weeks ago",
     "statusWaiting": "Pending",
     "statusProcessing": "In Process",
     "statusCompleted": "Completed",
