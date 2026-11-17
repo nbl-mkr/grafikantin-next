@@ -2,14 +2,49 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import Image from "next/image";
+import { toast } from "sonner";
 import { login } from "@/lib/actions";
 
 export default function LoginForm() {
   const t = useTranslations("auth");
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (loading) return;
+
+    if (!email.trim() || !password.trim()) {
+      toast.error(t("fieldsRequired"));
+      return;
+    }
+
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("email", email.trim());
+    formData.append("password", password.trim());
+
+    try {
+      const res = await login(formData);
+      if (!res.ok) {
+        toast.error(res.error ?? t("loginFailed"));
+        setLoading(false);
+        return;
+      }
+
+      toast.success(t("loginSuccess"));
+      if (res.redirectTo) {
+        router.push(res.redirectTo);
+      }
+    } catch {
+      toast.error(t("loginFailed"));
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="h-screen w-full flex flex-col lg:flex-row overflow-hidden bg-slate-50">
@@ -53,7 +88,7 @@ export default function LoginForm() {
             </p>
           </div>
 
-          <form action={login} className="space-y-3.5 sm:space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-5">
             <div className="space-y-1 sm:space-y-1.5">
               <label htmlFor="email" className="block text-xs sm:text-sm font-semibold text-gray-700">
                 {t("emailLabel")}
@@ -102,9 +137,10 @@ export default function LoginForm() {
 
             <button
               type="submit"
-              className="w-full rounded-xl bg-[#e76f51] py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-white transition hover:bg-[#d55f43] shadow-sm"
+              disabled={loading}
+              className="w-full rounded-xl bg-[#e76f51] py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-white transition hover:bg-[#d55f43] shadow-sm disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {t("submit")}
+              {loading ? t("loading") : t("submit")}
             </button>
           </form>
         </div>
