@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { routing, type AppLocale } from "@/i18n/routing";
 import LayoutWrapper from "@/components/LayoutWrapper";
 import { Toaster } from "@/components/ui/sonner";
-import { createClient } from "@/lib/supabase/server";
+import { getProfile } from "@/lib/supabase/session";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -39,23 +39,9 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
   const messages = await getMessages();
 
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  let initialUser: { id: string; email?: string | null } | null = null;
-  let initialPhoto: string | null = null;
-
-  if (user) {
-    initialUser = { id: user.id, email: user.email };
-    const { data: profile } = await supabase
-      .from("users")
-      .select("foto")
-      .eq("id", user.id)
-      .single();
-    if (profile?.foto) initialPhoto = profile.foto;
-  }
+  const profile = await getProfile();
+  const initialUser = profile ? { id: profile.id, email: profile.email } : null;
+  const initialPhoto = profile?.foto ?? null;
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
