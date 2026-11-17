@@ -1,9 +1,10 @@
-﻿import { NextIntlClientProvider } from "next-intl";
+import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { routing, type AppLocale } from "@/i18n/routing";
 import LayoutWrapper from "@/components/LayoutWrapper";
+import { Toaster } from "@/components/ui/sonner";
 import { createClient } from "@/lib/supabase/server";
 
 export function generateStaticParams() {
@@ -61,6 +62,7 @@ export default async function LocaleLayout({
       <LayoutWrapper initialUser={initialUser} initialPhoto={initialPhoto}>
         {children}
       </LayoutWrapper>
+      <Toaster />
     </NextIntlClientProvider>
   );
 }
