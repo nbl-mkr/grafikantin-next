@@ -2,6 +2,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { updateProfileAction } from "@/lib/data/profile";
 
 interface SettingsFormProps {
@@ -18,6 +19,7 @@ export default function SettingsForm({
   const t = useTranslations("dashboard.settings");
   const tCommon = useTranslations("dashboard.common");
   const tErrors = useTranslations("dashboard.errors");
+  const tToasts = useTranslations("dashboard.toasts");
   const router = useRouter();
 
   const [fullName, setFullName] = useState(initialFullName);
@@ -25,7 +27,6 @@ export default function SettingsForm({
   const [photoProfile, setPhotoProfile] = useState(initialPhotoProfile);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);
-  const [savedMessage, setSavedMessage] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +45,6 @@ export default function SettingsForm({
     e.preventDefault();
     if (saving) return;
     setSaving(true);
-    setSavedMessage("");
     const res = await updateProfileAction({
       username: fullName,
       email,
@@ -52,12 +52,12 @@ export default function SettingsForm({
     });
     setSaving(false);
     if (!res.ok) {
-      alert(res.error ?? tErrors("saveProfileFailed"));
+      toast.error(res.error ?? tErrors("saveProfileFailed"));
       return;
     }
     setPhotoFile(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
-    setSavedMessage(tCommon("saved"));
+    toast.success(tToasts("profileUpdated"));
     router.refresh();
   };
 
@@ -66,9 +66,6 @@ export default function SettingsForm({
       <div className="flex items-center justify-between rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
         <h1 className="text-xl font-bold text-gray-900">{t("title")}</h1>
         <div className="flex items-center gap-3">
-          {savedMessage && (
-            <span className="text-sm font-semibold text-gray-600">{savedMessage}</span>
-          )}
           <button
             type="submit"
             form="account-settings-form"
