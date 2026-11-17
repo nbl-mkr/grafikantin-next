@@ -2,7 +2,18 @@
 import { useState, useMemo } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
+import { toast } from "sonner";
 import { updateOrderStatusAction, type OrderStatus } from "@/lib/data/mutations";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export interface OrderView {
   id: string;
@@ -143,6 +154,7 @@ export default function OrderTable({ orders = [] }: { orders?: OrderView[] }) {
 
   const router = useRouter();
   const tErrors = useTranslations("dashboard.errors");
+  const tToasts = useTranslations("dashboard.toasts");
   const [busyKey, setBusyKey] = useState<string | null>(null);
   const [cancelTarget, setCancelTarget] = useState<OrderView | null>(null);
 
@@ -155,7 +167,9 @@ export default function OrderTable({ orders = [] }: { orders?: OrderView[] }) {
     setBusyKey(key);
     const res = await updateOrderStatusAction(order.id, order.status, statusBaru);
     if (!res.ok) {
-      alert(res.error ?? tErrors(res.errorKey ?? "updateOrderStatusFailed"));
+      toast.error(res.error ?? tErrors(res.errorKey ?? "updateOrderStatusFailed"));
+    } else {
+      toast.success(tToasts("orderStatusUpdated"));
     }
     setBusyKey(null);
     router.refresh();
@@ -399,34 +413,31 @@ export default function OrderTable({ orders = [] }: { orders?: OrderView[] }) {
         </div>
       </div>
     </div>
-      {cancelTarget && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-          <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
-            <h3 className="text-base font-semibold text-gray-900">
+      <AlertDialog
+        open={!!cancelTarget}
+        onOpenChange={(open) => {
+          if (!open) setCancelTarget(null);
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
               {t("cancelOrderTitle")}
-            </h3>
-            <p className="mt-2 text-sm text-gray-600">
-              {t("cancelOrderBody", { name: cancelTarget.id })}
-            </p>
-            <div className="mt-6 flex justify-end gap-2">
-              <button
-                type="button"
-                onClick={() => setCancelTarget(null)}
-                className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
-              >
-                {tCommon("cancel")}
-              </button>
-              <button
-                type="button"
-                onClick={handleCancelOrder}
-                className="rounded-lg bg-[#e76f51] px-4 py-2 text-sm font-medium text-white hover:bg-[#d55f43] transition-colors"
-              >
-                {t("btnCancelConfirm")}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {cancelTarget ? t("cancelOrderBody", { name: cancelTarget.id }) : ""}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setCancelTarget(null)}>
+              {tCommon("cancel")}
+            </AlertDialogCancel>
+            <AlertDialogAction onClick={handleCancelOrder}>
+              {t("btnCancelConfirm")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }
