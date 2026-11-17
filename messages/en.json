@@ -251,7 +251,11 @@
     "emailPlaceholder": "nis@grafikantin.com",
     "passwordLabel": "Password",
     "passwordPlaceholder": "••••••••••••",
-    "submit": "Sign In"
+    "submit": "Sign In",
+    "loginSuccess": "Login successful, redirecting...",
+    "loginFailed": "Invalid email or password",
+    "fieldsRequired": "Email and password are required",
+    "loading": "Signing in..."
   },
   "dashboard": {
     "meta": {

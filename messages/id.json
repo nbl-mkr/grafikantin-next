@@ -251,7 +251,11 @@
     "emailPlaceholder": "nis@grafikantin.com",
     "passwordLabel": "Password",
     "passwordPlaceholder": "••••••••••••",
-    "submit": "Masuk"
+    "submit": "Masuk",
+    "loginSuccess": "Login berhasil, mengalihkan...",
+    "loginFailed": "Email atau password salah",
+    "fieldsRequired": "Email dan password wajib diisi",
+    "loading": "Memproses..."
   },
   "dashboard": {
     "meta": {
