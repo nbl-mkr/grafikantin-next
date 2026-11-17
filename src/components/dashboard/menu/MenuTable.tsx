@@ -5,6 +5,16 @@ import { useLocale, useTranslations } from "next-intl";
 import type { MenuView } from "@/lib/data/views";
 import { useMenus } from "@/components/dashboard/menu/MenuContext";
 import { formatCurrency } from "@/lib/format";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 type SortField = "nama" | "harga" | "stok" | "terjual";
 type SortOrder = "asc" | "desc";
@@ -351,34 +361,31 @@ export default function MenuTable() {
           </div>
         </div>
       </div>
-      {deleteTarget && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-          <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
-            <h3 className="text-base font-semibold text-gray-900">
-              {tCommon("deleteTitle", { name: deleteTarget.nama })}
-            </h3>
-            <p className="mt-2 text-sm text-gray-600">
-              {tCommon("deleteBody", { name: deleteTarget.nama })}
-            </p>
-            <div className="mt-6 flex justify-end gap-2">
-              <button
-                type="button"
-                onClick={() => setDeleteTarget(null)}
-                className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
-              >
-                {tCommon("cancel")}
-              </button>
-              <button
-                type="button"
-                onClick={handleDelete}
-                className="rounded-lg bg-[#e76f51] px-4 py-2 text-sm font-medium text-white hover:bg-[#d55f43] transition-colors"
-              >
-                {tCommon("delete")}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <AlertDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => {
+          if (!open) setDeleteTarget(null);
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {deleteTarget ? tCommon("deleteTitle", { name: deleteTarget.nama }) : ""}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {deleteTarget ? tCommon("deleteBody", { name: deleteTarget.nama }) : ""}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setDeleteTarget(null)}>
+              {tCommon("cancel")}
+            </AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete}>
+              {tCommon("delete")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

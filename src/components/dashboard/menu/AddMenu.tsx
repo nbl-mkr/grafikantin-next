@@ -15,7 +15,7 @@ export default function AddMenu() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.nama.trim() || !form.standId) return;
-    await addMenu({
+    const ok = await addMenu({
       nama: form.nama,
       standId: form.standId,
       kategori: form.kategori,
@@ -24,7 +24,9 @@ export default function AddMenu() {
       tersedia: form.tersedia,
       gambar: form.gambarFile,
     });
-    router.push("/dashboard/menu");
+    if (ok) {
+      router.push("/dashboard/menu");
+    }
   };
 
   return (

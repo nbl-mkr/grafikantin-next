@@ -52,7 +52,7 @@ export default function EditMenu({ menuId }: EditMenuProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.nama.trim() || !form.standId) return;
-    await updateMenu(menuId, {
+    const ok = await updateMenu(menuId, {
       nama: form.nama,
       standId: form.standId,
       kategori: form.kategori,
@@ -61,7 +61,9 @@ export default function EditMenu({ menuId }: EditMenuProps) {
       tersedia: form.tersedia,
       gambar: form.gambarFile,
     });
-    router.push("/dashboard/menu");
+    if (ok) {
+      router.push("/dashboard/menu");
+    }
   };
 
   return (

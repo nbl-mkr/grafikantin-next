@@ -2,6 +2,7 @@
 import { createContext, useCallback, useContext, useState } from "react";
 import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import {
   upsertMenuAction,
   deleteMenuAction,
@@ -13,10 +14,10 @@ import type { MenuView } from "@/lib/data/views";
 interface MenuContextValue {
   menus: MenuView[];
   stands: { id: number; nama: string }[];
-  addMenu: (data: MenuInput) => Promise<void>;
-  updateMenu: (id: number, data: MenuInput) => Promise<void>;
-  deleteMenu: (id: number) => Promise<void>;
-  toggleTersedia: (id: number) => Promise<void>;
+  addMenu: (data: MenuInput) => Promise<boolean>;
+  updateMenu: (id: number, data: MenuInput) => Promise<boolean>;
+  deleteMenu: (id: number) => Promise<boolean>;
+  toggleTersedia: (id: number) => Promise<boolean>;
 }
 
 const MenuContext = createContext<MenuContextValue | null>(null);
@@ -31,7 +32,8 @@ export function MenuProvider({
   initialStands: { id: number; nama: string }[];
 }) {
   const router = useRouter();
-  const t = useTranslations("dashboard.errors");
+  const tError = useTranslations("dashboard.errors");
+  const tToast = useTranslations("dashboard.toasts");
   const [menus, setMenus] = useState<MenuView[]>(initialMenus);
   const [syncedInitialMenus, setSyncedInitialMenus] = useState(initialMenus);
 
@@ -43,28 +45,46 @@ export function MenuProvider({
   const addMenu = useCallback(
     async (data: MenuInput) => {
       const res = await upsertMenuAction(data);
-      if (res.ok) router.refresh();
-      else alert(res.error ?? t("saveMenuFailed"));
+      if (res.ok) {
+        toast.success(tToast("menuCreated"));
+        router.refresh();
+        return true;
+      } else {
+        toast.error(res.error ?? tError("saveMenuFailed"));
+        return false;
+      }
     },
-    [router, t]
+    [router, tError, tToast]
   );
 
   const updateMenu = useCallback(
     async (id: number, data: MenuInput) => {
       const res = await upsertMenuAction({ ...data, id });
-      if (res.ok) router.refresh();
-      else alert(res.error ?? t("saveMenuFailed"));
+      if (res.ok) {
+        toast.success(tToast("menuUpdated"));
+        router.refresh();
+        return true;
+      } else {
+        toast.error(res.error ?? tError("saveMenuFailed"));
+        return false;
+      }
     },
-    [router, t]
+    [router, tError, tToast]
   );
 
   const deleteMenu = useCallback(
     async (id: number) => {
       const res = await deleteMenuAction(id);
-      if (res.ok) router.refresh();
-      else alert(res.error ?? t("deleteMenuFailed"));
+      if (res.ok) {
+        toast.success(tToast("menuDeleted"));
+        router.refresh();
+        return true;
+      } else {
+        toast.error(res.error ?? tError("deleteMenuFailed"));
+        return false;
+      }
     },
-    [router, t]
+    [router, tError, tToast]
   );
 
   const toggleTersedia = useCallback(
@@ -77,11 +97,14 @@ export function MenuProvider({
         setMenus((prev) =>
           prev.map((m) => (m.id === id ? { ...m, tersedia: !m.tersedia } : m))
         );
-        alert(res.error ?? t("toggleStatusFailed"));
+        toast.error(res.error ?? tError("toggleStatusFailed"));
+        return false;
       }
+      toast.success(tToast("menuStatusUpdated"));
       router.refresh();
+      return true;
     },
-    [router, t]
+    [router, tError, tToast]
   );
 
   return (
