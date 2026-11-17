@@ -1,9 +1,12 @@
+import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import type { DashboardContext } from "@/lib/data/types";
 import type { OrderRow, StandRow, MenuRow } from "@/lib/data/types";
 
 const MAX_LOOKBACK_MONTHS = 12;
 const PAGE_SIZE = 1000;
+
+const CHART_ORDER_SELECT = "id, kode_transaksi, total_harga, status, created_at, id_stand";
 
 const ORDER_SELECT = `
   id, kode_transaksi, total_harga, metode_pembayaran, status, jumlah, created_at,
@@ -69,7 +72,7 @@ export async function fetchOrders(
   return orders;
 }
 
-export async function fetchChartOrders(ctx: DashboardContext): Promise<OrderRow[]> {
+export const fetchChartOrders = cache(async function fetchChartOrders(ctx: DashboardContext): Promise<OrderRow[]> {
   // Scoping akses data — lihat penjelasan di fetchOrders().
   const isAdmin = ctx.role === "admin";
   const scopedStandId = isAdmin ? null : ctx.standId;
@@ -83,7 +86,7 @@ export async function fetchChartOrders(ctx: DashboardContext): Promise<OrderRow[
   while (true) {
     let query = supabase
       .from("orders")
-      .select(ORDER_SELECT)
+      .select(CHART_ORDER_SELECT)
       .order("created_at", { ascending: false })
       .gte("created_at", twelveMonthsAgo.toISOString())
       .range(offset, offset + PAGE_SIZE - 1);
@@ -103,7 +106,7 @@ export async function fetchChartOrders(ctx: DashboardContext): Promise<OrderRow[
   }
 
   return orders;
-}
+});
 
 export async function fetchStands(): Promise<StandRow[]> {
   const supabase = await createClient();
