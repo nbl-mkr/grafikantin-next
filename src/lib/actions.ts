@@ -14,12 +14,16 @@ async function currentLocale() {
     : routing.defaultLocale
 }
 
-export async function login(formData: FormData) {
+export async function login(formData: FormData): Promise<{ ok: boolean; error?: string; redirectTo?: string }> {
   const locale = await currentLocale()
   const supabase = await createClient()
 
-  const email = formData.get('email') as string
-  const password = formData.get('password') as string
+  const email = (formData.get('email') as string)?.trim()
+  const password = (formData.get('password') as string)?.trim()
+
+  if (!email || !password) {
+    return { ok: false, error: 'Email dan password wajib diisi' }
+  }
 
   const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
     email,
@@ -27,7 +31,7 @@ export async function login(formData: FormData) {
   })
 
   if (authError || !authData.user) {
-    return redirect(`/${locale}/auth/login?error=Email atau password salah`)
+    return { ok: false, error: 'Email atau password salah' }
   }
 
   const { data: userData } = await supabase
@@ -44,11 +48,12 @@ export async function login(formData: FormData) {
 
   revalidatePath('/', 'layout')
 
-  if (userData?.role === 'penjual' || userData?.role === 'admin') {
-    redirect(`/${locale}/dashboard`)
-  } else {
-    redirect(`/${locale}`)
-  }
+  const target =
+    userData?.role === 'penjual' || userData?.role === 'admin'
+      ? `/${locale}/dashboard`
+      : `/${locale}`
+
+  return { ok: true, redirectTo: target }
 }
 
 export async function logout() {
