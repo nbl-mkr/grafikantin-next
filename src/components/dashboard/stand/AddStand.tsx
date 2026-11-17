@@ -12,11 +12,13 @@ export default function AddStand() {
   const { addStand } = useStands();
   const [form, setForm] = useState<StandFormData>(emptyStandForm);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.nama.trim() || !form.pemilik.trim()) return;
-    addStand(form);
-    router.push("/dashboard/stand");
+    const ok = await addStand(form);
+    if (ok) {
+      router.push("/dashboard/stand");
+    }
   };
 
   return (

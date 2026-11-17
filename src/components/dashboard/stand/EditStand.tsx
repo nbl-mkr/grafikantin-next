@@ -44,11 +44,13 @@ export default function EditStand({ standId }: EditStandProps) {
     );
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.nama.trim() || !form.pemilik.trim()) return;
-    updateStand(standId, form);
-    router.push("/dashboard/stand");
+    const ok = await updateStand(standId, form);
+    if (ok) {
+      router.push("/dashboard/stand");
+    }
   };
 
   return (

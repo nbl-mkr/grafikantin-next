@@ -2,14 +2,15 @@
 import { createContext, useCallback, useContext, useState } from "react";
 import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { upsertStandAction, deleteStandAction, type StandInput } from "@/lib/data/mutations";
 import type { StandView } from "@/lib/data/views";
 
 interface StandContextValue {
   stands: StandView[];
-  addStand: (data: StandInput) => Promise<void>;
-  updateStand: (id: number, data: StandInput) => Promise<void>;
-  deleteStand: (id: number) => Promise<void>;
+  addStand: (data: StandInput) => Promise<boolean>;
+  updateStand: (id: number, data: StandInput) => Promise<boolean>;
+  deleteStand: (id: number) => Promise<boolean>;
 }
 
 const StandContext = createContext<StandContextValue | null>(null);
@@ -22,7 +23,8 @@ export function StandProvider({
   initialStands: StandView[];
 }) {
   const router = useRouter();
-  const t = useTranslations("dashboard.errors");
+  const tError = useTranslations("dashboard.errors");
+  const tToast = useTranslations("dashboard.toasts");
   const [stands, setStands] = useState<StandView[]>(initialStands);
   const [syncedInitialStands, setSyncedInitialStands] = useState(initialStands);
 
@@ -34,28 +36,46 @@ export function StandProvider({
   const addStand = useCallback(
     async (data: StandInput) => {
       const res = await upsertStandAction(data);
-      if (res.ok) router.refresh();
-      else alert(res.error ?? t("saveStandFailed"));
+      if (res.ok) {
+        toast.success(tToast("standCreated"));
+        router.refresh();
+        return true;
+      } else {
+        toast.error(res.error ?? tError("saveStandFailed"));
+        return false;
+      }
     },
-    [router, t]
+    [router, tError, tToast]
   );
 
   const updateStand = useCallback(
     async (id: number, data: StandInput) => {
       const res = await upsertStandAction({ ...data, id });
-      if (res.ok) router.refresh();
-      else alert(res.error ?? t("saveStandFailed"));
+      if (res.ok) {
+        toast.success(tToast("standUpdated"));
+        router.refresh();
+        return true;
+      } else {
+        toast.error(res.error ?? tError("saveStandFailed"));
+        return false;
+      }
     },
-    [router, t]
+    [router, tError, tToast]
   );
 
   const deleteStand = useCallback(
     async (id: number) => {
       const res = await deleteStandAction(id);
-      if (res.ok) router.refresh();
-      else alert(res.error ?? t("deleteStandFailed"));
+      if (res.ok) {
+        toast.success(tToast("standDeleted"));
+        router.refresh();
+        return true;
+      } else {
+        toast.error(res.error ?? tError("deleteStandFailed"));
+        return false;
+      }
     },
-    [router, t]
+    [router, tError, tToast]
   );
 
   return (
