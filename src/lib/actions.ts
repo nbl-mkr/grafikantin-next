@@ -36,6 +36,12 @@ export async function login(formData: FormData) {
     .eq('id', authData.user.id)
     .single()
 
+  if (userData?.role && authData.user.user_metadata?.role !== userData.role) {
+    await supabase.auth.updateUser({
+      data: { role: userData.role },
+    })
+  }
+
   revalidatePath('/', 'layout')
 
   if (userData?.role === 'penjual' || userData?.role === 'admin') {
