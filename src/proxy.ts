@@ -112,13 +112,17 @@ export async function proxy(request: NextRequest) {
       )
     }
 
-    const { data: profile } = await supabase
-      .from('users')
-      .select('role')
-      .eq('id', user.id)
-      .maybeSingle()
+    let role = user.user_metadata?.role as Role | undefined
 
-    const role = profile?.role as Role | undefined
+    if (!role) {
+      const { data: profile } = await supabase
+        .from('users')
+        .select('role')
+        .eq('id', user.id)
+        .maybeSingle()
+      role = profile?.role as Role | undefined
+    }
+
     const landing = role ? DASHBOARD_LANDING[role] : undefined
 
     if (!role || !landing) {
