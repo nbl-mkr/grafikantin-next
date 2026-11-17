@@ -497,6 +497,17 @@
       "orderTransitionInvalid": "This order status change is not valid.",
       "orderNotFound": "Order not found or its status has already changed. Please refresh.",
       "updateOrderStatusFailed": "Failed to update order status"
+    },
+    "toasts": {
+      "menuCreated": "Menu added successfully",
+      "menuUpdated": "Menu updated successfully",
+      "menuDeleted": "Menu deleted successfully",
+      "menuStatusUpdated": "Menu availability updated successfully",
+      "standCreated": "Stand added successfully",
+      "standUpdated": "Stand updated successfully",
+      "standDeleted": "Stand deleted successfully",
+      "orderStatusUpdated": "Order status updated successfully",
+      "profileUpdated": "Profile updated successfully"
     }
   }
 }

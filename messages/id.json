@@ -497,6 +497,17 @@
       "orderTransitionInvalid": "Peralihan status pesanan tidak valid.",
       "orderNotFound": "Pesanan tidak ditemukan atau statusnya sudah berubah. Silakan refresh.",
       "updateOrderStatusFailed": "Gagal memperbarui status pesanan"
+    },
+    "toasts": {
+      "menuCreated": "Menu berhasil ditambahkan",
+      "menuUpdated": "Menu berhasil diperbarui",
+      "menuDeleted": "Menu berhasil dihapus",
+      "menuStatusUpdated": "Status ketersediaan menu berhasil diperbarui",
+      "standCreated": "Stand berhasil ditambahkan",
+      "standUpdated": "Stand berhasil diperbarui",
+      "standDeleted": "Stand berhasil dihapus",
+      "orderStatusUpdated": "Status pesanan berhasil diperbarui",
+      "profileUpdated": "Profil berhasil diperbarui"
     }
   }
 }
