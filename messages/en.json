@@ -143,7 +143,9 @@
     "selectAll": "Select all ({count})",
     "deleteSelected": "Delete selected",
     "totalLabel": "Total ({count} products):",
-    "checkout": "Checkout"
+    "checkout": "Checkout",
+    "itemRemoved": "Item removed from cart",
+    "selectedItemsRemoved": "{count} items removed from cart"
   },
   "checkout": {
     "title": "Order Payment",

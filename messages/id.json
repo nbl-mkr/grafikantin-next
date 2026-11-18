@@ -143,7 +143,9 @@
     "selectAll": "Pilih Semua ({count})",
     "deleteSelected": "Hapus Terpilih",
     "totalLabel": "Total ({count} Produk):",
-    "checkout": "Checkout"
+    "checkout": "Checkout",
+    "itemRemoved": "Item berhasil dihapus dari keranjang",
+    "selectedItemsRemoved": "{count} item berhasil dihapus dari keranjang"
   },
   "checkout": {
     "title": "Pembayaran Pesanan",
