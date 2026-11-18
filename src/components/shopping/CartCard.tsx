@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
+import { toast } from "sonner";
 import { useCart } from "@/context/CartContext";
 import { formatCurrency } from "@/lib/format";
 
@@ -36,9 +37,28 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
     );
   };
 
+  const handleRemoveItem = (id: string | number) => {
+    removeFromCart(id);
+    setSelectedIds((prev) => prev.filter((itemId) => itemId !== id));
+    toast.info(t("itemRemoved"));
+  };
+
+  const handleDecreaseQuantity = (id: string | number, currentQty: number) => {
+    if (currentQty <= 1) {
+      removeFromCart(id);
+      setSelectedIds((prev) => prev.filter((itemId) => itemId !== id));
+      toast.info(t("itemRemoved"));
+    } else {
+      updateQuantity(id, currentQty - 1);
+    }
+  };
+
   const handleRemoveSelected = () => {
+    const count = selectedIds.length;
+    if (count === 0) return;
     selectedIds.forEach((id) => removeFromCart(id));
     setSelectedIds([]);
+    toast.info(t("selectedItemsRemoved", { count }));
   };
 
   const selectedItems = cart.filter((item) => selectedIds.includes(item.id));
@@ -224,7 +244,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
                             <button
                               type="button"
                               onClick={() =>
-                                updateQuantity(item.id, item.quantity - 1)
+                                handleDecreaseQuantity(item.id, item.quantity)
                               }
                               className="px-2 py-0.5 text-xs text-gray-600 hover:bg-gray-200"
                             >
@@ -252,7 +272,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
                         <div className="flex justify-center">
                           <button
                             type="button"
-                            onClick={() => removeFromCart(item.id)}
+                            onClick={() => handleRemoveItem(item.id)}
                             className="flex items-center gap-1 text-xs font-medium text-red-500 hover:text-red-600"
                           >
                             <svg
