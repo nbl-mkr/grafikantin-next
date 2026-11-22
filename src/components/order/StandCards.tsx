@@ -27,21 +27,41 @@ export default async function StandCards({ stands }: StandCardsProps) {
           </p>
         </div>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 justify-items-center">
-          {stands.map((stand) => (
-            <div
-              key={stand.id}
-              className="group w-full rounded-lg bg-white p-4 shadow-sm hover:shadow-[0_0_16px_rgba(15,23,42,0.05)] hover:-translate-y-1 transition-all duration-300 border border-gray-100 flex flex-col justify-between"
-            >
-              <div>
-                <div className="relative overflow-hidden rounded-lg">
-                  <Image
-                    src={`/assets/${stand.gambar || "menu.jpg"}`}
-                    alt={stand.nama_stand}
-                    width={400}
-                    height={208}
-                    className="h-52 w-full object-cover block"
-                  />
-                </div>
+          {stands.map((stand) => {
+            const isPlaceholder = !stand.gambar || stand.gambar.includes("store-icon.png");
+            const imageSrc = stand.gambar ? `/assets/${stand.gambar}` : "/assets/store-icon.png";
+
+            return (
+              <div
+                key={stand.id}
+                className="group w-full rounded-lg bg-white p-4 shadow-sm hover:shadow-[0_0_16px_rgba(15,23,42,0.05)] hover:-translate-y-1 transition-all duration-300 border border-gray-100 flex flex-col justify-between"
+              >
+                <div>
+                  <div
+                    className={`relative h-52 w-full overflow-hidden rounded-lg ${
+                      isPlaceholder ? "bg-amber-50/40 flex items-center justify-center" : ""
+                    }`}
+                  >
+                    {isPlaceholder ? (
+                      <div className="relative h-20 w-20">
+                        <Image
+                          src={imageSrc}
+                          alt={stand.nama_stand}
+                          fill
+                          sizes="80px"
+                          className="object-contain"
+                        />
+                      </div>
+                    ) : (
+                      <Image
+                        src={imageSrc}
+                        alt={stand.nama_stand}
+                        width={400}
+                        height={208}
+                        className="h-52 w-full object-cover block"
+                      />
+                    )}
+                  </div>
 
                 <div className="mt-4 flex flex-col justify-between">
                   <div>
@@ -85,7 +105,8 @@ export default async function StandCards({ stands }: StandCardsProps) {
                 </div>
               </div>
             </div>
-          ))}
+          );
+        })}
         </div>
       </div>
     </section>
