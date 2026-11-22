@@ -10,6 +10,7 @@ import AdaptiveImage from "@/components/common/AdaptiveImage";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useTranslations } from "next-intl";
 import { FEEDBACK_FORM_URL } from "@/lib/constants";
+import { useCart } from "@/context/CartContext";
 
 interface NavbarUser {
   id: string;
@@ -26,9 +27,12 @@ const DEFAULT_PHOTO = "/assets/photo_profile.jpg";
 export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
   const pathname = usePathname();
   const t = useTranslations("nav");
+  const { cart } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<NavbarUser | null>(initialUser);
   const [photoProfile, setPhotoProfile] = useState(initialPhoto ?? DEFAULT_PHOTO);
+
+  const totalCartItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   useEffect(() => {
     // Sinkronkan state dengan props saat data profil dari server berubah.
@@ -214,7 +218,8 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
 
             <Link
               href="/shopping"
-              className="p-1.5 text-gray-600 hover:opacity-80 transition"
+              className="relative p-1.5 text-gray-600 hover:opacity-80 transition"
+              aria-label={t("cart")}
             >
               <Image
                 src="/assets/shopping-cart.png"
@@ -223,6 +228,11 @@ export default function Navbar({ initialUser, initialPhoto }: NavbarProps) {
                 height={16}
                 className="w-4 h-4"
               />
+              {totalCartItems > 0 && (
+                <span className="absolute -top-1 -right-1.5 flex min-w-4.5 h-4.5 items-center justify-center rounded-full bg-[#e76f51] px-1 text-[10px] font-bold leading-none text-white ring-2 ring-white select-none">
+                  {totalCartItems > 99 ? "99+" : totalCartItems}
+                </span>
+              )}
             </Link>
 
             {user && (
