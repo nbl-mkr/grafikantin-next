@@ -238,20 +238,44 @@ export default function HistoryOrder({
                         0
                       );
                       const image = firstItem.menu?.gambar;
+                      const isPlaceholder = !image || image.includes("-icon.png");
+                      const imageSrc =
+                        image ||
+                        (firstItem.menu?.kategori?.toLowerCase() === "snack"
+                          ? "/assets/snack-icon.png"
+                          : "/assets/food-icon.png");
 
                       return (
                         <li
                           key={transaction.code}
                           className="grid grid-cols-1 gap-4 border-b border-slate-200 py-5 last:border-b-0 sm:grid-cols-[minmax(180px,0.38fr)_minmax(0,1fr)] sm:gap-6"
                         >
-                          <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-slate-200">
-                            <AdaptiveImage
-                              src={image || "/assets/food.jpg"}
-                              alt={firstItem.menu?.nama ?? t("unknownMenu")}
-                              fill
-                              sizes="(max-width: 640px) 36vw, (max-width: 1024px) 38vw, 380px"
-                              className="object-cover"
-                            />
+                          <div
+                            className={`relative aspect-video w-full overflow-hidden rounded-lg ${
+                              isPlaceholder
+                                ? "bg-amber-50/40 flex items-center justify-center"
+                                : "bg-slate-200"
+                            }`}
+                          >
+                            {isPlaceholder ? (
+                              <div className="relative h-10 w-10 sm:h-12 sm:w-12">
+                                <AdaptiveImage
+                                  src={imageSrc}
+                                  alt={firstItem.menu?.nama ?? t("unknownMenu")}
+                                  fill
+                                  sizes="48px"
+                                  className="object-contain"
+                                />
+                              </div>
+                            ) : (
+                              <AdaptiveImage
+                                src={imageSrc}
+                                alt={firstItem.menu?.nama ?? t("unknownMenu")}
+                                fill
+                                sizes="(max-width: 640px) 36vw, (max-width: 1024px) 38vw, 380px"
+                                className="object-cover"
+                              />
+                            )}
                           </div>
 
                           <div className="min-w-0">
