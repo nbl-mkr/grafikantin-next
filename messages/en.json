@@ -124,6 +124,7 @@
     "stockUnavailable": "Out of stock",
     "quantityLabel": "Qty",
     "addToCart": "Add to cart",
+    "addedToCart": "Item added to cart",
     "outOfStock": "Out of stock"
   },
   "shopping": {

@@ -124,6 +124,7 @@
     "stockUnavailable": "Habis",
     "quantityLabel": "Jumlah",
     "addToCart": "Masukkan Keranjang",
+    "addedToCart": "Berhasil ditambahkan ke keranjang",
     "outOfStock": "Stok Habis"
   },
   "shopping": {
