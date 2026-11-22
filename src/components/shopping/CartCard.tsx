@@ -133,22 +133,16 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
         {t("title")}
       </h1>
 
-      <div className="mb-4 flex items-center justify-between rounded-2xl border border-gray-100 bg-white px-6 py-4 text-sm font-semibold text-gray-600 shadow-sm">
-        <div className="flex items-center gap-4 w-2/5">
+      <div className="mb-4 flex items-center rounded-2xl border border-gray-100 bg-white px-4 py-4 text-sm font-semibold text-gray-600 shadow-sm sm:px-6">
+        <label className="flex cursor-pointer items-center gap-4">
           <input
             type="checkbox"
             checked={isAllSelected}
             onChange={handleSelectAll}
-            className="h-4 w-4 rounded border-gray-300 accent-[#e76f51] cursor-pointer"
+            className="h-4 w-4 cursor-pointer rounded border-gray-300 accent-[#e76f51]"
           />
           <span>{t("colProduct")}</span>
-        </div>
-        <div className="grid grid-cols-4 w-3/5 text-center">
-          <span>{t("colUnitPrice")}</span>
-          <span>{t("colQuantity")}</span>
-          <span>{t("colTotalPrice")}</span>
-          <span>{t("colAction")}</span>
-        </div>
+        </label>
       </div>
 
       <div className="flex flex-col gap-4">
@@ -177,12 +171,13 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
               key={standId}
               className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden"
             >
-              <div className="flex items-center gap-3 border-b border-gray-50 px-6 py-3.5 bg-white">
+              <div className="flex items-center gap-3 border-b border-gray-50 bg-white px-4 py-3.5 sm:px-6">
                 <input
                   type="checkbox"
                   checked={isStandAllSelected}
                   onChange={handleSelectStand}
-                  className="h-4 w-4 rounded border-gray-300 accent-[#e76f51] cursor-pointer"
+                  aria-label={standName}
+                  className="h-4 w-4 cursor-pointer rounded border-gray-300 accent-[#e76f51]"
                 />
                 <div className="flex items-center gap-2 text-gray-900 font-bold text-sm">
                   <svg
@@ -208,88 +203,115 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
                   return (
                     <div
                       key={item.id}
-                      className="flex items-center justify-between px-6 py-4 text-sm"
+                      className="grid grid-cols-[16px_minmax(0,1fr)] items-start gap-x-3 gap-y-4 px-4 py-5 sm:grid-cols-[16px_minmax(180px,0.38fr)_minmax(0,1fr)] sm:items-stretch sm:gap-x-5 sm:px-5"
                     >
-                      <div className="flex items-center gap-4 w-2/5">
-                        <input
-                          type="checkbox"
-                          checked={isChecked}
-                          onChange={() => handleSelectItem(item.id)}
-                          className="h-4 w-4 rounded border-gray-300 accent-[#e76f51] cursor-pointer"
-                        />
-                        <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-gray-100">
-                          {item.gambar && (
-                            <Image
-                              src={item.gambar}
-                              alt={item.nama_menu}
-                              fill
-                              className="object-cover"
-                            />
-                          )}
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <span className="font-bold text-gray-900">
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={() => handleSelectItem(item.id)}
+                        aria-label={item.nama_menu}
+                        className="mt-1 h-4 w-4 cursor-pointer rounded border-gray-300 accent-[#e76f51]"
+                      />
+                      {(() => {
+                        const isPlaceholder = (item.gambar || "").includes("-icon.png");
+                        return (
+                          <div
+                            className={`relative col-start-2 aspect-video w-full overflow-hidden rounded-xl ${
+                              isPlaceholder
+                                ? "bg-amber-50/40 flex items-center justify-center"
+                                : "bg-slate-200"
+                            } sm:row-start-1`}
+                          >
+                            {isPlaceholder ? (
+                              <div className="relative h-10 w-10 sm:h-12 sm:w-12">
+                                <Image
+                                  src={item.gambar || "/assets/food-icon.png"}
+                                  alt={item.nama_menu}
+                                  fill
+                                  sizes="48px"
+                                  className="object-contain"
+                                />
+                              </div>
+                            ) : (
+                              <Image
+                                src={item.gambar || "/assets/food-icon.png"}
+                                alt={item.nama_menu}
+                                fill
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 38vw, 380px"
+                                className="object-cover"
+                              />
+                            )}
+                          </div>
+                        );
+                      })()}
+
+                      <div className="col-start-2 flex min-w-0 flex-col justify-between gap-5 text-left sm:col-start-3 sm:row-start-1 sm:h-full">
+                        <div className="grid min-w-0 grid-cols-2 gap-x-4 sm:gap-x-6">
+                          <p className="min-w-0 break-words text-xl font-semibold leading-6 text-gray-900">
                             {item.nama_menu}
-                          </span>
+                          </p>
+                          <p className="min-w-0 break-words text-right text-lg font-semibold tabular-nums text-gray-700">
+                            <span className="sr-only">{t("colUnitPrice")}: </span>
+                            {formatCurrency(item.harga, locale)}
+                          </p>
                         </div>
-                      </div>
 
-                      <div className="grid grid-cols-4 w-3/5 items-center text-center">
-                        <span className="text-gray-600 font-medium">
-                          {formatCurrency(item.harga, locale)}
-                        </span>
-
-                        <div className="flex items-center justify-center">
-                          <div className="flex items-center rounded-lg border border-gray-200 bg-slate-50">
+                        <div className="grid min-w-0 grid-cols-2 items-center gap-x-4 sm:gap-x-6">
+                          <div className="flex min-w-0 flex-wrap items-center gap-2">
+                            <div
+                              role="group"
+                              aria-label={`${t("colQuantity")}: ${item.quantity}`}
+                              className="flex shrink-0 items-center rounded-lg border border-gray-200 bg-slate-50"
+                            >
+                              <button
+                                type="button"
+                                aria-label={`${t("colQuantity")} -`}
+                                onClick={() =>
+                                  handleDecreaseQuantity(item.id, item.quantity)
+                                }
+                                className="flex h-8 w-6 items-center justify-center rounded-l-lg text-sm text-gray-600 hover:bg-gray-200"
+                              >
+                                -
+                              </button>
+                              <span className="min-w-5 text-center text-sm font-semibold tabular-nums text-gray-800">
+                                {item.quantity}
+                              </span>
+                              <button
+                                type="button"
+                                aria-label={`${t("colQuantity")} +`}
+                                onClick={() =>
+                                  updateQuantity(item.id, item.quantity + 1)
+                                }
+                                className="flex h-8 w-6 items-center justify-center rounded-r-lg text-sm text-gray-600 hover:bg-gray-200"
+                              >
+                                +
+                              </button>
+                            </div>
                             <button
                               type="button"
-                              onClick={() =>
-                                handleDecreaseQuantity(item.id, item.quantity)
-                              }
-                              className="px-2 py-0.5 text-xs text-gray-600 hover:bg-gray-200"
+                              aria-label={t("delete")}
+                              onClick={() => handleRemoveItem(item.id)}
+                              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-red-600 transition hover:bg-red-50"
                             >
-                              -
-                            </button>
-                            <span className="w-8 text-center text-xs font-semibold text-gray-800">
-                              {item.quantity}
-                            </span>
-                            <button
-                              type="button"
-                              onClick={() =>
-                                updateQuantity(item.id, item.quantity + 1)
-                              }
-                              className="px-2 py-0.5 text-xs text-gray-600 hover:bg-gray-200"
-                            >
-                              +
+                              <svg
+                                className="h-4 w-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
+                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                />
+                              </svg>
                             </button>
                           </div>
-                        </div>
-
-                        <span className="font-bold text-[#e76f51]">
-                          {formatCurrency(item.harga * item.quantity, locale)}
-                        </span>
-
-                        <div className="flex justify-center">
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveItem(item.id)}
-                            className="flex items-center gap-1 text-xs font-medium text-red-500 hover:text-red-600"
-                          >
-                            <svg
-                              className="w-3.5 h-3.5"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                              />
-                            </svg>
-                            <span>{t("delete")}</span>
-                          </button>
+                          <p className="min-w-0 break-words text-right text-lg font-semibold tabular-nums text-[#e76f51]">
+                            <span className="sr-only">{t("colTotalPrice")}: </span>
+                            {formatCurrency(item.harga * item.quantity, locale)}
+                          </p>
                         </div>
                       </div>
                     </div>
