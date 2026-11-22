@@ -30,14 +30,21 @@ export interface PublicCatalog {
   popular: PublicMenuItem[];
 }
 
-const DEFAULT_GAMBAR = "/assets/food.jpg";
+export function resolveMenuImage(gambar?: string | null, kategori?: string | null): string {
+  if (gambar && gambar.trim() !== "") {
+    return gambar.startsWith("/") || gambar.startsWith("http") ? gambar : `/assets/${gambar}`;
+  }
+  return kategori?.toLowerCase() === "snack"
+    ? "/assets/snack-icon.png"
+    : "/assets/food-icon.png";
+}
 
 function toPublicItem(m: MenuRow): PublicMenuItem {
   return {
     id: m.id,
     nama_menu: m.nama,
     harga: Number(m.harga),
-    gambar: m.gambar || DEFAULT_GAMBAR,
+    gambar: resolveMenuImage(m.gambar, m.kategori),
     estimasi: m.estimasi ? `${m.estimasi} Mnt` : "10-15 Mnt",
     rating: m.rating ? `${Number(m.rating).toFixed(1)} / 5.0` : "-",
     kategori: m.kategori,
