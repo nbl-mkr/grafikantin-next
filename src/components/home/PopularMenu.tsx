@@ -25,6 +25,7 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
   const t = useTranslations("popular");
   const formatNumber = useFormatter().number;
   const featured = items[0];
+  const isFeaturedPlaceholder = (featured?.gambar || "").includes("-icon.png");
 
   const handleBuyClick = () => {
     if (!featured) return;
@@ -82,15 +83,32 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
           {featured && (
             <div className="group rounded-lg bg-white p-4 shadow-sm hover:shadow-[0_0_16px_rgba(15,23,42,0.05)] hover:-translate-y-1 transition-all duration-300 border border-gray-100 flex flex-col justify-between w-full max-w-88 mx-auto lg:justify-self-end lg:mx-0">
               <div>
-                <div className="relative h-52 overflow-hidden rounded-lg">
-                  <AdaptiveImage
-                    src={featured.gambar}
-                    alt={featured.nama_menu}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 352px"
-                    className="object-cover"
-                    preload
-                  />
+                <div
+                  className={`relative h-52 overflow-hidden rounded-lg ${
+                    isFeaturedPlaceholder ? "bg-amber-50/40 flex items-center justify-center" : ""
+                  }`}
+                >
+                  {isFeaturedPlaceholder ? (
+                    <div className="relative h-20 w-20">
+                      <AdaptiveImage
+                        src={featured.gambar}
+                        alt={featured.nama_menu}
+                        fill
+                        sizes="80px"
+                        className="object-contain"
+                        preload
+                      />
+                    </div>
+                  ) : (
+                    <AdaptiveImage
+                      src={featured.gambar}
+                      alt={featured.nama_menu}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 352px"
+                      className="object-cover"
+                      preload
+                    />
+                  )}
                 </div>
 
                 <div className="mt-2">
