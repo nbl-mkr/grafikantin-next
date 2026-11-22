@@ -12,6 +12,7 @@ export interface ProductData {
   id: string | number;
   nama_menu: string;
   harga: number;
+  kategori?: string;
   deskripsi?: string;
   gambar?: string;
   estimasi?: string;
@@ -44,7 +45,7 @@ export default function ProductDetail({ product, standName }: ProductDetailProps
       id: product.id,
       nama_menu: product.nama_menu,
       harga: product.harga,
-      gambar: product.gambar || "/assets/food.jpg",
+      gambar: product.gambar || (product.kategori?.toLowerCase() === "snack" ? "/assets/snack-icon.png" : "/assets/food-icon.png"),
       quantity: quantity,
       stand_id: product.stand_id || 1,
     });
