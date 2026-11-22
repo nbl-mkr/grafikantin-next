@@ -25,18 +25,37 @@ interface MenuCardProps {
 export default function MenuCard({ item, preload }: MenuCardProps) {
   const t = useTranslations("menu");
   const locale = useLocale();
+  const isPlaceholder = (item.gambar || "").includes("-icon.png");
+
   return (
     <div className="group rounded-lg bg-white p-4 shadow-sm hover:shadow-[0_0_16px_rgba(15,23,42,0.05)] hover:-translate-y-1 transition-all duration-300 border border-gray-100 flex flex-col justify-between">
       <div>
-        <div className="relative h-52 overflow-hidden rounded-lg">
-          <AdaptiveImage
-            src={item.gambar}
-            alt={item.nama_menu}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover"
-            preload={preload}
-          />
+        <div
+          className={`relative h-52 overflow-hidden rounded-lg ${
+            isPlaceholder ? "bg-amber-50/40 flex items-center justify-center" : ""
+          }`}
+        >
+          {isPlaceholder ? (
+            <div className="relative h-20 w-20">
+              <AdaptiveImage
+                src={item.gambar}
+                alt={item.nama_menu}
+                fill
+                sizes="80px"
+                className="object-contain"
+                preload={preload}
+              />
+            </div>
+          ) : (
+            <AdaptiveImage
+              src={item.gambar}
+              alt={item.nama_menu}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover"
+              preload={preload}
+            />
+          )}
         </div>
 
         <div className="mt-2">
