@@ -23,7 +23,7 @@ export default function DashboardShell({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-slate-50 font-sans">
+    <div className="flex min-h-screen bg-[#fafafa] font-sans">
       <Sidebar
         role={role}
         profile={profile}

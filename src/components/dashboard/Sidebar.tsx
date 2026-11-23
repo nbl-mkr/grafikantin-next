@@ -176,7 +176,7 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
           <Link
             href="/dashboard/setting"
             onClick={onClose}
-            className="block rounded-2xl border border-gray-100 bg-slate-50 p-3 shadow-sm transition hover:border-gray-200 hover:bg-slate-100"
+            className="block rounded-2xl border border-gray-100 bg-[#fafafa] p-3 shadow-sm transition hover:border-gray-200 hover:bg-slate-100"
           >
             <div className="flex flex-col items-center gap-3 text-center">
               <div className="relative h-16 w-16 overflow-hidden rounded-full border border-gray-200 bg-white shadow-sm">
