@@ -39,7 +39,7 @@ export default async function StandCards({ stands }: StandCardsProps) {
                 <div>
                   <div
                     className={`relative h-52 w-full overflow-hidden rounded-lg ${
-                      isPlaceholder ? "bg-amber-50/40 flex items-center justify-center" : ""
+                      isPlaceholder ? "bg-[#fafafa] flex items-center justify-center" : ""
                     }`}
                   >
                     {isPlaceholder ? (
