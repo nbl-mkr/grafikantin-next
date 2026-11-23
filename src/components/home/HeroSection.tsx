@@ -133,8 +133,8 @@ export default function HeroSection() {
             <p className="text-xs font-medium text-gray-600">{t("statHygiene")}</p>
           </div>
           <div>
-            <p className="text-2xl font-black text-slate-900">{t("statRatingValue")}</p>
-            <p className="text-xs font-medium text-gray-600">{t("statRating")}</p>
+            <p className="text-2xl font-black text-slate-900">{t("statMenusValue")}</p>
+            <p className="text-xs font-medium text-gray-600">{t("statMenus")}</p>
           </div>
         </div>
       </div>
