@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 export default async function OrderInformation() {
   const t = await getTranslations("order");
   return (
-    <div className="w-full bg-slate-50 py-12 md:py-16 text-gray-900 border-y border-gray-200/60">
+    <div className="w-full bg-[#fafafa] py-12 md:py-16 text-gray-900 border-y border-gray-200/60">
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-10 px-6 md:flex-row md:items-stretch">
         
         <div className="w-full text-left md:w-6/12 flex flex-col justify-center">
