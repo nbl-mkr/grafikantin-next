@@ -29,8 +29,8 @@
     "statStands": "Canteen Stalls",
     "statHygieneValue": "100%",
     "statHygiene": "Hygienic & Fresh",
-    "statRatingValue": "4.8/5",
-    "statRating": "Student Rating"
+    "statMenusValue": "50+",
+    "statMenus": "Canteen Menus"
   },
   "promo": {
     "titleFirst": "PICK UP",
