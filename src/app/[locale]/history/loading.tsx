@@ -6,7 +6,7 @@ export default async function HistoryLoading() {
   return (
     <div
       aria-busy="true"
-      className="mx-auto w-full max-w-5xl bg-slate-50 px-4 py-10 pb-28 sm:px-6"
+      className="mx-auto w-full max-w-5xl bg-[#fafafa] px-4 py-10 pb-28 sm:px-6"
     >
       <p className="sr-only" role="status">{t("loading")}</p>
       <div className="mb-10 max-w-3xl">

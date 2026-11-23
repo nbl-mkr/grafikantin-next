@@ -127,7 +127,7 @@ export default function HistoryOrder({
       <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
         {!isLoggedIn ? (
           <section className="flex flex-col items-center justify-center p-8 text-center sm:p-12">
-            <div className="mb-4 rounded-full bg-slate-50 p-6">
+            <div className="mb-4 rounded-full bg-[#fafafa] p-6">
               <svg
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
@@ -159,7 +159,7 @@ export default function HistoryOrder({
           </section>
         ) : transactions.length === 0 ? (
           <section className="flex flex-col items-center justify-center p-8 text-center sm:p-12">
-            <div className="mb-4 rounded-full bg-slate-50 p-6">
+            <div className="mb-4 rounded-full bg-[#fafafa] p-6">
               <svg
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
@@ -184,7 +184,7 @@ export default function HistoryOrder({
             </p>
             <Link
               href="/#menu-populer"
-              className="mt-6 block w-full max-w-sm rounded-xl border border-gray-100 bg-slate-50 p-4 text-left transition-colors duration-300 hover:bg-slate-100"
+              className="mt-6 block w-full max-w-sm rounded-xl border border-gray-100 bg-[#fafafa] p-4 text-left transition-colors duration-300 hover:bg-slate-100"
             >
               <p className="text-sm font-bold text-gray-900">
                 {t("popularTitle")}

@@ -14,7 +14,7 @@ export default async function HistoryPage() {
   const currentTime = new Date().toISOString();
 
   return (
-    <div className="grow bg-slate-50">
+    <div className="grow bg-[#fafafa]">
       <HistoryOrder
         orders={orders}
         isLoggedIn={Boolean(profile)}
