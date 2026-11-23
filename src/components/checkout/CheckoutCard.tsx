@@ -130,7 +130,7 @@ export default function CheckoutCard() {
   };
 
   if (!isLoaded) {
-    return <div className="min-h-screen bg-slate-50" />;
+    return <div className="min-h-screen bg-[#fafafa]" />;
   }
 
   if (items.length === 0) {
@@ -196,7 +196,7 @@ export default function CheckoutCard() {
               {t("paymentInstructions")}
             </p>
 
-            <div className="flex flex-col items-center rounded-2xl border border-gray-100 bg-slate-50 p-6 w-full text-center">
+            <div className="flex flex-col items-center rounded-2xl border border-gray-100 bg-[#fafafa] p-6 w-full text-center">
               <span className="text-xs font-bold text-slate-700 tracking-wider mb-3">
                 {t("paymentViaMidtrans")}
               </span>
