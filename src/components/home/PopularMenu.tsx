@@ -87,7 +87,7 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
               <div>
                 <div
                   className={`relative h-52 overflow-hidden rounded-lg ${
-                    isFeaturedPlaceholder ? "bg-amber-50/40 flex items-center justify-center" : ""
+                    isFeaturedPlaceholder ? "bg-[#fafafa] flex items-center justify-center" : ""
                   }`}
                 >
                   {isFeaturedPlaceholder ? (
