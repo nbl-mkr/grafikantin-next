@@ -5,7 +5,7 @@ export default async function ShoppingPage() {
   const { stands } = await fetchPublicCatalog();
 
   return (
-    <div className="grow bg-slate-50">
+    <div className="grow bg-[#fafafa]">
       <CardCard stands={stands.map((s) => ({ id: s.id, nama_stand: s.nama_stand }))} />
     </div>
   );

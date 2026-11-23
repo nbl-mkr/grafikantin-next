@@ -86,7 +86,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
         </h1>
 
         <div className="flex flex-col items-center justify-center rounded-2xl border border-gray-100 bg-white p-8 sm:p-12 text-center shadow-sm">
-          <div className="mb-4 rounded-full bg-slate-50 p-6">
+          <div className="mb-4 rounded-full bg-[#fafafa] p-6">
             <svg
               className="size-8 text-gray-600"
               fill="none"
@@ -109,7 +109,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
           </p>
           <Link
             href="/#menu-populer"
-            className="mt-6 block w-full max-w-sm rounded-xl border border-gray-100 bg-slate-50 p-4 text-left transition-colors duration-300 hover:bg-slate-100"
+            className="mt-6 block w-full max-w-sm rounded-xl border border-gray-100 bg-[#fafafa] p-4 text-left transition-colors duration-300 hover:bg-slate-100"
           >
             <p className="text-sm font-bold text-gray-900">{t("popularTitle")}</p>
             <p className="text-xs text-gray-600 mt-0.5">
@@ -261,7 +261,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
                             <div
                               role="group"
                               aria-label={`${t("colQuantity")}: ${item.quantity}`}
-                              className="flex shrink-0 items-center rounded-lg border border-gray-200 bg-slate-50"
+                              className="flex shrink-0 items-center rounded-lg border border-gray-200 bg-[#fafafa]"
                             >
                               <button
                                 type="button"
