@@ -12,8 +12,10 @@ export interface PopularMenuItem {
   deskripsi?: string;
   gambar: string;
   stand_id?: number | string;
+  stand_nama?: string;
   estimasi?: string;
   rating?: string;
+  tersedia?: boolean;
 }
 
 interface PopularMenuProps {
@@ -63,10 +65,10 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
                     <p className="text-xs text-gray-600">{t("prepLabel")}</p>
                   </div>
                   <div className="border-l-2 border-[#e76f51] pl-4">
-                    <p className="text-lg font-bold text-gray-900">
-                      {featured.rating || "4.8 / 5.0"}
+                    <p className="text-lg font-bold text-gray-900 truncate">
+                      {featured.stand_nama || t("standFallback")}
                     </p>
-                    <p className="text-xs text-gray-600">{t("ratingLabel")}</p>
+                    <p className="text-xs text-gray-600">{t("standLabel")}</p>
                   </div>
                 </div>
               </>
@@ -154,23 +156,23 @@ export default function PopularMenu({ items, onSelect }: PopularMenuProps) {
 
                     <div className="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
                       <svg
-                        className="size-4 text-[#e76f51]"
+                        className="size-4 text-[#e76f51] shrink-0"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
+                        strokeWidth="2"
                       >
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                          d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                         />
                       </svg>
                       <div className="mt-1.5 sm:mt-0">
-                        <p className="text-gray-600">{t("ratingShort")}</p>
-                        <p className="font-medium text-gray-700">
-                          {featured.rating || "4.8 / 5.0"}
+                        <p className="text-gray-600">{t("statusLabel")}</p>
+                        <p className={`font-medium ${featured.tersedia !== false ? "text-gray-700" : "text-gray-400"}`}>
+                          {featured.tersedia !== false ? t("statusAvailable") : t("statusUnavailable")}
                         </p>
                       </div>
                     </div>
