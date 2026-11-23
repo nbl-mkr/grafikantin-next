@@ -12,6 +12,7 @@ export interface PublicMenuItem {
   kategori: "Makanan" | "Snack";
   deskripsi?: string;
   stand_id: number;
+  stand_nama?: string;
   tersedia: boolean;
 }
 
@@ -50,6 +51,7 @@ function toPublicItem(m: MenuRow): PublicMenuItem {
     kategori: m.kategori,
     deskripsi: m.deskripsi ?? undefined,
     stand_id: m.stand_id,
+    stand_nama: m.stand?.nama_stand ?? undefined,
     tersedia: m.tersedia,
   };
 }
@@ -57,7 +59,10 @@ function toPublicItem(m: MenuRow): PublicMenuItem {
 export async function fetchPublicCatalog(): Promise<PublicCatalog> {
   const supabase = await createClient();
 
-  const [menusRes, standsRes] = await Promise.all([
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+  const [menusRes, standsRes, ordersRes] = await Promise.all([
     supabase
       .from("menus")
       .select("id, nama, kategori, harga, stok, tersedia, estimasi, deskripsi, rating, gambar, stand_id, stand:stands!menus_stand_id_fkey ( id, nama_stand )")
@@ -67,6 +72,11 @@ export async function fetchPublicCatalog(): Promise<PublicCatalog> {
       .from("stands")
       .select("id, nama_stand, nomor_stand, status, menus(count)")
       .order("id"),
+    supabase
+      .from("orders")
+      .select("id_menu, jumlah, status, created_at")
+      .gte("created_at", oneWeekAgo.toISOString())
+      .neq("status", "Dibatalkan"),
   ]);
 
   if (menusRes.error) throw new Error(`Gagal memuat menu: ${menusRes.error.message}`);
@@ -87,12 +97,23 @@ export async function fetchPublicCatalog(): Promise<PublicCatalog> {
     jumlah_menu: s.menus?.[0]?.count ?? 0,
   }));
 
+  const salesMap = new Map<number, number>();
+  if (ordersRes.data) {
+    for (const order of ordersRes.data as { id_menu?: number; jumlah?: number }[]) {
+      if (order.id_menu) {
+        const current = salesMap.get(order.id_menu) ?? 0;
+        salesMap.set(order.id_menu, current + (order.jumlah || 1));
+      }
+    }
+  }
+
   const popular = [...items]
-    .sort(
-      (a, b) =>
-        (parseFloat(b.rating) || 0) - (parseFloat(a.rating) || 0) ||
-        a.harga - b.harga
-    )
+    .sort((a, b) => {
+      const salesA = salesMap.get(a.id) ?? 0;
+      const salesB = salesMap.get(b.id) ?? 0;
+      if (salesB !== salesA) return salesB - salesA;
+      return a.id - b.id;
+    })
     .slice(0, 3);
 
   return { items, stands, popular };
