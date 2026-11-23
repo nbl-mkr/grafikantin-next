@@ -62,7 +62,7 @@ export default function InvoiceCard({ status }: { status: InvoiceStatus }) {
     return (
       <div className="mx-auto max-w-md px-4 py-12 text-center sm:px-0">
         <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm">
-          <div className="mx-auto mb-4 flex size-20 items-center justify-center rounded-full bg-slate-50">
+          <div className="mx-auto mb-4 flex size-20 items-center justify-center rounded-full bg-[#fafafa]">
             <svg
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
@@ -111,13 +111,13 @@ export default function InvoiceCard({ status }: { status: InvoiceStatus }) {
             <button
               type="button"
               onClick={handleFinish}
-              className="w-full rounded-xl border border-gray-100 bg-slate-50 py-3 text-sm font-bold text-gray-700 transition-colors hover:bg-slate-100"
+              className="w-full rounded-xl border border-gray-100 bg-[#fafafa] py-3 text-sm font-bold text-gray-700 transition-colors hover:bg-slate-100"
             >
               {t("finish")}
             </button>
           </div>
           {checkMessage && (
-            <p className="mt-3 rounded-lg border border-gray-100 bg-slate-50 px-3 py-2 text-xs font-medium text-gray-600">
+            <p className="mt-3 rounded-lg border border-gray-100 bg-[#fafafa] px-3 py-2 text-xs font-medium text-gray-600">
               {checkMessage}
             </p>
           )}
@@ -208,7 +208,7 @@ export default function InvoiceCard({ status }: { status: InvoiceStatus }) {
           <button
             type="button"
             onClick={handlePrint}
-            className="w-full rounded-xl border border-gray-100 bg-slate-50 py-3 text-center text-sm font-bold text-gray-700 transition-colors duration-300 hover:bg-slate-100 cursor-pointer"
+            className="w-full rounded-xl border border-gray-100 bg-[#fafafa] py-3 text-center text-sm font-bold text-gray-700 transition-colors duration-300 hover:bg-slate-100 cursor-pointer"
           >
             {t("print")}
           </button>

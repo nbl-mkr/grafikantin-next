@@ -17,7 +17,7 @@ export default async function InvoicePage({
       : null;
 
   return (
-    <div className="w-full bg-slate-50 py-8">
+    <div className="w-full bg-[#fafafa] py-8">
       <InvoiceCard status={status} />
     </div>
   );
