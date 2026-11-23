@@ -33,7 +33,7 @@ export default function MenuCard({ item, preload }: MenuCardProps) {
       <div>
         <div
           className={`relative h-52 overflow-hidden rounded-lg ${
-            isPlaceholder ? "bg-[#fafafa] flex items-center justify-center" : ""
+            isPlaceholder ? "bg-amber-50/40 flex items-center justify-center" : ""
           }`}
         >
           {isPlaceholder ? (
