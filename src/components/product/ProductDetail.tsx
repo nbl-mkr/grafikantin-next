@@ -114,7 +114,7 @@ export default function ProductDetail({ product, standName }: ProductDetailProps
             </p>
           </div>
 
-          <div className="mt-5 flex items-center justify-between rounded-2xl bg-slate-50 p-4 border border-gray-100 text-sm">
+          <div className="mt-5 flex items-center justify-between rounded-2xl bg-[#fafafa] p-4 border border-gray-100 text-sm">
             <div>
               <p className="text-gray-600 text-xs">{t("estimateTitle")}</p>
               <p className="font-bold text-gray-800 mt-0.5">

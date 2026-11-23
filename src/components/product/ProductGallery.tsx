@@ -11,7 +11,7 @@ export default function ProductGallery({ gambar, namaMenu }: ProductGalleryProps
   return (
     <div
       className={`relative aspect-square h-auto w-full lg:aspect-auto lg:h-full overflow-hidden rounded-2xl ${
-        isPlaceholder ? "bg-amber-50/40 flex items-center justify-center" : "bg-gray-50"
+        isPlaceholder ? "bg-[#fafafa] flex items-center justify-center" : "bg-gray-50"
       } border border-gray-100`}
     >
       {isPlaceholder ? (
