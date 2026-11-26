@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import ChartPeriodFilter from "@/components/dashboard/ChartPeriodFilter";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -17,7 +18,7 @@ import {
   type ScriptableContext,
 } from "chart.js";
 import { Line, Doughnut } from "react-chartjs-2";
-import type { ChartPeriod } from "@/lib/data/aggregate";
+import type { ChartMonthRange, ChartRanges, ChartPeriod, ChartTimeframe } from "@/lib/data/aggregate";
 import { formatCurrency } from "@/lib/format";
 
 ChartJS.register(
@@ -33,15 +34,25 @@ ChartJS.register(
 );
 
 interface ChartSectionProps {
-  revenueRanges: { "6m": ChartPeriod; "12m": ChartPeriod };
+  revenueRanges: ChartRanges<ChartPeriod>;
   statusSplit: { label: string; value: number }[];
 }
 
 export default function ChartSection({ revenueRanges, statusSplit }: ChartSectionProps) {
   const t = useTranslations("dashboard.overview");
   const locale = useLocale();
-  const [range, setRange] = useState<"6m" | "12m">("6m");
-  const currentData = revenueRanges[range];
+  const [timeframe, setTimeframe] = useState<ChartTimeframe>("monthly");
+  const [monthRange, setMonthRange] = useState<ChartMonthRange>("6m");
+  const currentData =
+    timeframe === "monthly" ? revenueRanges.monthly[monthRange] : revenueRanges[timeframe];
+  const maxRevenue = Math.max(...currentData.values, 0);
+  const roughStep = maxRevenue > 0 ? maxRevenue / 5 : 500000;
+  const magnitude = 10 ** Math.floor(Math.log10(roughStep));
+  const normalizedStep = roughStep / magnitude;
+  const yAxisStep =
+    (normalizedStep <= 1 ? 1 : normalizedStep <= 2 ? 2 : normalizedStep <= 5 ? 5 : 10) *
+    magnitude;
+  const yAxisMax = Math.max(yAxisStep * 5, Math.ceil(maxRevenue / yAxisStep) * yAxisStep);
 
   const lineChartData = {
     labels: currentData.labels,
@@ -88,9 +99,9 @@ export default function ChartSection({ revenueRanges, statusSplit }: ChartSectio
       x: { grid: { display: false }, ticks: { color: "#4b5563" } },
       y: {
         min: 0,
-        max: 2500000,
+        max: yAxisMax,
         ticks: {
-          stepSize: 500000,
+          stepSize: yAxisStep,
           color: "#4b5563",
           callback: (tickValue: string | number) =>
             formatCurrency(Number(tickValue), locale),
@@ -132,32 +143,14 @@ export default function ChartSection({ revenueRanges, statusSplit }: ChartSectio
   return (
     <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
       <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm lg:col-span-2">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="text-sm font-medium text-gray-900">{t("chartTitle")}</h2>
-          <div className="inline-flex rounded-md border border-gray-200 p-0.5 text-xs font-medium">
-            <button
-              type="button"
-              onClick={() => setRange("6m")}
-              className={`rounded-sm px-2 py-1 transition-colors ${
-                range === "6m"
-                  ? "bg-gray-100 text-gray-900 font-semibold"
-                  : "text-gray-600"
-              }`}
-            >
-              {t("range6m")}
-            </button>
-            <button
-              type="button"
-              onClick={() => setRange("12m")}
-              className={`rounded-sm px-2 py-1 transition-colors ${
-                range === "12m"
-                  ? "bg-gray-100 text-gray-900 font-semibold"
-                  : "text-gray-600"
-              }`}
-            >
-              {t("range12m")}
-            </button>
-          </div>
+          <ChartPeriodFilter
+            timeframe={timeframe}
+            onTimeframeChange={setTimeframe}
+            monthRange={monthRange}
+            onMonthRangeChange={setMonthRange}
+          />
         </div>
         <div className="mt-4 h-64">
           <Line data={lineChartData} options={lineChartOptions} />

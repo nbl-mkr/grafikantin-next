@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import ChartPeriodFilter from "@/components/dashboard/ChartPeriodFilter";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,12 +14,16 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import StatCard from "@/components/dashboard/StatCard";
-import type { DashboardStat } from "@/lib/data/aggregate";
+import type {
+  ChartMonthRange,
+  ChartRanges,
+  ChartTimeframe,
+  DashboardStat,
+  ReportChartPeriod,
+} from "@/lib/data/aggregate";
 import { formatCurrency } from "@/lib/format";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
-
-type RangeKey = "6m" | "12m";
 
 interface ReportSectionProps {
   summary: DashboardStat[];
@@ -29,14 +34,16 @@ interface ReportSectionProps {
     menuTerlaris: string;
     persentase: number;
   }[];
-  charts: Record<RangeKey, { labels: string[]; pendapatan: number[]; pesanan: number[] }>;
+  charts: ChartRanges<ReportChartPeriod>;
 }
 
 export default function ReportSection({ summary, rows, charts }: ReportSectionProps) {
   const t = useTranslations("dashboard.report");
   const locale = useLocale();
-  const [range, setRange] = useState<RangeKey>("6m");
-  const current = charts[range];
+  const [timeframe, setTimeframe] = useState<ChartTimeframe>("monthly");
+  const [monthRange, setMonthRange] = useState<ChartMonthRange>("6m");
+  const current =
+    timeframe === "monthly" ? charts.monthly[monthRange] : charts[timeframe];
 
   const chartData = {
     labels: current.labels,
@@ -105,22 +112,14 @@ export default function ReportSection({ summary, rows, charts }: ReportSectionPr
         ))}
       </div>
       <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="text-sm font-medium text-gray-900">{t("chartTitle")}</h2>
-          <div className="inline-flex rounded-md border border-gray-200 p-0.5 text-xs font-medium">
-            {(["6m", "12m"] as const).map((r) => (
-              <button
-                key={r}
-                type="button"
-                onClick={() => setRange(r)}
-                className={`rounded-sm px-2 py-1 transition-colors ${
-                  range === r ? "bg-gray-100 text-gray-900 font-semibold" : "text-gray-600"
-                }`}
-              >
-                {r === "6m" ? t("range6m") : t("range12m")}
-              </button>
-            ))}
-          </div>
+          <ChartPeriodFilter
+            timeframe={timeframe}
+            onTimeframeChange={setTimeframe}
+            monthRange={monthRange}
+            onMonthRangeChange={setMonthRange}
+          />
         </div>
         <div className="mt-4 h-64">
           <Bar data={chartData} options={chartOptions} />
