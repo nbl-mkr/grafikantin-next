@@ -5,6 +5,21 @@ export interface ChartPeriod {
   values: number[];
 }
 
+export type ChartTimeframe = "daily" | "weekly" | "monthly";
+export type ChartMonthRange = "6m" | "12m";
+
+export interface ChartRanges<T> {
+  daily: T;
+  weekly: T;
+  monthly: Record<ChartMonthRange, T>;
+}
+
+interface TimeBucket {
+  start: Date;
+  end: Date;
+  label: string;
+}
+
 export interface DashboardStat {
   label: string;
   value: string;
@@ -37,28 +52,77 @@ const pctChange = (curr: number, prev: number) => {
 
 const inRange = (d: Date, start: Date, end: Date) => d >= start && d < end;
 
-export function buildRevenueCharts(orders: OrderRow[], locale: string): {
-  "6m": ChartPeriod;
-  "12m": ChartPeriod;
-} {
-  const now = new Date();
+const formatShortDate = (date: Date, locale: string) =>
+  date.toLocaleDateString(locale === "en" ? "en-US" : "id-ID", {
+    day: "numeric",
+    month: "short",
+  });
+
+function makeDailyBuckets(now: Date, locale: string): TimeBucket[] {
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  return Array.from({ length: 7 }, (_, index) => {
+    const start = new Date(today);
+    start.setDate(today.getDate() - (6 - index));
+    const end = new Date(start);
+    end.setDate(start.getDate() + 1);
+    return { start, end, label: formatShortDate(start, locale) };
+  });
+}
+
+function makeWeeklyBuckets(now: Date, locale: string): TimeBucket[] {
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const oldest = new Date(today);
+  oldest.setDate(today.getDate() - 27);
+
+  return Array.from({ length: 4 }, (_, index) => {
+    const start = new Date(oldest);
+    start.setDate(oldest.getDate() + index * 7);
+    const end = new Date(start);
+    end.setDate(start.getDate() + 7);
+    const lastDay = new Date(end);
+    lastDay.setDate(end.getDate() - 1);
+    return {
+      start,
+      end,
+      label: `${formatShortDate(start, locale)} - ${formatShortDate(lastDay, locale)}`,
+    };
+  });
+}
+
+function makeMonthlyBuckets(now: Date, locale: string, monthsCount: number): TimeBucket[] {
   const months = monthNames(locale);
-  const make = (monthsCount: number): ChartPeriod => {
-    const labels: string[] = [];
-    const values: number[] = [];
-    for (let i = monthsCount - 1; i >= 0; i--) {
-      const start = new Date(now.getFullYear(), now.getMonth() - i, 1);
-      const end = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
-      labels.push(months[start.getMonth()]);
-      values.push(
-        orders
-          .filter((o) => o.status !== "Dibatalkan" && inRange(new Date(o.created_at), start, end))
-          .reduce((sum, o) => sum + Number(o.total_harga), 0)
-      );
-    }
-    return { labels, values };
+  return Array.from({ length: monthsCount }, (_, index) => {
+    const monthOffset = monthsCount - index - 1;
+    const start = new Date(now.getFullYear(), now.getMonth() - monthOffset, 1);
+    const end = new Date(now.getFullYear(), now.getMonth() - monthOffset + 1, 1);
+    return { start, end, label: months[start.getMonth()] };
+  });
+}
+
+function groupOrdersByBucket(orders: OrderRow[], buckets: TimeBucket[]): OrderRow[][] {
+  return buckets.map(({ start, end }) =>
+    orders.filter((order) => inRange(new Date(order.created_at), start, end))
+  );
+}
+
+export function buildRevenueCharts(orders: OrderRow[], locale: string): ChartRanges<ChartPeriod> {
+  const now = new Date();
+  const validOrders = orders.filter((order) => order.status !== "Dibatalkan");
+  const make = (buckets: TimeBucket[]): ChartPeriod => ({
+    labels: buckets.map((bucket) => bucket.label),
+    values: groupOrdersByBucket(validOrders, buckets).map((bucketOrders) =>
+      bucketOrders.reduce((sum, order) => sum + Number(order.total_harga), 0)
+    ),
+  });
+
+  return {
+    daily: make(makeDailyBuckets(now, locale)),
+    weekly: make(makeWeeklyBuckets(now, locale)),
+    monthly: {
+      "6m": make(makeMonthlyBuckets(now, locale, 6)),
+      "12m": make(makeMonthlyBuckets(now, locale, 12)),
+    },
   };
-  return { "6m": make(6), "12m": make(12) };
 }
 
 export function buildStats(orders: OrderRow[], stands: StandRow[], menus: MenuRow[], locale: string): DashboardStat[] {
@@ -113,29 +177,34 @@ export function buildStandRevenue(orders: { id_stand: number; total_harga: numbe
   return map;
 }
 
-export function buildReportCharts(orders: OrderRow[], locale: string): {
-  "6m": { labels: string[]; pendapatan: number[]; pesanan: number[] };
-  "12m": { labels: string[]; pendapatan: number[]; pesanan: number[] };
-} {
+export interface ReportChartPeriod {
+  labels: string[];
+  pendapatan: number[];
+  pesanan: number[];
+}
+
+export function buildReportCharts(orders: OrderRow[], locale: string): ChartRanges<ReportChartPeriod> {
   const now = new Date();
-  const months = monthNames(locale);
-  const make = (monthsCount: number) => {
-    const labels: string[] = [];
-    const pendapatan: number[] = [];
-    const pesanan: number[] = [];
-    for (let i = monthsCount - 1; i >= 0; i--) {
-      const start = new Date(now.getFullYear(), now.getMonth() - i, 1);
-      const end = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
-      const valid = orders.filter(
-        (o) => o.status !== "Dibatalkan" && inRange(new Date(o.created_at), start, end)
-      );
-      labels.push(months[start.getMonth()]);
-      pendapatan.push(valid.reduce((s, o) => s + Number(o.total_harga), 0));
-      pesanan.push(valid.length);
-    }
-    return { labels, pendapatan, pesanan };
+  const validOrders = orders.filter((order) => order.status !== "Dibatalkan");
+  const make = (buckets: TimeBucket[]): ReportChartPeriod => {
+    const groupedOrders = groupOrdersByBucket(validOrders, buckets);
+    return {
+      labels: buckets.map((bucket) => bucket.label),
+      pendapatan: groupedOrders.map((bucketOrders) =>
+        bucketOrders.reduce((sum, order) => sum + Number(order.total_harga), 0)
+      ),
+      pesanan: groupedOrders.map((bucketOrders) => bucketOrders.length),
+    };
   };
-  return { "6m": make(6), "12m": make(12) };
+
+  return {
+    daily: make(makeDailyBuckets(now, locale)),
+    weekly: make(makeWeeklyBuckets(now, locale)),
+    monthly: {
+      "6m": make(makeMonthlyBuckets(now, locale, 6)),
+      "12m": make(makeMonthlyBuckets(now, locale, 12)),
+    },
+  };
 }
 
 export interface OrderChartPeriod {
@@ -143,35 +212,28 @@ export interface OrderChartPeriod {
   pesanan: number[];
 }
 
-export interface OrderChartData {
-  "6m": OrderChartPeriod;
-  "12m": OrderChartPeriod;
+export interface OrderChartData extends ChartRanges<OrderChartPeriod> {
   target: number;
 }
 
 export function buildOrderCharts(orders: OrderRow[], locale: string): OrderChartData {
   const now = new Date();
-  const months = monthNames(locale);
   const validOrders = orders.filter((o) => o.status !== "Dibatalkan");
-  const make = (monthsCount: number) => {
-    const labels: string[] = [];
-    const pesanan: number[] = [];
-    for (let i = monthsCount - 1; i >= 0; i--) {
-      const start = new Date(now.getFullYear(), now.getMonth() - i, 1);
-      const end = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
-      const valid = validOrders.filter((o) => inRange(new Date(o.created_at), start, end));
-      labels.push(months[start.getMonth()]);
-      pesanan.push(valid.length);
-    }
-    return { labels, pesanan };
-  };
-  const range6m = make(6);
-  const range12m = make(12);
-  const target = Math.round(range12m.pesanan.reduce((sum, count) => sum + count, 0) / 12);
+  const make = (buckets: TimeBucket[]): OrderChartPeriod => ({
+    labels: buckets.map((bucket) => bucket.label),
+    pesanan: groupOrdersByBucket(validOrders, buckets).map((bucketOrders) => bucketOrders.length),
+  });
+  const monthly6m = make(makeMonthlyBuckets(now, locale, 6));
+  const monthly12m = make(makeMonthlyBuckets(now, locale, 12));
+  const target = Math.round(monthly12m.pesanan.reduce((sum, count) => sum + count, 0) / 12);
 
   return {
-    "6m": range6m,
-    "12m": range12m,
+    daily: make(makeDailyBuckets(now, locale)),
+    weekly: make(makeWeeklyBuckets(now, locale)),
+    monthly: {
+      "6m": monthly6m,
+      "12m": monthly12m,
+    },
     target,
   };
 }
