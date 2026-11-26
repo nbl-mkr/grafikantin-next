@@ -172,7 +172,7 @@ export default function Sidebar({ role, profile, isOpen, onClose }: SidebarProps
             )}
           </div>
         </nav>
-        <div className="shrink-0 border-t border-gray-100 p-4">
+        <div className="shrink-0 p-4">
           <Link
             href="/dashboard/setting"
             onClick={onClose}
