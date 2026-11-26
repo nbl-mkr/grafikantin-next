@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import HeroSection from "@/components/home/HeroSection";
 import PopularMenu from "@/components/home/PopularMenu";
 import PromoBanner from "@/components/home/PromoBanner";
@@ -20,7 +20,8 @@ export async function generateMetadata({
 }
 
 export default async function Home() {
-  const { popular } = await fetchPublicCatalog();
+  const locale = await getLocale();
+  const { popular } = await fetchPublicCatalog(locale);
 
   return (
     <>
