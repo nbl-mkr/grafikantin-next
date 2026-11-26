@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { getLocale } from "next-intl/server";
 import ProductDetail from "@/components/product/ProductDetail";
 import { fetchPublicCatalog } from "@/lib/data/public";
 
@@ -8,7 +9,8 @@ interface PageProps {
 
 export default async function ProductDetailPage({ params }: PageProps) {
   const { productId } = await params;
-  const { items, stands } = await fetchPublicCatalog();
+  const locale = await getLocale();
+  const { items, stands } = await fetchPublicCatalog(locale);
 
   const product = items.find((item) => String(item.id) === String(productId));
   if (!product) notFound();
