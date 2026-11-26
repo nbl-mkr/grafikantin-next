@@ -247,10 +247,10 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
 
                       <div className="col-start-2 flex min-w-0 flex-col justify-between gap-5 text-left sm:col-start-3 sm:row-start-1 sm:h-full">
                         <div className="grid min-w-0 grid-cols-2 gap-x-4 sm:gap-x-6">
-                          <p className="min-w-0 break-words text-xl font-semibold leading-6 text-gray-900">
+                          <p className="min-w-0 wrap-break-word text-xl font-semibold leading-6 text-gray-900">
                             {item.nama_menu}
                           </p>
-                          <p className="min-w-0 break-words text-right text-lg font-semibold tabular-nums text-gray-700">
+                          <p className="min-w-0 wrap-break-word text-right text-lg font-semibold tabular-nums text-gray-700">
                             <span className="sr-only">{t("colUnitPrice")}: </span>
                             {formatCurrency(item.harga, locale)}
                           </p>
@@ -308,7 +308,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
                               </svg>
                             </button>
                           </div>
-                          <p className="min-w-0 break-words text-right text-lg font-semibold tabular-nums text-[#e76f51]">
+                          <p className="min-w-0 wrap-break-word text-right text-lg font-semibold tabular-nums text-[#e76f51]">
                             <span className="sr-only">{t("colTotalPrice")}: </span>
                             {formatCurrency(item.harga * item.quantity, locale)}
                           </p>
