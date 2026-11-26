@@ -45,3 +45,4 @@ next-env.d.ts
 .hermesignore
 skills-lock.json
 public/assets/originals
+public/assets/photos
