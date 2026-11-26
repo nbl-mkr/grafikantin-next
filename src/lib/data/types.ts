@@ -12,10 +12,18 @@ export interface DbStandRef {
 export interface DbMenuRef {
   id: number;
   nama: string;
-  kategori: string;
+  kategori_id: number | null;
+  kategori_detail: Pick<MenuCategoryRow, "id" | "nama_id" | "nama_en"> | null;
   harga: number;
   gambar: string | null;
   stand: DbStandRef | null;
+}
+
+export interface MenuCategoryRow {
+  id: number;
+  nama_id: string;
+  nama_en: string;
+  is_active: boolean;
 }
 
 export interface OrderRow {
@@ -47,7 +55,8 @@ export interface StandRow {
 export interface MenuRow {
   id: number;
   nama: string;
-  kategori: "Makanan" | "Snack";
+  kategori_id: number | null;
+  kategori_detail: MenuCategoryRow | null;
   harga: number;
   stok: number;
   tersedia: boolean;
