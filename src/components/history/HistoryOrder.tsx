@@ -239,9 +239,10 @@ export default function HistoryOrder({
                       );
                       const image = firstItem.menu?.gambar;
                       const isPlaceholder = !image || image.includes("-icon.png");
+                      const categoryName = firstItem.menu?.kategori_detail?.nama_id;
                       const imageSrc =
                         image ||
-                        (firstItem.menu?.kategori?.toLowerCase() === "snack"
+                        (categoryName?.toLowerCase() === "snack"
                           ? "/assets/snack-icon.png"
                           : "/assets/food-icon.png");
 
@@ -253,7 +254,7 @@ export default function HistoryOrder({
                           <div
                             className={`relative aspect-video w-full overflow-hidden rounded-lg ${
                               isPlaceholder
-                                ? "bg-amber-50/40 flex items-center justify-center"
+                                ? "bg-[#fafafa] flex items-center justify-center"
                                 : "bg-slate-200"
                             }`}
                           >
