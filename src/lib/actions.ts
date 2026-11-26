@@ -15,7 +15,6 @@ async function currentLocale() {
 }
 
 export async function login(formData: FormData): Promise<{ ok: boolean; error?: string; redirectTo?: string }> {
-  const locale = await currentLocale()
   const supabase = await createClient()
 
   const email = (formData.get('email') as string)?.trim()
@@ -50,8 +49,8 @@ export async function login(formData: FormData): Promise<{ ok: boolean; error?: 
 
   const target =
     userData?.role === 'penjual' || userData?.role === 'admin'
-      ? `/${locale}/dashboard`
-      : `/${locale}`
+      ? '/dashboard'
+      : '/'
 
   return { ok: true, redirectTo: target }
 }
