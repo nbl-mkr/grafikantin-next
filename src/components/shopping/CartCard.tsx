@@ -218,7 +218,7 @@ export default function CartCard({ stands = [] }: { stands?: StandRef[] }) {
                           <div
                             className={`relative col-start-2 aspect-video w-full overflow-hidden rounded-xl ${
                               isPlaceholder
-                                ? "bg-amber-50/40 flex items-center justify-center"
+                                ? "bg-[#fafafa] flex items-center justify-center"
                                 : "bg-slate-200"
                             } sm:row-start-1`}
                           >
