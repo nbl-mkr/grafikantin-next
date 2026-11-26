@@ -63,11 +63,121 @@ export interface MenuInput {
   id?: number;
   nama: string;
   standId: number;
-  kategori: "Makanan" | "Snack";
+  kategoriId: number;
   harga: number;
   stok: number;
   tersedia: boolean;
   gambar?: File | null;
+}
+
+export interface MenuCategoryInput {
+  id?: number;
+  namaId: string;
+  namaEn: string;
+}
+
+function revalidateMenuCategoryPages() {
+  revalidatePath("/[locale]/dashboard/menu", "layout");
+  revalidatePath("/[locale]/menu", "page");
+  revalidatePath("/[locale]", "page");
+  revalidatePath("/[locale]/product/[productId]", "page");
+}
+
+export async function upsertMenuCategoryAction(
+  input: MenuCategoryInput
+): Promise<ActionResult> {
+  const ctx = await getDashboardContext();
+  if (!ctx || ctx.role !== "admin") return { ok: false, errorKey: "notAllowed" };
+
+  const namaId = input.namaId.trim();
+  const namaEn = input.namaEn.trim();
+  if (!namaId || !namaEn) return { ok: false, errorKey: "categoryNameRequired" };
+
+  const supabase = await createClient();
+  const payload = { nama_id: namaId, nama_en: namaEn };
+  const result = input.id
+    ? await supabase
+        .from("menu_categories")
+        .update(payload)
+        .eq("id", input.id)
+        .select("id")
+        .maybeSingle()
+    : await supabase
+        .from("menu_categories")
+        .insert(payload)
+        .select("id")
+        .maybeSingle();
+
+  if (result.error) {
+    if (result.error.code === "23505") {
+      return { ok: false, errorKey: "categoryAlreadyExists" };
+    }
+    return { ok: false, error: result.error.message };
+  }
+  if (!result.data) return { ok: false, errorKey: "categoryNotFound" };
+
+  revalidateMenuCategoryPages();
+  return { ok: true };
+}
+
+export async function setMenuCategoryActiveAction(
+  id: number,
+  isActive: boolean
+): Promise<ActionResult> {
+  const ctx = await getDashboardContext();
+  if (!ctx || ctx.role !== "admin") return { ok: false, errorKey: "notAllowed" };
+  if (!Number.isInteger(id) || id <= 0) return { ok: false, errorKey: "categoryNotFound" };
+
+  const supabase = await createClient();
+  if (!isActive) {
+    const { count, error } = await supabase
+      .from("menus")
+      .select("id", { count: "exact", head: true })
+      .eq("kategori_id", id);
+    if (error) return { ok: false, error: error.message };
+    if ((count ?? 0) > 0) return { ok: false, errorKey: "categoryInUse" };
+  }
+
+  const { data, error } = await supabase
+    .from("menu_categories")
+    .update({ is_active: isActive })
+    .eq("id", id)
+    .select("id")
+    .maybeSingle();
+  if (error) return { ok: false, error: error.message };
+  if (!data) return { ok: false, errorKey: "categoryNotFound" };
+
+  revalidateMenuCategoryPages();
+  return { ok: true };
+}
+
+export async function deleteMenuCategoryAction(id: number): Promise<ActionResult> {
+  const ctx = await getDashboardContext();
+  if (!ctx || ctx.role !== "admin") return { ok: false, errorKey: "notAllowed" };
+  if (!Number.isInteger(id) || id <= 0) return { ok: false, errorKey: "categoryNotFound" };
+
+  const supabase = await createClient();
+  const { count, error: countError } = await supabase
+    .from("menus")
+    .select("id", { count: "exact", head: true })
+    .eq("kategori_id", id);
+  if (countError) return { ok: false, error: countError.message };
+  if ((count ?? 0) > 0) return { ok: false, errorKey: "categoryInUse" };
+
+  const { data, error } = await supabase
+    .from("menu_categories")
+    .delete()
+    .eq("id", id)
+    .select("id")
+    .maybeSingle();
+  if (error) {
+    if (error.code === "23503") return { ok: false, errorKey: "categoryInUse" };
+    return { ok: false, error: error.message };
+  }
+  if (!data) return { ok: false, errorKey: "categoryNotFound" };
+
+  revalidateMenuCategoryPages();
+  return { ok: true };
 }
 
 async function uploadMenuImage(
@@ -93,12 +203,23 @@ export async function upsertMenuAction(input: MenuInput): Promise<ActionResult> 
   if (ctx.role === "penjual" && (!ctx.standId || ctx.standId !== input.standId)) return { ok: false, errorKey: "notYourStand" };
   if (!input.nama.trim()) return { ok: false, errorKey: "menuNameRequired" };
   if (!input.standId) return { ok: false, errorKey: "chooseStand" };
+  if (!Number.isInteger(input.kategoriId) || input.kategoriId <= 0) {
+    return { ok: false, errorKey: "chooseCategory" };
+  }
 
   const supabase = await createClient();
+  const { data: category, error: categoryError } = await supabase
+    .from("menu_categories")
+    .select("id, is_active")
+    .eq("id", input.kategoriId)
+    .maybeSingle();
+  if (categoryError) return { ok: false, error: categoryError.message };
+  if (!category || !category.is_active) return { ok: false, errorKey: "chooseCategory" };
+
   const payload: Record<string, unknown> = {
     nama: input.nama.trim(),
     stand_id: input.standId,
-    kategori: input.kategori,
+    kategori_id: input.kategoriId,
     harga: Math.max(0, Math.round(Number(input.harga) || 0)),
     stok: Math.max(0, Math.round(Number(input.stok) || 0)),
     tersedia: input.tersedia,
