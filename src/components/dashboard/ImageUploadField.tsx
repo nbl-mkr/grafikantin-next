@@ -38,7 +38,7 @@ export default function ImageUploadField({ id, preview, onSelect }: ImageUploadF
       {preview ? (
         <div
           onClick={() => inputRef.current?.click()}
-          className="group relative mt-1 flex h-32 w-full cursor-pointer items-center justify-center overflow-hidden rounded-md border border-gray-200 focus-within:border-[#e76f51] focus:outline-none"
+          className="group relative mt-1 flex h-[300px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-md border border-gray-200 focus-within:border-[#e76f51] focus:outline-none"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={preview} alt="Preview" className="h-full w-full object-cover" />
@@ -79,7 +79,7 @@ export default function ImageUploadField({ id, preview, onSelect }: ImageUploadF
             setDragging(false);
             pick(e.dataTransfer.files?.[0]);
           }}
-          className={`mt-1 flex h-32 w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-md border text-center transition-colors focus:outline-none ${
+          className={`mt-1 flex h-[300px] w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-md border text-center transition-colors focus:outline-none ${
             dragging
               ? "border-[#e76f51] bg-[#e76f51]/5"
               : "border-gray-200 bg-gray-50/50 hover:border-[#e76f51] focus-visible:border-[#e76f51]"
@@ -92,7 +92,7 @@ export default function ImageUploadField({ id, preview, onSelect }: ImageUploadF
           </span>
           <span className="text-sm font-medium text-gray-900">{t("title")}</span>
           <span className="text-xs text-gray-600">
-            {t("hint")}
+            {t("hint")}{" "}
             <span className="font-medium text-[#e76f51]">{t("browse")}</span>
           </span>
         </div>
