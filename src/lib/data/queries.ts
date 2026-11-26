@@ -1,7 +1,7 @@
 import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import type { DashboardContext } from "@/lib/data/types";
-import type { OrderRow, StandRow, MenuRow } from "@/lib/data/types";
+import type { OrderRow, StandRow, MenuRow, MenuCategoryRow } from "@/lib/data/types";
 
 const MAX_LOOKBACK_MONTHS = 12;
 const PAGE_SIZE = 1000;
@@ -12,7 +12,12 @@ const ORDER_SELECT = `
   id, kode_transaksi, total_harga, metode_pembayaran, status, jumlah, created_at,
   user:users!orders_id_user_fkey ( username ),
   stand:stands!orders_id_stand_fkey ( id, nama_stand ),
-  menu:menus!orders_id_menu_fkey ( id, nama, kategori, harga, gambar, stand:stands!menus_stand_id_fkey ( id, nama_stand ) )
+  menu:menus!orders_id_menu_fkey (
+    id, nama, kategori_id,
+    kategori_detail:menu_categories ( id, nama_id, nama_en ),
+    harga, gambar,
+    stand:stands!menus_stand_id_fkey ( id, nama_stand )
+  )
 `;
 
 function getMaxLookbackDate(): Date {
@@ -118,11 +123,21 @@ export async function fetchStands(): Promise<StandRow[]> {
   return (data ?? []) as unknown as StandRow[];
 }
 
+export async function fetchMenuCategories(): Promise<MenuCategoryRow[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("menu_categories")
+    .select("id, nama_id, nama_en, is_active")
+    .order("nama_id");
+  if (error) throw new Error(`Gagal memuat kategori menu: ${error.message}`);
+  return (data ?? []) as MenuCategoryRow[];
+}
+
 export async function fetchMenus(standId?: number | null): Promise<MenuRow[]> {
   const supabase = await createClient();
   let query = supabase
     .from("menus")
-    .select("id, nama, kategori, harga, stok, tersedia, estimasi, deskripsi, rating, gambar, stand_id, stand:stands!menus_stand_id_fkey ( id, nama_stand )")
+    .select("id, nama, kategori_id, kategori_detail:menu_categories ( id, nama_id, nama_en, is_active ), harga, stok, tersedia, estimasi, deskripsi, rating, gambar, stand_id, stand:stands!menus_stand_id_fkey ( id, nama_stand )")
     .order("id", { ascending: true });
   if (standId) query = query.eq("stand_id", standId);
 
@@ -257,7 +272,8 @@ export interface UserOrderItem {
   menu: {
     id: number;
     nama: string;
-    kategori: string;
+    kategori_id: number | null;
+    kategori_detail: Pick<MenuCategoryRow, "id" | "nama_id" | "nama_en"> | null;
     harga: number;
     gambar: string | null;
   } | null;
@@ -284,7 +300,11 @@ export async function fetchUserOrders(userId: string): Promise<UserOrderItem[]> 
       jumlah,
       created_at,
       stand:stands!orders_id_stand_fkey ( id, nama_stand ),
-      menu:menus!orders_id_menu_fkey ( id, nama, kategori, harga, gambar )
+      menu:menus!orders_id_menu_fkey (
+        id, nama, kategori_id,
+        kategori_detail:menu_categories ( id, nama_id, nama_en ),
+        harga, gambar
+      )
     `)
     .eq("id_user", userId)
     .order("created_at", { ascending: false });
