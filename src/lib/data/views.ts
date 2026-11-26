@@ -1,8 +1,9 @@
 import "server-only";
 import { getDashboardContext } from "@/lib/data/context";
-import { fetchStands, fetchMenus } from "@/lib/data/queries";
+import { fetchStands, fetchMenus, fetchMenuCategories } from "@/lib/data/queries";
 import { buildStandRevenue } from "@/lib/data/aggregate";
 import { createClient } from "@/lib/supabase/server";
+import type { MenuCategoryRow } from "@/lib/data/types";
 
 export interface StandView {
   id: number;
@@ -19,7 +20,9 @@ export interface MenuView {
   nama: string;
   stand: string;
   standId: number;
-  kategori: "Makanan" | "Snack";
+  kategori: string;
+  kategoriEn: string;
+  kategoriId: number;
   harga: number;
   stok: number;
   terjual: number;
@@ -44,9 +47,14 @@ export async function getStandsView(): Promise<StandView[]> {
   }));
 }
 
-export async function getMenusView(): Promise<{ menus: MenuView[]; stands: { id: number; nama: string }[] }> {
+export async function getMenusView(): Promise<{
+  menus: MenuView[];
+  stands: { id: number; nama: string }[];
+  categories: MenuCategoryRow[];
+  canManageCategories: boolean;
+}> {
   const ctx = await getDashboardContext();
-  if (!ctx) return { menus: [], stands: [] };
+  if (!ctx) return { menus: [], stands: [], categories: [], canManageCategories: false };
 
   // Scoping akses data — sama seperti fetchOrders/fetchChartOrders.
   // Admin melihat semua; penjual hanya standnya sendiri. Penjual yang belum
@@ -54,31 +62,45 @@ export async function getMenusView(): Promise<{ menus: MenuView[]; stands: { id:
   // fetchMenus(null) berarti "tanpa filter" (yaitu semua stand).
   const isAdmin = ctx.role === "admin";
   const scopedStandId = isAdmin ? null : ctx.standId;
-  if (!isAdmin && scopedStandId === null) return { menus: [], stands: [] };
+  if (!isAdmin && scopedStandId === null) {
+    return { menus: [], stands: [], categories: [], canManageCategories: false };
+  }
 
-  const [menus, soldByMenu, stands] = await Promise.all([
+  const [menus, soldByMenu, stands, categories] = await Promise.all([
     fetchMenus(scopedStandId),
     fetchSoldMenuCounts(),
     fetchStands(),
+    fetchMenuCategories(),
   ]);
 
   const visibleStands =
     scopedStandId === null ? stands : stands.filter((s) => s.id === scopedStandId);
 
   return {
-    menus: menus.map((m) => ({
-      id: m.id,
-      nama: m.nama,
-      stand: m.stand?.nama_stand ?? "-",
-      standId: m.stand_id,
-      kategori: m.kategori,
-      harga: Number(m.harga),
-      stok: m.stok,
-      terjual: soldByMenu.get(m.id) ?? 0,
-      tersedia: m.tersedia,
-      gambar: m.gambar,
-    })),
+    menus: menus.map((m) => {
+      const category = m.kategori_detail;
+      if (!category || category.id !== m.kategori_id) {
+        throw new Error(`Menu ${m.id} tidak memiliki relasi kategori yang valid`);
+      }
+
+      return {
+        id: m.id,
+        nama: m.nama,
+        stand: m.stand?.nama_stand ?? "-",
+        standId: m.stand_id,
+        kategori: category.nama_id,
+        kategoriEn: category.nama_en,
+        kategoriId: category.id,
+        harga: Number(m.harga),
+        stok: m.stok,
+        terjual: soldByMenu.get(m.id) ?? 0,
+        tersedia: m.tersedia,
+        gambar: m.gambar,
+      };
+    }),
     stands: visibleStands.map((s) => ({ id: s.id, nama: s.nama_stand })),
+    categories,
+    canManageCategories: ctx.role === "admin",
   };
 }
 
