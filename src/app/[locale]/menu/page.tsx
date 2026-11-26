@@ -1,12 +1,13 @@
 import { Suspense } from "react";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import MenuBrowser from "@/components/menu/MenuBrowser";
 import { fetchPublicCatalog } from "@/lib/data/public";
 
 export default async function MenuPage() {
+  const locale = await getLocale();
   const [t, { items, stands }] = await Promise.all([
     getTranslations("menu"),
-    fetchPublicCatalog(),
+    fetchPublicCatalog(locale),
   ]);
 
   return (

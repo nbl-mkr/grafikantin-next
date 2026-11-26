@@ -4,7 +4,7 @@ interface MenuSectionProps {
   id: string;
   title: string;
   items: MenuItem[];
-  category: "makanan" | "camilan";
+  category: string;
   emptyMessage: string;
   onSelectItem: (item: MenuItem, category: string) => void;
 }
@@ -24,7 +24,7 @@ export default function MenuSection({
         <div className="h-[1.5px] w-full bg-slate-200"></div>
       </div>
 
-      {items && items.length > 0 ? (
+      {items.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
           {items.map((item, index) => (
             <MenuCard

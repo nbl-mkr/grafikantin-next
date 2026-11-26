@@ -10,9 +10,10 @@ export interface StandInfo {
 
 interface HeroSectionProps {
   stand?: StandInfo;
+  categories: { id: string; label: string }[];
 }
 
-export default function HeroSection({ stand }: HeroSectionProps) {
+export default function HeroSection({ stand, categories }: HeroSectionProps) {
   const t = useTranslations("menu");
   const defaultStand: StandInfo = {
     nama_stand: t("defaultStandName"),
@@ -55,20 +56,19 @@ export default function HeroSection({ stand }: HeroSectionProps) {
             {activeStand.deskripsi}
           </p>
 
-          <div className="mt-6 flex gap-3">
-            <a
-              href="#food-section"
-              className="inline-flex items-center justify-center rounded-lg bg-[#e76f51] px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-[#d55f43] shadow-sm"
-            >
-              {t("foodAnchor")}
-            </a>
-            <a
-              href="#snack-section"
-              className="inline-flex items-center justify-center rounded-lg bg-[#e76f51] px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-[#d55f43] shadow-sm"
-            >
-              {t("snackAnchor")}
-            </a>
-          </div>
+          {categories.length > 0 && (
+            <nav aria-label={t("categoryNavigation")} className="mt-6 flex flex-wrap gap-3">
+              {categories.map((category) => (
+                <a
+                  key={category.id}
+                  href={`#${category.id}`}
+                  className="inline-flex items-center justify-center rounded-lg bg-[#e76f51] px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-[#d55f43] shadow-sm"
+                >
+                  {category.label}
+                </a>
+              ))}
+            </nav>
+          )}
         </div>
 
         <div className="w-full text-left md:w-auto md:text-right">

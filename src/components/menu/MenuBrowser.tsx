@@ -28,8 +28,30 @@ export default function MenuBrowser({ items, stands }: MenuBrowserProps) {
     return items.filter((i) => String(i.stand_id) === String(currentStand.id));
   }, [items, currentStand]);
 
-  const makanan = filtered.filter((i) => i.kategori === "Makanan");
-  const camilan = filtered.filter((i) => i.kategori !== "Makanan");
+  const categoryGroups = useMemo(() => {
+    const groups = new Map<
+      string,
+      { id: string; label: string; items: PublicMenuItem[]; sortId: number }
+    >();
+
+    for (const item of filtered) {
+      const key = `id:${item.kategori_id}`;
+      const id = `menu-category-${item.kategori_id}`;
+      const group = groups.get(key);
+      if (group) {
+        group.items.push(item);
+      } else {
+        groups.set(key, {
+          id,
+          label: item.kategori,
+          items: [item],
+          sortId: item.kategori_id,
+        });
+      }
+    }
+
+    return [...groups.values()].sort((a, b) => a.sortId - b.sortId);
+  }, [filtered]);
 
   const handleSelectItem = (item: MenuItem, category: string) => {
     console.log("Item dipilih:", item.nama_menu, "Kategori:", category);
@@ -37,26 +59,23 @@ export default function MenuBrowser({ items, stands }: MenuBrowserProps) {
 
   return (
     <>
-      <HeroSection stand={currentStand} />
+      <HeroSection
+        stand={currentStand}
+        categories={categoryGroups.map(({ id, label }) => ({ id, label }))}
+      />
 
       <main className="w-full mx-auto">
-        <MenuSection
-          id="food-section"
-          title={t("foodTitle")}
-          items={makanan}
-          category="makanan"
-          emptyMessage={t("foodEmpty")}
-          onSelectItem={handleSelectItem}
-        />
-
-        <MenuSection
-          id="snack-section"
-          title={t("snackTitle")}
-          items={camilan}
-          category="camilan"
-          emptyMessage={t("snackEmpty")}
-          onSelectItem={handleSelectItem}
-        />
+        {categoryGroups.map((group) => (
+          <MenuSection
+            key={group.id}
+            id={group.id}
+            title={group.label}
+            items={group.items}
+            category={group.label}
+            emptyMessage={t("categoryEmpty")}
+            onSelectItem={handleSelectItem}
+          />
+        ))}
       </main>
     </>
   );
