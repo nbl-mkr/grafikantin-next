@@ -9,16 +9,20 @@ export default function AddMenu() {
   const t = useTranslations("dashboard.menus");
   const tCommon = useTranslations("dashboard.common");
   const router = useRouter();
-  const { addMenu, stands } = useMenus();
-  const [form, setForm] = useState<MenuFormData>(emptyMenuForm);
+  const { addMenu, stands, categories } = useMenus();
+  const hasActiveCategory = categories.some((category) => category.is_active);
+  const [form, setForm] = useState<MenuFormData>(() => ({
+    ...emptyMenuForm,
+    kategoriId: categories.find((category) => category.is_active)?.id ?? null,
+  }));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.nama.trim() || !form.standId) return;
+    if (!form.nama.trim() || !form.standId || form.kategoriId === null) return;
     const ok = await addMenu({
       nama: form.nama,
       standId: form.standId,
-      kategori: form.kategori,
+      kategoriId: form.kategoriId,
       harga: form.harga,
       stok: form.stok,
       tersedia: form.tersedia,
@@ -39,7 +43,8 @@ export default function AddMenu() {
         <button
           type="submit"
           form="add-menu-form"
-          className="rounded-lg bg-[#e76f51] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#d55f43]"
+          disabled={!hasActiveCategory}
+          className="rounded-lg bg-[#e76f51] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#d55f43] disabled:cursor-not-allowed disabled:opacity-60"
         >
           {tCommon("add")}
         </button>
@@ -51,7 +56,7 @@ export default function AddMenu() {
       >
         <h2 className="text-sm font-medium text-gray-900">{t("addSectionTitle")}</h2>
         <div className="mt-4">
-          <MenuForm form={form} onChange={setForm} stands={stands} />
+          <MenuForm form={form} onChange={setForm} stands={stands} categories={categories} />
         </div>
       </form>
       <Link

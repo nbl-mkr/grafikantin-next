@@ -1,15 +1,14 @@
 "use client";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import CustomSelect from "@/components/CustomSelect";
 import ImageUploadField from "@/components/dashboard/ImageUploadField";
-
-export type MenuKategori = "Makanan" | "Snack";
+import type { MenuCategoryRow } from "@/lib/data/types";
 
 export interface MenuFormData {
   nama: string;
   stand: string;
   standId: number;
-  kategori: MenuKategori;
+  kategoriId: number | null;
   harga: number;
   stok: number;
   tersedia: boolean;
@@ -21,7 +20,7 @@ export const emptyMenuForm: MenuFormData = {
   nama: "",
   stand: "",
   standId: 0,
-  kategori: "Makanan",
+  kategoriId: null,
   harga: 0,
   stok: 0,
   tersedia: true,
@@ -33,11 +32,13 @@ interface MenuFormProps {
   form: MenuFormData;
   onChange: (form: MenuFormData) => void;
   stands: { id: number; nama: string }[];
+  categories: MenuCategoryRow[];
 }
 
-export default function MenuForm({ form, onChange, stands }: MenuFormProps) {
+export default function MenuForm({ form, onChange, stands, categories }: MenuFormProps) {
   const t = useTranslations("dashboard.menus.form");
-  const tCategory = useTranslations("dashboard.enums.category");
+  const locale = useLocale();
+  const activeCategories = categories.filter((category) => category.is_active);
 
   const update = <K extends keyof MenuFormData>(key: K, value: MenuFormData[K]) => {
     onChange({ ...form, [key]: value });
@@ -80,16 +81,23 @@ export default function MenuForm({ form, onChange, stands }: MenuFormProps) {
         <label htmlFor="menu-kategori" className="block text-sm font-medium text-gray-700">
           {t("category")}
         </label>
-        <CustomSelect
-          id="menu-kategori"
-          value={form.kategori}
-          options={[
-            { value: "Makanan", label: tCategory("Makanan") },
-            { value: "Snack", label: tCategory("Snack") },
-          ]}
-          onChange={(value) => update("kategori", value as MenuKategori)}
-          ariaLabel={t("selectCategory")}
-        />
+        {activeCategories.length > 0 ? (
+          <CustomSelect
+            id="menu-kategori"
+            value={form.kategoriId === null ? "" : String(form.kategoriId)}
+            options={activeCategories.map((category) => ({
+              value: String(category.id),
+              label: locale === "en" ? category.nama_en : category.nama_id,
+            }))}
+            onChange={(value) => {
+              const picked = activeCategories.find((category) => String(category.id) === value);
+              if (picked) update("kategoriId", picked.id);
+            }}
+            ariaLabel={t("selectCategory")}
+          />
+        ) : (
+          <p className="mt-1 text-sm text-gray-600">{t("noActiveCategories")}</p>
+        )}
       </div>
       <div>
         <label htmlFor="menu-harga" className="block text-sm font-medium text-gray-700">

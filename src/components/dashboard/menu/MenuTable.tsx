@@ -27,18 +27,25 @@ const KATEGORI_STYLES: Record<string, string> = {
 export default function MenuTable() {
   const t = useTranslations("dashboard.menus");
   const tCommon = useTranslations("dashboard.common");
-  const tCategory = useTranslations("dashboard.enums.category");
   const locale = useLocale();
 
-  const { menus, stands, deleteMenu, toggleTersedia } = useMenus();
+  const { menus, stands, categories, deleteMenu, toggleTersedia } = useMenus();
   const [searchTerm, setSearchTerm] = useState("");
   const [standFilter, setStandFilter] = useState<string>("all");
-  const [kategoriFilter, setKategoriFilter] = useState<"all" | "Makanan" | "Snack">("all");
+  const [kategoriFilter, setKategoriFilter] = useState("all");
   const [sortField, setSortField] = useState<SortField | null>(null);
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [deleteTarget, setDeleteTarget] = useState<MenuView | null>(null);
+
+  const effectiveKategoriFilter =
+    kategoriFilter === "all" ||
+    categories.some(
+      (category) => category.is_active && String(category.id) === kategoriFilter
+    )
+      ? kategoriFilter
+      : "all";
 
   const processedMenus = useMemo(() => {
     const result = menus.filter((m) => {
@@ -46,7 +53,9 @@ export default function MenuTable() {
         m.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
         m.stand.toLowerCase().includes(searchTerm.toLowerCase());
       const matchStand = standFilter === "all" || m.stand === standFilter;
-      const matchKategori = kategoriFilter === "all" || m.kategori === kategoriFilter;
+      const matchKategori =
+        effectiveKategoriFilter === "all" ||
+        String(m.kategoriId) === effectiveKategoriFilter;
       return matchSearch && matchStand && matchKategori;
     });
     if (sortField) {
@@ -63,7 +72,7 @@ export default function MenuTable() {
       });
     }
     return result;
-  }, [menus, searchTerm, standFilter, kategoriFilter, sortField, sortOrder]);
+  }, [menus, searchTerm, standFilter, effectiveKategoriFilter, sortField, sortOrder]);
 
   const totalPages = Math.ceil(processedMenus.length / itemsPerPage) || 1;
   const validCurrentPage = Math.min(currentPage, totalPages);
@@ -161,20 +170,28 @@ export default function MenuTable() {
                 </div>
               </div>
             </div>
-            <div className="inline-flex h-9 items-center rounded-md border border-gray-200 p-1 text-xs font-medium">
-              {(["all", "Makanan", "Snack"] as const).map((f) => (
+            <div className="inline-flex h-9 max-w-full items-center overflow-x-auto rounded-md border border-gray-200 p-1 text-xs font-medium">
+              {[
+                { id: "all", label: t("filterAll") },
+                ...categories
+                  .filter((category) => category.is_active)
+                  .map((category) => ({
+                    id: String(category.id),
+                    label: locale === "en" ? category.nama_en : category.nama_id,
+                  })),
+              ].map((filter) => (
                 <button
-                  key={f}
+                  key={filter.id}
                   type="button"
                   onClick={() => {
-                    setKategoriFilter(f);
+                    setKategoriFilter(filter.id);
                     setCurrentPage(1);
                   }}
                   className={`h-full rounded-sm px-2.5 flex items-center justify-center transition-colors ${
-                    kategoriFilter === f ? "bg-gray-100 text-gray-900" : "text-gray-600 hover:text-gray-900"
+                    effectiveKategoriFilter === filter.id ? "bg-gray-100 text-gray-900" : "text-gray-600 hover:text-gray-900"
                   }`}
                 >
-                  {f === "all" ? t("filterAll") : tCategory(f)}
+                  {filter.label}
                 </button>
               ))}
             </div>
@@ -232,7 +249,7 @@ export default function MenuTable() {
                       <td className="px-4 py-3 whitespace-nowrap text-gray-600">{menu.stand}</td>
                       <td className="px-4 py-3 whitespace-nowrap">
                         <span className={`inline-flex text-xs font-semibold ${KATEGORI_STYLES[menu.kategori] ?? "text-gray-600"}`}>
-                          {tCategory(menu.kategori)}
+                          {locale === "en" ? menu.kategoriEn : menu.kategori}
                         </span>
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-right text-gray-600">

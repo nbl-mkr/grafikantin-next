@@ -13,7 +13,8 @@ export default function EditMenu({ menuId }: EditMenuProps) {
   const t = useTranslations("dashboard.menus");
   const tCommon = useTranslations("dashboard.common");
   const router = useRouter();
-  const { menus, stands, updateMenu } = useMenus();
+  const { menus, stands, categories, updateMenu } = useMenus();
+  const hasActiveCategory = categories.some((category) => category.is_active);
   const menu = menus.find((m) => m.id === menuId);
 
   const [form, setForm] = useState<MenuFormData | null>(
@@ -22,7 +23,7 @@ export default function EditMenu({ menuId }: EditMenuProps) {
           nama: menu.nama,
           stand: menu.stand,
           standId: menu.standId,
-          kategori: menu.kategori,
+          kategoriId: menu.kategoriId,
           harga: menu.harga,
           stok: menu.stok,
           tersedia: menu.tersedia,
@@ -51,11 +52,11 @@ export default function EditMenu({ menuId }: EditMenuProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.nama.trim() || !form.standId) return;
+    if (!form.nama.trim() || !form.standId || form.kategoriId === null) return;
     const ok = await updateMenu(menuId, {
       nama: form.nama,
       standId: form.standId,
-      kategori: form.kategori,
+      kategoriId: form.kategoriId,
       harga: form.harga,
       stok: form.stok,
       tersedia: form.tersedia,
@@ -76,7 +77,8 @@ export default function EditMenu({ menuId }: EditMenuProps) {
         <button
           type="submit"
           form="edit-menu-form"
-          className="rounded-lg bg-[#e76f51] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#d55f43]"
+          disabled={!hasActiveCategory}
+          className="rounded-lg bg-[#e76f51] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#d55f43] disabled:cursor-not-allowed disabled:opacity-60"
         >
           {tCommon("save")}
         </button>
@@ -88,7 +90,7 @@ export default function EditMenu({ menuId }: EditMenuProps) {
       >
         <h2 className="text-sm font-medium text-gray-900">{t("addSectionTitle")}</h2>
         <div className="mt-4">
-          <MenuForm form={form} onChange={setForm} stands={stands} />
+          <MenuForm form={form} onChange={setForm} stands={stands} categories={categories} />
         </div>
       </form>
       <Link

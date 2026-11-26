@@ -13,10 +13,15 @@ export default async function DashboardMenuLayout({
   const profile = await getProfile();
   if (!profile) redirect(`/${locale}/auth/login`);
 
-  const { menus, stands } = await getMenusView();
+  const { menus, stands, categories, canManageCategories } = await getMenusView();
 
   return (
-    <MenuProviderWrapper initialMenus={menus} initialStands={stands}>
+    <MenuProviderWrapper
+      initialMenus={menus}
+      initialStands={stands}
+      initialCategories={categories}
+      canManageCategories={canManageCategories}
+    >
       {children}
     </MenuProviderWrapper>
   );
