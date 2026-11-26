@@ -9,7 +9,8 @@ export interface PublicMenuItem {
   gambar: string;
   estimasi: string;
   rating: string;
-  kategori: "Makanan" | "Snack";
+  kategori: string;
+  kategori_id: number;
   deskripsi?: string;
   stand_id: number;
   stand_nama?: string;
@@ -40,15 +41,21 @@ export function resolveMenuImage(gambar?: string | null, kategori?: string | nul
     : "/assets/food-icon.png";
 }
 
-function toPublicItem(m: MenuRow): PublicMenuItem {
+function toPublicItem(m: MenuRow, locale: string): PublicMenuItem {
+  const category = m.kategori_detail;
+  if (!category || category.id !== m.kategori_id) {
+    throw new Error(`Menu ${m.id} tidak memiliki relasi kategori yang valid`);
+  }
+
   return {
     id: m.id,
     nama_menu: m.nama,
     harga: Number(m.harga),
-    gambar: resolveMenuImage(m.gambar, m.kategori),
+    gambar: resolveMenuImage(m.gambar, category.nama_id),
     estimasi: m.estimasi ? `${m.estimasi} Mnt` : "10-15 Mnt",
     rating: m.rating ? `${Number(m.rating).toFixed(1)} / 5.0` : "-",
-    kategori: m.kategori,
+    kategori: locale === "en" ? category.nama_en : category.nama_id,
+    kategori_id: category.id,
     deskripsi: m.deskripsi ?? undefined,
     stand_id: m.stand_id,
     stand_nama: m.stand?.nama_stand ?? undefined,
@@ -56,7 +63,7 @@ function toPublicItem(m: MenuRow): PublicMenuItem {
   };
 }
 
-export async function fetchPublicCatalog(): Promise<PublicCatalog> {
+export async function fetchPublicCatalog(locale = "id"): Promise<PublicCatalog> {
   const supabase = await createClient();
 
   const oneWeekAgo = new Date();
@@ -65,7 +72,7 @@ export async function fetchPublicCatalog(): Promise<PublicCatalog> {
   const [menusRes, standsRes, ordersRes] = await Promise.all([
     supabase
       .from("menus")
-      .select("id, nama, kategori, harga, stok, tersedia, estimasi, deskripsi, rating, gambar, stand_id, stand:stands!menus_stand_id_fkey ( id, nama_stand )")
+      .select("id, nama, kategori_id, kategori_detail:menu_categories ( id, nama_id, nama_en, is_active ), harga, stok, tersedia, estimasi, deskripsi, rating, gambar, stand_id, stand:stands!menus_stand_id_fkey ( id, nama_stand )")
       .eq("tersedia", true)
       .order("id"),
     supabase
@@ -81,7 +88,9 @@ export async function fetchPublicCatalog(): Promise<PublicCatalog> {
 
   if (menusRes.error) throw new Error(`Gagal memuat menu: ${menusRes.error.message}`);
 
-  const items = ((menusRes.data ?? []) as unknown as MenuRow[]).map(toPublicItem);
+  const items = ((menusRes.data ?? []) as unknown as MenuRow[]).map((menu) =>
+    toPublicItem(menu, locale)
+  );
 
   const stands = ((standsRes.data ?? []) as unknown as {
     id: number;
