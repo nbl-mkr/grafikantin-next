@@ -331,13 +331,20 @@
         "Snack": "Camilan"
       }
     },
+    "chartFilter": {
+      "timeframe": "Rentang waktu",
+      "daily": "Harian",
+      "weekly": "Mingguan",
+      "monthly": "Bulanan",
+      "monthRange": "Rentang bulanan",
+      "range6m": "6B",
+      "range12m": "12B"
+    },
     "overview": {
       "chartTitle": "Tren Pendapatan",
       "revenue": "Pendapatan",
       "revenueTooltip": "Pendapatan: {value}",
       "statusTitle": "Status Pesanan",
-      "range6m": "6B",
-      "range12m": "12B",
       "recentOrders": "Pesanan Terbaru",
       "searchPlaceholder": "Cari ID atau pelanggan...",
       "filterAll": "Semua",
@@ -353,7 +360,7 @@
     "orders": {
       "title": "Pesanan",
       "export": "Ekspor Pesanan",
-      "chartTitle": "Pesanan vs Target Bulanan",
+      "chartTitle": "Pesanan vs Target",
       "target": "Target",
       "ordersLabel": "Pesanan",
       "listTitle": "Daftar Pesanan",
@@ -369,8 +376,6 @@
       "colStatus": "Status",
       "colTotal": "Total",
       "colAksi": "Aksi",
-      "range6m": "6B",
-      "range12m": "12B",
       "refresh": "Refresh",
       "btnAccept": "Terima",
       "btnComplete": "Selesai",
@@ -392,9 +397,7 @@
       "colOrders": "Pesanan",
       "colRevenue": "Pendapatan",
       "colBestMenu": "Menu Terlaris",
-      "colContribution": "Kontribusi",
-      "range6m": "6B",
-      "range12m": "12B"
+      "colContribution": "Kontribusi"
     },
     "stands": {
       "allTitle": "Semua Stand",

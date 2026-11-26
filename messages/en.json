@@ -331,13 +331,20 @@
         "Snack": "Snacks"
       }
     },
+    "chartFilter": {
+      "timeframe": "Chart time range",
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "monthRange": "Monthly range",
+      "range6m": "6M",
+      "range12m": "12M"
+    },
     "overview": {
       "chartTitle": "Revenue Trend",
       "revenue": "Revenue",
       "revenueTooltip": "Revenue: {value}",
       "statusTitle": "Order Status",
-      "range6m": "6M",
-      "range12m": "12M",
       "recentOrders": "Recent Orders",
       "searchPlaceholder": "Search ID or customer...",
       "filterAll": "All",
@@ -353,7 +360,7 @@
     "orders": {
       "title": "Orders",
       "export": "Export Orders",
-      "chartTitle": "Orders vs Monthly Target",
+      "chartTitle": "Orders vs Target",
       "target": "Target",
       "ordersLabel": "Orders",
       "listTitle": "Order List",
@@ -369,8 +376,6 @@
       "colStatus": "Status",
       "colTotal": "Total",
       "colAksi": "Action",
-      "range6m": "6M",
-      "range12m": "12M",
       "refresh": "Refresh",
       "btnAccept": "Accept",
       "btnComplete": "Complete",
@@ -392,9 +397,7 @@
       "colOrders": "Orders",
       "colRevenue": "Revenue",
       "colBestMenu": "Best Seller",
-      "colContribution": "Contribution",
-      "range6m": "6M",
-      "range12m": "12M"
+      "colContribution": "Contribution"
     },
     "stands": {
       "allTitle": "All Stands",
